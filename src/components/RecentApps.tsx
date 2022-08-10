@@ -1,0 +1,61 @@
+// React
+import React, { FC } from 'react'
+// React Native
+import { FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native'
+// Redux
+import { useSelector } from 'react-redux'
+// Components
+import AppItem from './AppItem'
+// Slices
+import { selectRecentAppsMemoized } from '../slices/recentApps'
+// Models
+import { RenderedIn } from '../models/rendered-in'
+import { RecentAppDetails } from '../models/recent-app'
+
+const RecentApps: FC = () => {
+  const apps = useSelector(selectRecentAppsMemoized)
+
+  const renderAppItem: ListRenderItem<RecentAppDetails> = ({ item }: ListRenderItemInfo<RecentAppDetails>) => (
+    <AppItem appDetails={item} appIcon={item.icon} renderedIn={RenderedIn.RECENT_APPS} />
+  )
+
+  if (apps.length === 0) {
+    return (
+      <View style={[styles.wrapper, styles.noAppsWrapper]}>
+        <Text style={styles.noAppsWrapperText}>No recent apps yet</Text>
+      </View>
+    )
+  }
+
+  return (
+    <View style={styles.wrapper}>
+      <FlatList
+        inverted
+        data={apps}
+        renderItem={renderAppItem}
+        keyboardShouldPersistTaps={'handled'}
+        keyExtractor={appDetails => appDetails.name}
+      />
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  wrapper: {
+    minHeight: 310,
+    paddingVertical: 5,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, .25)',
+  },
+  noAppsWrapper: {
+    paddingVertical: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  noAppsWrapperText: {
+    color: 'rgba(255, 255, 255, .7)',
+  },
+})
+
+export default RecentApps
