@@ -56,6 +56,7 @@ const Home = () => {
   useEffect(() => {
     // TODO: Create a context to update the apps list
     // TODO: Remove this listener from this component (can it be a hook?)
+    // TODO: After reloading the apps, check if the package is in recent or favorite apps and decide on it
     const eventEmitter = new NativeEventEmitter(NativeModules.AppsModule)
     const eventListener = eventEmitter.addListener('packageChange', ({ packageName }: PackageChange) => {
       setReloadApps(packageName)
