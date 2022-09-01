@@ -1,3 +1,4 @@
+// Models
 import { AppDetails } from './app-details'
 
 export type FavoriteAppDetails = AppDetails & { icon: string }

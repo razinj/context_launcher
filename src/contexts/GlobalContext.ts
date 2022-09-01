@@ -1,11 +1,16 @@
 // React
-import { createContext } from 'react'
+import { createContext, RefObject } from 'react'
+// BottomSheet
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 
 export type GlobalContextType = {
+  hideAllApps: () => void
   toggleDisplayAllApps: () => void
   displayAllApps: boolean
-  toggleDisplaySettingsModal: () => void
-  displaySettingsModal: boolean
+  settingsBottomSheetRef: RefObject<BottomSheetModal> | null
+  displaySettingsBottomSheet: () => void
+  sortableFavoriteApps: boolean
+  toggleSortableFavoriteApps: () => void
 }
 
 const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType)

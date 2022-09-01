@@ -1,7 +1,7 @@
 // React
-import React, { FC } from 'react'
+import React from 'react'
 // React Native
-import { Text } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 // Redux
 import { useSelector } from 'react-redux'
 // Slices
@@ -9,7 +9,7 @@ import { selectAppsSearchQuery } from '../slices/appsSearch'
 // Models
 import { HighlightTextProps as Props } from '../models/props'
 
-const HighlightText: FC<Props> = ({ text }) => {
+const HighlightText = ({ text }: Props) => {
   const searchQuery = useSelector(selectAppsSearchQuery)
 
   if (!searchQuery || searchQuery.trim().length === 0) return <Text>{text}</Text>
@@ -20,7 +20,7 @@ const HighlightText: FC<Props> = ({ text }) => {
     <Text>
       {text.split(regex).map((substring: string, index: number) => {
         return regex.test(substring) ? (
-          <Text style={{ color: 'green', fontWeight: '600' }} key={index}>
+          <Text style={styles.highlightedText} key={index}>
             {substring}
           </Text>
         ) : (
@@ -30,5 +30,12 @@ const HighlightText: FC<Props> = ({ text }) => {
     </Text>
   )
 }
+
+const styles = StyleSheet.create({
+  highlightedText: {
+    color: 'green',
+    fontWeight: '600',
+  },
+})
 
 export default HighlightText

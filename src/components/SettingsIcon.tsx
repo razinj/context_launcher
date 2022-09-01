@@ -4,15 +4,15 @@ import React, { useContext } from 'react'
 import { StyleSheet, View } from 'react-native'
 // Contexts
 import GlobalContext from '../contexts/GlobalContext'
-// Icon
+// Icons
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const AllAppsIcon = () => {
-  const { toggleDisplayAllApps } = useContext(GlobalContext)
+const SettingsIcon = () => {
+  const { displaySettingsBottomSheet } = useContext(GlobalContext)
 
   return (
     <View style={styles.wrapper}>
-      <Icon style={styles.icon} name='dots-hexagon' size={35} color='#000' onPress={toggleDisplayAllApps} />
+      <Icon style={styles.icon} name='menu' size={35} color='#000' onPress={displaySettingsBottomSheet} />
     </View>
   )
 }
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AllAppsIcon
+export default SettingsIcon

@@ -1,18 +1,17 @@
 // React
-import React, { FC } from 'react'
+import React from 'react'
 // React Native
 import { FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native'
 // Redux
 import { useSelector } from 'react-redux'
+import { selectRecentAppsMemoized } from '../slices/recentApps'
 // Components
 import AppItem from './AppItem'
-// Slices
-import { selectRecentAppsMemoized } from '../slices/recentApps'
 // Models
 import { RenderedIn } from '../models/rendered-in'
 import { RecentAppDetails } from '../models/recent-app'
 
-const RecentApps: FC = () => {
+const RecentApps = () => {
   const apps = useSelector(selectRecentAppsMemoized)
 
   const renderAppItem: ListRenderItem<RecentAppDetails> = ({ item }: ListRenderItemInfo<RecentAppDetails>) => (

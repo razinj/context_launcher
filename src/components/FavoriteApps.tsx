@@ -1,21 +1,20 @@
 // React
-import React, { FC, useContext } from 'react'
+import React, { useContext } from 'react'
 // React Native
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
-// Slices
 import { resetAppsSearchState } from '../slices/appsSearch'
 import { selectFavoriteAppsMemoized } from '../slices/favoriteApps'
-// Utils
-import { launchApp } from '../utils/appsModule'
 // Contexts
 import SearchContext, { SearchContextType } from '../contexts/SearchContext'
+// Utils
+import { launchApp } from '../utils/appsModule'
 // Models
 import { AppDetails } from '../models/app-details'
 import { FavoriteApp } from '../models/favorite-app'
 
-const FavoriteApps: FC = () => {
+const FavoriteApps = () => {
   const dispatch = useDispatch()
   const apps = useSelector(selectFavoriteAppsMemoized)
   const { triggerAppLaunchedProcedure } = useContext<SearchContextType>(SearchContext)

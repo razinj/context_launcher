@@ -1,3 +1,4 @@
+// React Native
 import { NativeModules } from 'react-native'
 
 const { AppsModule } = NativeModules

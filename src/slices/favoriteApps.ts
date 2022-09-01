@@ -18,7 +18,7 @@ export const favoriteAppsSlice = createSlice({
   initialState,
   reducers: {
     addFavoriteApp: (state: FavoriteAppsState, action: PayloadAction<FavoriteAppDetails>) => {
-      if (state.list.length >= 5) return
+      if (state.list.length == 5) return
 
       const existingApp = state.list.find((app: FavoriteApp) => app.appDetails.name === action.payload.name)
 
@@ -27,24 +27,24 @@ export const favoriteAppsSlice = createSlice({
       if (!existingApp) state.list.push({ appDetails: action.payload, order: 1 })
     },
     removeFavoriteApp: (state: FavoriteAppsState, action: PayloadAction<string>) => {
-      const list = state.list
+      const foundAppIndex = state.list.findIndex((app: FavoriteApp) => app.appDetails.name === action.payload)
 
-      // Payload should be the package name
-      const foundAppIndex = list.findIndex((app: FavoriteApp) => app.appDetails.name === action.payload)
+      if (foundAppIndex === -1) return
 
-      if (foundAppIndex === -1) console.error('App not found in favorite apps list')
-
-      list.splice(foundAppIndex, 1)
+      state.list.splice(foundAppIndex, 1)
+    },
+    setFavoriteApps: (state: FavoriteAppsState, action: PayloadAction<FavoriteApp[]>) => {
+      state.list = action.payload
     },
   },
 })
 
-export const { addFavoriteApp, removeFavoriteApp } = favoriteAppsSlice.actions
+export const { addFavoriteApp, removeFavoriteApp, setFavoriteApps } = favoriteAppsSlice.actions
 
 const selectFavoriteApps = (state: RootState) => state.favoriteApps.list
 
 export const selectFavoriteAppsMemoized = createSelector(selectFavoriteApps, (list: FavoriteApp[]) => {
-  return list.slice().sort((appOne: FavoriteApp, appTwo: FavoriteApp) => appOne.order - appTwo.order)
+  return [...list].sort((appOne: FavoriteApp, appTwo: FavoriteApp) => appOne.order - appTwo.order)
 })
 
 export default favoriteAppsSlice.reducer

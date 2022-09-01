@@ -1,5 +1,5 @@
 // React
-import React, { FC, memo, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 // React Native
 import { Image, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
 // Components
@@ -8,29 +8,32 @@ import HighlightText from './HighlightText'
 import { useDispatch, useSelector } from 'react-redux'
 // Slices
 import { addRecentApp } from '../slices/recentApps'
-import { addFavoriteApp, removeFavoriteApp, selectFavoriteAppsMemoized } from '../slices/favoriteApps'
 import { resetAppsSearchState } from '../slices/appsSearch'
+import { addFavoriteApp, removeFavoriteApp, selectFavoriteAppsMemoized } from '../slices/favoriteApps'
 // Utils
 import { launchApp, requestAppUninstall, showAppDetails } from '../utils/appsModule'
 // Native modules
 import AppsModule from '../native-modules/AppsModule'
 // Contexts
 import SearchContext, { SearchContextType } from '../contexts/SearchContext'
+import GlobalContext, { GlobalContextType } from '../contexts/GlobalContext'
 // Models
-import { AppItemProps as Props } from '../models/props'
 import { RenderedIn } from '../models/rendered-in'
 import { FavoriteApp } from '../models/favorite-app'
+import { AppItemProps as Props } from '../models/props'
 
-const AppItem: FC<Props> = ({ appDetails, renderedIn, appIcon }) => {
+const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
   const dispatch = useDispatch()
   const [modalVisible, setModalVisible] = useState(false)
   const [icon, setIcon] = useState<string | undefined>(undefined)
+  const { hideAllApps } = useContext<GlobalContextType>(GlobalContext)
   const { triggerAppLaunchedProcedure } = useContext<SearchContextType>(SearchContext)
   const favoriteApps = useSelector(selectFavoriteAppsMemoized)
   const [isFavoriteApp, setIsFavoriteApp] = useState(false)
 
   const handleOnAppPress = () => {
     launchApp(appDetails.name)
+    hideAllApps()
     triggerAppLaunchedProcedure()
     dispatch(resetAppsSearchState())
 
@@ -189,4 +192,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default memo(AppItem)
+export default AppItem

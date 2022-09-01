@@ -1,12 +1,11 @@
 // React
-import React, { FC, useContext } from 'react'
+import React, { useContext } from 'react'
 // React Native
 import { FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native'
 // Components
 import AppItem from './AppItem'
 // Redux
 import { useSelector } from 'react-redux'
-// Slices
 import { selectAppsSearchResult } from '../slices/appsSearch'
 // Contexts
 import SearchContext, { SearchContextType } from '../contexts/SearchContext'
@@ -14,7 +13,7 @@ import SearchContext, { SearchContextType } from '../contexts/SearchContext'
 import { AppDetails } from '../models/app-details'
 import { RenderedIn } from '../models/rendered-in'
 
-const FilteredApps: FC = () => {
+const FilteredApps = () => {
   const apps = useSelector(selectAppsSearchResult)
   const { invalidCharacters } = useContext<SearchContextType>(SearchContext)
 

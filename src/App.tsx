@@ -1,5 +1,5 @@
 // React
-import React from 'react'
+import React, { useEffect } from 'react'
 // React Native
 import { StatusBar, useColorScheme } from 'react-native'
 // Redux
@@ -10,19 +10,29 @@ import GlobalContextWrapper from './contexts/GlobalContextWrapper'
 import SearchContextWrapper from './contexts/SearchContextWrapper'
 // Components
 import Home from './Home'
-import SettingsModal from './components/SettingsModal'
+import SettingsBottomSheet from './components/SettingsBottomSheet'
 // State
 import { persistor, store } from './store'
+// Gesture Handler
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const App = () => {
+  const colorScheme = useColorScheme()
+
+  useEffect(() => {
+    if (!colorScheme) StatusBar.setBarStyle('default', true)
+    else StatusBar.setBarStyle(colorScheme === 'dark' ? 'light-content' : 'dark-content', true)
+  }, [colorScheme])
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <StatusBar barStyle={useColorScheme() === 'dark' ? 'light-content' : 'dark-content'} animated={true} />
         <GlobalContextWrapper>
           <SearchContextWrapper>
-            <Home />
-            <SettingsModal />
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <Home />
+              <SettingsBottomSheet />
+            </GestureHandlerRootView>
           </SearchContextWrapper>
         </GlobalContextWrapper>
       </PersistGate>

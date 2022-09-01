@@ -1,10 +1,9 @@
 // React
-import React, { FC, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 // React Native
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
-// Slices
 import {
   resetAppsSearchState,
   selectAppsSearchQuery,
@@ -12,18 +11,16 @@ import {
   setAppsSearchResult,
 } from '../slices/appsSearch'
 import { selectAppsListMemoized } from '../slices/appsList'
+// Contexts
+import SearchContext, { SearchContextType } from '../contexts/SearchContext'
 // Icon
 import Icon from 'react-native-vector-icons/MaterialIcons'
 // Utils
 import { dismissKeyboard } from '../utils/keyboard'
-// Contexts
-import SearchContext, { SearchContextType } from '../contexts/SearchContext'
 // Models
 import { AppDetails } from '../models/app-details'
 
-const clearIcon = <Icon name='clear' size={25} color='#808080' />
-
-const Search: FC = () => {
+const Search = () => {
   const dispatch = useDispatch()
   const allApps = useSelector(selectAppsListMemoized)
   const searchQuery = useSelector(selectAppsSearchQuery)
@@ -71,7 +68,9 @@ const Search: FC = () => {
         onSubmitEditing={dismissKeyboard}
       />
       {searchQuery && searchQuery?.length > 0 && (
-        <TouchableOpacity onPress={clearInputAndSearchState}>{clearIcon}</TouchableOpacity>
+        <TouchableOpacity onPress={clearInputAndSearchState}>
+          <Icon name='clear' size={25} color='#808080' />
+        </TouchableOpacity>
       )}
     </View>
   )
@@ -82,9 +81,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     flex: 1,
   },
   searchInput: {
