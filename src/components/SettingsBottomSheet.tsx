@@ -14,6 +14,12 @@ import {
 import GlobalContext from '../contexts/GlobalContext'
 // BottomSheet
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+// Icon
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+// Utils
+import { showAppDetails } from '../utils/appsModule'
+// Constants
+import { CONTEXT_LAUNCHER_APP_ID } from '../constants'
 
 const switchTrackColor = { false: '#ccc', true: '#ccc' }
 
@@ -37,8 +43,15 @@ const SettingsBottomSheet = () => {
     <BottomSheetModalProvider>
       <BottomSheetModal ref={settingsBottomSheetRef} snapPoints={snapPoints} style={{ marginHorizontal: 5 }}>
         <View style={styles.settingsWrapper}>
-          <View style={{ marginBottom: 20 }}>
+          <View
+            style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={{ color: '#808080', fontSize: 20, fontWeight: '400' }}>Context Settings</Text>
+            <Icon
+              size={34}
+              color='#808080'
+              name='information-outline'
+              onPress={() => showAppDetails(CONTEXT_LAUNCHER_APP_ID)}
+            />
           </View>
           <View style={styles.itemContainer}>
             <Text style={styles.itemLabel}>Display recent apps</Text>

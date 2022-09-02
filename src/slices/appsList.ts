@@ -1,6 +1,8 @@
 // Redux
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+// Constants
+import { CONTEXT_LAUNCHER_APP_ID } from '../constants'
 // Models
 import { RootState } from '../store'
 import { AppDetails } from '../models/app-details'
@@ -18,7 +20,8 @@ export const appsListSlice = createSlice({
   initialState,
   reducers: {
     setAppsList: (state: AppsListState, action: PayloadAction<AppDetails[]>) => {
-      state.list = action.payload
+      // Filter out Context Launcher from the app's list
+      state.list = action.payload.filter(({ name }: AppDetails) => name !== CONTEXT_LAUNCHER_APP_ID)
     },
   },
 })
