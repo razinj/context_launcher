@@ -10,17 +10,19 @@
     "upgrade": "react-native upgrade",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "check-dependencies": "rnx-dep-check",
+    "fix-dependencies": "rnx-dep-check --write"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.4.3",
     "@react-native-async-storage/async-storage": "^1.17.7",
     "@reduxjs/toolkit": "^1.8.3",
     "react": "18.0.0",
-    "react-native": "0.69.1",
+    "react-native": "^0.69.0",
     "react-native-draggable-flatlist": "^3.1.2",
-    "react-native-gesture-handler": "^2.6.0",
-    "react-native-reanimated": "^2.10.0",
+    "react-native-gesture-handler": "^2.5.0",
+    "react-native-reanimated": "^2.9.0",
     "react-native-vector-icons": "^9.2.0",
     "react-redux": "^8.0.2",
     "redux-persist": "^6.0.0"
@@ -29,6 +31,7 @@
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@rnx-kit/dep-check": "^1.12.22",
     "@types/jest": "^26.0.23",
     "@types/react-native": "^0.69.1",
     "@types/react-native-vector-icons": "^6.4.10",
@@ -55,6 +58,22 @@
       "jsx",
       "json",
       "node"
+    ]
+  },
+  "rnx-kit": {
+    "reactNativeVersion": "^0.69.0",
+    "kitType": "app",
+    "capabilities": [
+      "animation",
+      "babel-preset-react-native",
+      "core",
+      "core-android",
+      "core-ios",
+      "gestures",
+      "jest",
+      "react",
+      "react-test-renderer",
+      "storage"
     ]
   }
 }
