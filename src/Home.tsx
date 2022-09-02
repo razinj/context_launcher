@@ -50,6 +50,7 @@ const Home = () => {
     if (displayAllApps) toggleDisplayAllApps()
     if (searchInputRef?.current?.isFocused()) searchInputRef?.current?.blur()
 
+    // TODO: Read more about the return here: https://github.com/react-native-community/hooks#usebackhandler
     return true
   })
 
