@@ -1,7 +1,16 @@
 // React
 import React from 'react'
 // React Native
-import { FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  FlatList,
+  ListRenderItem,
+  ListRenderItemInfo,
+  Pressable,
+  PressableAndroidRippleConfig,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 // Redux
 import { useSelector } from 'react-redux'
 import { selectAppsListMemoized } from '../slices/appsList'
@@ -9,19 +18,20 @@ import { selectAppsListMemoized } from '../slices/appsList'
 import { getFirstLetter } from '../utils/alphabetList'
 // Models
 import { AppDetails } from '../models/app-details'
+import { AppLetterIndex } from '../models/list-letter-index'
+import { ListLetterIndexProps as Props } from '../models/props'
 
-interface ListLetterIndexProps {
-  onPressLetter: (sectionIndex: number) => void
+const rippleConfig: PressableAndroidRippleConfig = {
+  borderless: false,
+  foreground: true,
+  color: '#e5e5e5',
+  radius: 12,
 }
 
-type AppLetterIndex = {
-  index: number
-  letter: string
-}
-
-const BetaListLetterIndex = ({ onPressLetter }: ListLetterIndexProps) => {
+const BetaListLetterIndex = ({ onLetterPress }: Props) => {
   const apps = useSelector(selectAppsListMemoized)
 
+  // TODO: Needs refactoring -- use selector to cache the data
   const getAppsLetterIndex = (data: AppDetails[]): AppLetterIndex[] => {
     const treatedLetters: string[] = []
     const appsLetterIndex: AppLetterIndex[] = []
@@ -38,23 +48,24 @@ const BetaListLetterIndex = ({ onPressLetter }: ListLetterIndexProps) => {
     return appsLetterIndex
   }
 
-  const onRenderCustomIndexLetter: ListRenderItem<AppLetterIndex> = ({ item }: ListRenderItemInfo<AppLetterIndex>) => {
+  const renderItem: ListRenderItem<AppLetterIndex> = ({ item }: ListRenderItemInfo<AppLetterIndex>) => {
     return (
-      <TouchableOpacity onPress={() => onPressLetter(item.index)}>
-        <View style={styles.letterIndexItem}>
-          <Text style={styles.letterIndexLabel}>{item.letter}</Text>
-        </View>
-      </TouchableOpacity>
+      <Pressable
+        style={styles.letterIndexLabelWrapper}
+        onPress={() => onLetterPress(item.index)}
+        android_disableSound={true}
+        android_ripple={rippleConfig}>
+        <Text style={styles.letterIndexLabel}>{item.letter}</Text>
+      </Pressable>
     )
   }
 
   return (
     <View style={styles.letterIndexContainer}>
       <FlatList
-        contentContainerStyle={styles.letterIndexList}
         data={getAppsLetterIndex(apps)}
+        renderItem={renderItem}
         keyExtractor={(item: AppLetterIndex) => item.letter}
-        renderItem={onRenderCustomIndexLetter}
       />
     </View>
   )
@@ -62,27 +73,26 @@ const BetaListLetterIndex = ({ onPressLetter }: ListLetterIndexProps) => {
 
 const styles = StyleSheet.create({
   letterIndexContainer: {
-    width: 10,
-    height: '100%',
-    position: 'absolute',
     top: 0,
     right: 0,
-  },
-  letterIndexList: {
+    bottom: 0,
+    position: 'absolute',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100%',
   },
-  letterIndexItem: {
-    width: 10,
-    height: 15,
+  letterIndexLabelWrapper: {
+    width: 25,
+    height: 25,
     alignItems: 'center',
     justifyContent: 'center',
   },
   letterIndexLabel: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: 'grey',
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowRadius: 2.5,
   },
 })
 

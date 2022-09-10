@@ -8,16 +8,18 @@ import { useSelector } from 'react-redux'
 import { selectAppsSearchQuery } from '../slices/appsSearch'
 // Models
 import { HighlightTextProps as Props } from '../models/props'
+// Constants
+import { PRIMARY_HEX_COLOR } from '../constants'
 
 const HighlightText = ({ text }: Props) => {
   const searchQuery = useSelector(selectAppsSearchQuery)
 
-  if (!searchQuery || searchQuery.trim().length === 0) return <Text>{text}</Text>
+  if (!searchQuery || searchQuery.trim().length === 0) return <Text style={styles.normalText}>{text}</Text>
 
   const regex = new RegExp(`(${searchQuery})`, 'gi')
 
   return (
-    <Text>
+    <Text style={styles.normalText}>
       {text.split(regex).map((substring: string, index: number) => {
         return regex.test(substring) ? (
           <Text style={styles.highlightedText} key={index}>
@@ -33,8 +35,16 @@ const HighlightText = ({ text }: Props) => {
 
 const styles = StyleSheet.create({
   highlightedText: {
-    color: 'green',
+    color: PRIMARY_HEX_COLOR,
     fontWeight: '600',
+    textShadowColor: 'rgba(255, 255, 255, 0.75)',
+    textShadowRadius: 2.5,
+  },
+  normalText: {
+    color: '#fff',
+    fontWeight: '600',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowRadius: 2.5,
   },
 })
 

@@ -26,3 +26,12 @@ export type GlobalContextWrapperProps = {
 export type PackageChange = {
   packageName: string
 }
+
+export type ListLetterIndexProps = {
+  onLetterPress: (letterIndex: number) => void
+}
+
+export type SettingsItemLabelProps = {
+  title: string
+  description?: string
+}

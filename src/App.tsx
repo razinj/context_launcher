@@ -10,6 +10,7 @@ import GlobalContextWrapper from './contexts/GlobalContextWrapper'
 import SearchContextWrapper from './contexts/SearchContextWrapper'
 // Components
 import Home from './Home'
+import AppItemMenu from './components/AppItemMenu'
 import SettingsBottomSheet from './components/SettingsBottomSheet'
 // State
 import { persistor, store } from './store'
@@ -31,6 +32,7 @@ const App = () => {
           <SearchContextWrapper>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <Home />
+              <AppItemMenu />
               <SettingsBottomSheet />
             </GestureHandlerRootView>
           </SearchContextWrapper>

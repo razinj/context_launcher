@@ -12,6 +12,7 @@ import SearchContext, { SearchContextType } from '../contexts/SearchContext'
 // Models
 import { AppDetails } from '../models/app-details'
 import { RenderedIn } from '../models/rendered-in'
+import { BACKGROUND_COLOR } from '../constants'
 
 const FilteredApps = () => {
   const apps = useSelector(selectAppsSearchResult)
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     minHeight: 70,
     paddingVertical: 5,
     borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, .25)',
+    backgroundColor: BACKGROUND_COLOR,
   },
   noAppsWrapper: {
     paddingVertical: 0,
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   noAppsWrapperText: {
-    color: 'rgba(255, 255, 255, .7)',
+    color: '#fff',
   },
 })
 

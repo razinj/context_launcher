@@ -1,7 +1,7 @@
 // React
 import React, { useContext, useEffect } from 'react'
 // React Native
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import { Pressable, PressableAndroidRippleConfig, StyleSheet, TextInput, View } from 'react-native'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -17,8 +17,17 @@ import SearchContext, { SearchContextType } from '../contexts/SearchContext'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 // Utils
 import { dismissKeyboard } from '../utils/keyboard'
+// Constants
+import { SECONDARY_HEX_COLOR } from '../constants'
 // Models
 import { AppDetails } from '../models/app-details'
+
+const clearIconRippleConfig: PressableAndroidRippleConfig = {
+  borderless: true,
+  foreground: true,
+  color: '#ccc',
+  radius: 15,
+}
 
 const Search = () => {
   const dispatch = useDispatch()
@@ -61,16 +70,20 @@ const Search = () => {
         ref={searchInputRef}
         style={styles.searchInput}
         placeholder='Search'
-        placeholderTextColor='#808080'
+        placeholderTextColor={SECONDARY_HEX_COLOR}
         returnKeyType='search'
         autoCapitalize='words'
         onChangeText={onQueryChange}
         onSubmitEditing={dismissKeyboard}
       />
       {searchQuery && searchQuery?.length > 0 && (
-        <TouchableOpacity onPress={clearInputAndSearchState}>
+        <Pressable
+          style={styles.clearIconWrapper}
+          onPress={clearInputAndSearchState}
+          android_disableSound={true}
+          android_ripple={clearIconRippleConfig}>
           <Icon name='clear' size={25} color='#808080' />
-        </TouchableOpacity>
+        </Pressable>
       )}
     </View>
   )
@@ -88,6 +101,9 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#000',
     fontSize: 16,
+  },
+  clearIconWrapper: {
+    padding: 5,
   },
 })
 

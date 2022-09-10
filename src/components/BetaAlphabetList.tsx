@@ -11,41 +11,43 @@ import { selectAppsListMemoized } from '../slices/appsList'
 // Models
 import { AppDetails } from '../models/app-details'
 import { RenderedIn } from '../models/rendered-in'
+import { BACKGROUND_COLOR } from '../constants'
 
 const BetaAlphabetList = () => {
   const apps = useSelector(selectAppsListMemoized)
-  const flatListRef: MutableRefObject<FlatList<AppDetails> | null> = useRef(null)
+  const listRef: MutableRefObject<FlatList<AppDetails> | null> = useRef(null)
 
-  const onScrollToSection = (index: number) => {
-    if (!flatListRef.current) return
-
-    const sectionList = flatListRef.current as FlatList
-    sectionList.scrollToIndex({ index, animated: false })
+  const scrollToIndex = (index: number) => {
+    ;(listRef.current as FlatList).scrollToIndex({ index, animated: true })
   }
 
-  const renderAppItem: ListRenderItem<AppDetails> = ({ item }: ListRenderItemInfo<AppDetails>) => (
-    <AppItem appDetails={item} renderedIn={RenderedIn.FILTERED_APPS} />
+  const renderItem: ListRenderItem<AppDetails> = ({ item }: ListRenderItemInfo<AppDetails>) => (
+    <AppItem appDetails={item} renderedIn={RenderedIn.ALL_APPS} />
   )
 
   return (
     <View style={styles.wrapper}>
       <FlatList
         data={apps}
-        ref={flatListRef}
-        renderItem={renderAppItem}
+        ref={listRef}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={'handled'}
-        keyExtractor={appDetails => appDetails.name}
+        keyExtractor={(item: AppDetails) => item.name}
         getItemLayout={(_data: unknown, index: number) => ({ length: 60, offset: 60 * index, index })}
       />
 
-      <BetaListLetterIndex onPressLetter={onScrollToSection} />
+      <BetaListLetterIndex onLetterPress={scrollToIndex} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   wrapper: {
+    borderRadius: 10,
+    paddingVertical: 5,
     position: 'relative',
+    backgroundColor: BACKGROUND_COLOR,
   },
 })
 

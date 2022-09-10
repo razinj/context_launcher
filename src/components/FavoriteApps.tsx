@@ -13,6 +13,7 @@ import { launchApp } from '../utils/appsModule'
 // Models
 import { AppDetails } from '../models/app-details'
 import { FavoriteApp } from '../models/favorite-app'
+import { BACKGROUND_COLOR } from '../constants'
 
 const FavoriteApps = () => {
   const dispatch = useDispatch()
@@ -58,14 +59,14 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 10,
     paddingVertical: 2.5,
-    backgroundColor: 'rgba(255, 255, 255, .25)',
+    backgroundColor: BACKGROUND_COLOR,
   },
   noAppsWrapper: {
     alignItems: 'center',
     paddingVertical: 0,
   },
   noAppsWrapperText: {
-    color: 'rgba(255, 255, 255, .7)',
+    color: '#fff',
   },
   pressable: {
     backgroundColor: 'transparent',

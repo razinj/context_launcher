@@ -1,7 +1,9 @@
 // React
 import React, { useContext, useMemo } from 'react'
 // React Native
-import { StyleSheet, Switch, Text, View } from 'react-native'
+import { Pressable, PressableAndroidRippleConfig, StyleSheet, Switch, Text, View } from 'react-native'
+// Components
+import SettingsItemLabel from './SettingsItemLabel'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -19,13 +21,28 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // Utils
 import { showAppDetails } from '../utils/appsModule'
 // Constants
-import { CONTEXT_LAUNCHER_APP_ID } from '../constants'
+import { CONTEXT_LAUNCHER_APP_ID, PRIMARY_HEX_COLOR } from '../constants'
 
-const switchTrackColor = { false: '#ccc', true: '#ccc' }
+const activeSwitch = PRIMARY_HEX_COLOR
+const inActiveSwitch = '#f4f3f4'
+const switchTrackColor = { false: '#e5e5e5', true: '#e5e5e5' }
+
+const appInfoIconRippleConfig: PressableAndroidRippleConfig = {
+  borderless: true,
+  foreground: true,
+  color: '#e5e5e5',
+  radius: 18,
+}
+
+const settingItemButtonRippleConfig: PressableAndroidRippleConfig = {
+  borderless: false,
+  foreground: true,
+  color: '#e5e5e5',
+}
 
 const SettingsBottomSheet = () => {
   const dispatch = useDispatch()
-  const { settingsBottomSheetRef, sortableFavoriteApps, toggleSortableFavoriteApps } = useContext(GlobalContext)
+  const { settingsBottomSheetRef, toggleSortableFavoriteApps } = useContext(GlobalContext)
   const displayRecentAppsValue = useSelector(selectDisplayRecentAppsMemoized)
   const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
 
@@ -41,44 +58,50 @@ const SettingsBottomSheet = () => {
 
   return (
     <BottomSheetModalProvider>
-      <BottomSheetModal ref={settingsBottomSheetRef} snapPoints={snapPoints} style={{ marginHorizontal: 5 }}>
+      <BottomSheetModal ref={settingsBottomSheetRef} snapPoints={snapPoints} style={styles.bottomSheetModal}>
+        {/* Settings wrapper */}
         <View style={styles.settingsWrapper}>
-          <View
-            style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={{ color: '#808080', fontSize: 20, fontWeight: '400' }}>Context Settings</Text>
-            <Icon
-              size={34}
-              color='#808080'
-              name='information-outline'
+          {/* Header wrapper */}
+          <View style={styles.headerWrapper}>
+            <Text style={styles.headerTitle}>Context Settings</Text>
+            <Pressable
               onPress={() => showAppDetails(CONTEXT_LAUNCHER_APP_ID)}
-            />
+              android_disableSound={true}
+              android_ripple={appInfoIconRippleConfig}>
+              <Icon name='information-outline' size={34} color='#808080' />
+            </Pressable>
           </View>
+
+          {/* Settings */}
+          {/* Recent apps switch */}
           <View style={styles.itemContainer}>
-            <Text style={styles.itemLabel}>Display recent apps</Text>
+            <SettingsItemLabel title='Display recent apps' />
             <Switch
               value={displayRecentAppsValue}
               onValueChange={toggleDisplayRecentApps}
               trackColor={switchTrackColor}
-              thumbColor={displayRecentAppsValue ? '#05445E' : '#f4f3f4'}
+              thumbColor={displayRecentAppsValue ? activeSwitch : inActiveSwitch}
             />
           </View>
+          {/* Favorite apps switch */}
           <View style={styles.itemContainer}>
-            <Text style={styles.itemLabel}>Display favorite apps</Text>
+            <SettingsItemLabel title='Display favorite apps' />
             <Switch
               value={displayFavoriteAppsValue}
               onValueChange={toggleDisplayFavoriteApps}
               trackColor={switchTrackColor}
-              thumbColor={displayFavoriteAppsValue ? '#05445E' : '#f4f3f4'}
+              thumbColor={displayFavoriteAppsValue ? activeSwitch : inActiveSwitch}
             />
           </View>
+          {/* Sort favorite apps */}
           <View style={styles.itemContainer}>
-            <Text style={styles.itemLabel}>Sort favorite apps</Text>
-            <Switch
-              value={sortableFavoriteApps}
-              onValueChange={toggleSortableFavoriteApps}
-              trackColor={switchTrackColor}
-              thumbColor={!sortableFavoriteApps ? '#05445E' : '#f4f3f4'}
-            />
+            <Pressable
+              style={styles.buttonItemPressable}
+              onPress={toggleSortableFavoriteApps}
+              android_disableSound={true}
+              android_ripple={settingItemButtonRippleConfig}>
+              <SettingsItemLabel title='Sort favorite apps' description='Click to activate sorting view' />
+            </Pressable>
           </View>
         </View>
       </BottomSheetModal>
@@ -93,9 +116,25 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e5e5',
   },
-  itemLabel: {
+  buttonItemPressable: {
+    flex: 1,
+  },
+  headerWrapper: {
+    paddingBottom: 20,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  headerTitle: {
+    fontSize: 20,
     color: '#808080',
+    fontWeight: '400',
+  },
+  bottomSheetModal: {
+    marginHorizontal: 5,
   },
 })
 

@@ -10,6 +10,7 @@ import AppItem from './AppItem'
 // Models
 import { RenderedIn } from '../models/rendered-in'
 import { RecentAppDetails } from '../models/recent-app'
+import { BACKGROUND_COLOR } from '../constants'
 
 const RecentApps = () => {
   const apps = useSelector(selectRecentAppsMemoized)
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     minHeight: 310,
     paddingVertical: 5,
     borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, .25)',
+    backgroundColor: BACKGROUND_COLOR,
   },
   noAppsWrapper: {
     paddingVertical: 0,
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   noAppsWrapperText: {
-    color: 'rgba(255, 255, 255, .7)',
+    color: '#fff',
   },
 })
 
