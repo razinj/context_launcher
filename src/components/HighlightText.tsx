@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   highlightedText: {
     color: PRIMARY_HEX_COLOR,
     fontWeight: '600',
-    textShadowColor: 'rgba(255, 255, 255, 0.75)',
+    textShadowColor: 'rgba(255, 255, 255, 0.1)',
     textShadowRadius: 2.5,
   },
   normalText: {
