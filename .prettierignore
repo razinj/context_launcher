@@ -1,3 +1,6 @@
+.idea
+.vscode
+.fleet
 .bundle
 node_modules
 
