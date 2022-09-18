@@ -1,6 +1,5 @@
 // Redux
-import { createSelector, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 // Models
 import { RootState } from '../store'
 
@@ -11,18 +10,18 @@ export interface PreferencesState {
 
 const initialState: PreferencesState = {
   displayRecentApps: true,
-  displayFavoriteApps: false,
+  displayFavoriteApps: true,
 }
 
 export const preferencesSlice = createSlice({
   name: 'preferences',
   initialState,
   reducers: {
-    displayRecentApps: (state: PreferencesState, action: PayloadAction<boolean>) => {
-      state.displayRecentApps = action.payload
+    displayRecentApps: (state: PreferencesState, { payload }: PayloadAction<boolean>) => {
+      state.displayRecentApps = payload
     },
-    displayFavoriteApps: (state: PreferencesState, action: PayloadAction<boolean>) => {
-      state.displayFavoriteApps = action.payload
+    displayFavoriteApps: (state: PreferencesState, { payload }: PayloadAction<boolean>) => {
+      state.displayFavoriteApps = payload
     },
   },
 })

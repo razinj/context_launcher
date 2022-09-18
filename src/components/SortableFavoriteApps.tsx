@@ -23,6 +23,8 @@ const doneButtonRippleConfig: PressableAndroidRippleConfig = {
   radius: 10,
 }
 
+const keyExtractor = ({ name }: FavoriteApp) => name
+
 const SortableFavoriteApps = () => {
   const dispatch = useDispatch()
   const apps = useSelector(selectFavoriteAppsMemoized)
@@ -59,12 +61,8 @@ const SortableFavoriteApps = () => {
     return (
       <ScaleDecorator>
         <Animated.View style={{ transform: [{ translateX: isActive ? 0 : animatedValueX }] }}>
-          <Pressable key={item.appDetails.name} style={[styles.pressable]} onLongPress={drag} disabled={isActive}>
-            <Image
-              style={styles.image}
-              resizeMode={'contain'}
-              source={{ uri: `data:image/png;base64,${item.appDetails.icon}` }}
-            />
+          <Pressable key={item.name} style={[styles.pressable]} onLongPress={drag} disabled={isActive}>
+            <Image style={styles.image} resizeMode={'contain'} source={{ uri: `data:image/png;base64,${item.icon}` }} />
           </Pressable>
         </Animated.View>
       </ScaleDecorator>
@@ -89,7 +87,7 @@ const SortableFavoriteApps = () => {
           data={apps}
           onDragEnd={onDragEnd}
           renderItem={renderItem}
-          keyExtractor={item => item.appDetails.name}
+          keyExtractor={keyExtractor}
         />
       </View>
     </View>

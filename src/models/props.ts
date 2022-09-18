@@ -1,5 +1,8 @@
 // React
 import { ReactNode } from 'react'
+// React Native
+import { StyleProp, ViewStyle } from 'react-native'
+import { BaseAnimationBuilder } from 'react-native-reanimated'
 // Models
 import { AppDetails } from './app-details'
 import { RenderedIn } from './rendered-in'
@@ -7,6 +10,7 @@ import { RenderedIn } from './rendered-in'
 export type AppItemProps = {
   appDetails: AppDetails
   renderedIn: RenderedIn
+  displayLabel?: boolean
   appIcon?: string
 }
 
@@ -23,15 +27,18 @@ export type GlobalContextWrapperProps = {
   children: ReactNode
 }
 
-export type PackageChange = {
-  packageName: string
-}
-
-export type ListLetterIndexProps = {
-  onLetterPress: (letterIndex: number) => void
+export type AllAppsLetterIndexProps = {
+  onPress: (letterIndex: number) => void
 }
 
 export type SettingsItemLabelProps = {
   title: string
   description?: string
+}
+
+export type CustomViewProps = {
+  children: ReactNode
+  style?: StyleProp<ViewStyle>
+  exitAnimation?: BaseAnimationBuilder | typeof BaseAnimationBuilder | undefined
+  entryAnimation?: BaseAnimationBuilder | typeof BaseAnimationBuilder | undefined
 }

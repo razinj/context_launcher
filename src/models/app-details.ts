@@ -3,4 +3,4 @@ export type AppDetails = {
   name: string
 }
 
-export type AppDetailsWithIcon = AppDetails & { icon?: string }
+export type AppDetailsOptionalIcon = AppDetails & { icon?: string }

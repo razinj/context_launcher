@@ -2,24 +2,21 @@
 import React from 'react'
 // React Native
 import {
-  FlatList,
-  ListRenderItem,
-  ListRenderItemInfo,
-  Pressable,
-  PressableAndroidRippleConfig,
-  StyleSheet,
   Text,
   View,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  ListRenderItem,
+  ListRenderItemInfo,
+  PressableAndroidRippleConfig,
 } from 'react-native'
 // Redux
 import { useSelector } from 'react-redux'
-import { selectAppsListMemoized } from '../slices/appsList'
-// Utils
-import { getFirstLetter } from '../utils/alphabetList'
+import { selectAppsLetterListMemoized } from '../slices/appsList'
 // Models
-import { AppDetails } from '../models/app-details'
 import { AppLetterIndex } from '../models/list-letter-index'
-import { ListLetterIndexProps as Props } from '../models/props'
+import { AllAppsLetterIndexProps as Props } from '../models/props'
 
 const rippleConfig: PressableAndroidRippleConfig = {
   borderless: false,
@@ -28,33 +25,18 @@ const rippleConfig: PressableAndroidRippleConfig = {
   radius: 12,
 }
 
-const BetaListLetterIndex = ({ onLetterPress }: Props) => {
-  const apps = useSelector(selectAppsListMemoized)
+const keyExtractor = ({ letter }: AppLetterIndex) => letter
 
-  // TODO: Needs refactoring -- use selector to cache the data
-  const getAppsLetterIndex = (data: AppDetails[]): AppLetterIndex[] => {
-    const treatedLetters: string[] = []
-    const appsLetterIndex: AppLetterIndex[] = []
-
-    data.forEach((item: AppDetails, index: number) => {
-      const letter = getFirstLetter(item.label)
-
-      if (!treatedLetters.includes(letter)) {
-        treatedLetters.push(letter)
-        appsLetterIndex.push({ letter: letter.toUpperCase(), index })
-      }
-    })
-
-    return appsLetterIndex
-  }
+const AllAppsLetterIndex = ({ onPress }: Props) => {
+  const appsLetterList = useSelector(selectAppsLetterListMemoized)
 
   const renderItem: ListRenderItem<AppLetterIndex> = ({ item }: ListRenderItemInfo<AppLetterIndex>) => {
     return (
       <Pressable
-        style={styles.letterIndexLabelWrapper}
-        onPress={() => onLetterPress(item.index)}
         android_disableSound={true}
-        android_ripple={rippleConfig}>
+        android_ripple={rippleConfig}
+        style={styles.letterIndexLabelWrapper}
+        onPress={() => onPress(item.index)}>
         <Text style={styles.letterIndexLabel}>{item.letter}</Text>
       </Pressable>
     )
@@ -63,9 +45,10 @@ const BetaListLetterIndex = ({ onLetterPress }: Props) => {
   return (
     <View style={styles.letterIndexContainer}>
       <FlatList
-        data={getAppsLetterIndex(apps)}
+        data={appsLetterList}
         renderItem={renderItem}
-        keyExtractor={(item: AppLetterIndex) => item.letter}
+        keyExtractor={keyExtractor}
+        initialNumToRender={appsLetterList.length}
       />
     </View>
   )
@@ -96,4 +79,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BetaListLetterIndex
+export default AllAppsLetterIndex

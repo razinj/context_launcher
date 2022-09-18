@@ -12,6 +12,7 @@ import {
   selectDisplayFavoriteAppsMemoized,
   selectDisplayRecentAppsMemoized,
 } from '../slices/preferences'
+import { selectFavoriteAppsCountMemoized } from '../slices/favoriteApps'
 // Contexts
 import GlobalContext from '../contexts/GlobalContext'
 // BottomSheet
@@ -42,9 +43,10 @@ const settingItemButtonRippleConfig: PressableAndroidRippleConfig = {
 
 const SettingsBottomSheet = () => {
   const dispatch = useDispatch()
-  const { settingsBottomSheetRef, toggleSortableFavoriteApps } = useContext(GlobalContext)
+  const favoriteAppsCount = useSelector(selectFavoriteAppsCountMemoized)
   const displayRecentAppsValue = useSelector(selectDisplayRecentAppsMemoized)
   const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
+  const { dismissKeyboard, settingsBottomSheetRef, toggleSortableFavoriteApps } = useContext(GlobalContext)
 
   const toggleDisplayRecentApps = () => {
     dispatch(displayRecentApps(!displayRecentAppsValue))
@@ -54,11 +56,19 @@ const SettingsBottomSheet = () => {
     dispatch(displayFavoriteApps(!displayFavoriteAppsValue))
   }
 
-  const snapPoints = useMemo(() => ['25%', '50%'], [])
+  const onFavoriteAppsSortViewClick = () => {
+    dismissKeyboard()
+    toggleSortableFavoriteApps()
+  }
+
+  const favoriteAppsSortDisabled = useMemo(
+    () => favoriteAppsCount <= 1 || !displayFavoriteAppsValue,
+    [favoriteAppsCount, displayFavoriteAppsValue]
+  )
 
   return (
     <BottomSheetModalProvider>
-      <BottomSheetModal ref={settingsBottomSheetRef} snapPoints={snapPoints} style={styles.bottomSheetModal}>
+      <BottomSheetModal ref={settingsBottomSheetRef} snapPoints={['25%', '50%']} style={styles.bottomSheetModal}>
         {/* Settings wrapper */}
         <View style={styles.settingsWrapper}>
           {/* Header wrapper */}
@@ -96,11 +106,21 @@ const SettingsBottomSheet = () => {
           {/* Sort favorite apps */}
           <View style={styles.itemContainer}>
             <Pressable
-              style={styles.buttonItemPressable}
-              onPress={toggleSortableFavoriteApps}
+              disabled={favoriteAppsSortDisabled}
+              onPress={onFavoriteAppsSortViewClick}
               android_disableSound={true}
-              android_ripple={settingItemButtonRippleConfig}>
-              <SettingsItemLabel title='Sort favorite apps' description='Click to activate sorting view' />
+              android_ripple={settingItemButtonRippleConfig}
+              style={[styles.buttonItemPressable, { opacity: favoriteAppsSortDisabled ? 0.5 : 1 }]}>
+              <SettingsItemLabel
+                title='Sort favorite apps'
+                description={
+                  favoriteAppsSortDisabled
+                    ? displayFavoriteAppsValue
+                      ? 'Add more favorite apps to be able to sort'
+                      : 'Display favorite apps to be able to sort'
+                    : 'Click to start sorting your favorite apps'
+                }
+              />
             </Pressable>
           </View>
         </View>

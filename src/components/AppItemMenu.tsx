@@ -1,14 +1,29 @@
-import { BottomSheetModalProvider, BottomSheetModal } from '@gorhom/bottom-sheet'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+// React
+import React, { useContext, useEffect, useState } from 'react'
+// React Native
 import { View, Text, Pressable, StyleSheet, PressableAndroidRippleConfig, Image } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import { useDispatch, useSelector } from 'react-redux'
-import GlobalContext from '../contexts/GlobalContext'
-import { FavoriteApp } from '../models/favorite-app'
-import { resetAppsSearchState } from '../slices/appsSearch'
-import { selectFavoriteAppsMemoized, addFavoriteApp, removeFavoriteApp } from '../slices/favoriteApps'
-import { requestAppUninstall, showAppDetails } from '../utils/appsModule'
+// Components
 import SettingsItemLabel from './SettingsItemLabel'
+// Redux
+import { useDispatch, useSelector } from 'react-redux'
+import { resetAppsSearchState } from '../slices/appsSearch'
+import { selectDisplayFavoriteAppsMemoized } from '../slices/preferences'
+import {
+  selectFavoriteAppsMemoized,
+  addFavoriteApp,
+  removeFavoriteApp,
+  selectFavoriteAppsCountMemoized,
+} from '../slices/favoriteApps'
+// Contexts
+import GlobalContext from '../contexts/GlobalContext'
+// Bottom sheet
+import { BottomSheetModalProvider, BottomSheetModal } from '@gorhom/bottom-sheet'
+// Icon
+import Icon from 'react-native-vector-icons/MaterialIcons'
+// Utils
+import { requestAppUninstall, showAppDetails } from '../utils/appsModule'
+// Model
+import { FavoriteApp } from '../models/favorite-app'
 
 const appInfoIconRippleConfig: PressableAndroidRippleConfig = {
   borderless: true,
@@ -25,16 +40,18 @@ const settingItemButtonRippleConfig: PressableAndroidRippleConfig = {
 
 const AppItemMenu = () => {
   const dispatch = useDispatch()
-  const favoriteApps = useSelector(selectFavoriteAppsMemoized)
   const [isFavoriteApp, setIsFavoriteApp] = useState(false)
+  const favoriteApps = useSelector(selectFavoriteAppsMemoized)
+  const favoriteAppsCount = useSelector(selectFavoriteAppsCountMemoized)
+  const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
   const { appItemMenuBottomSheetRef, appItemMenuDetails } = useContext(GlobalContext)
 
   useEffect(() => {
     if (!appItemMenuDetails) return
 
-    const appIndex = favoriteApps.findIndex((app: FavoriteApp) => app.appDetails.name === appItemMenuDetails.name)
+    const appIndex = favoriteApps.findIndex(({ name }: FavoriteApp) => name === appItemMenuDetails.name)
     setIsFavoriteApp(appIndex !== -1)
-  }, [appItemMenuDetails])
+  }, [appItemMenuDetails, favoriteApps])
 
   const addToFavoriteApps = () => {
     if (!appItemMenuDetails || !appItemMenuDetails.icon) return
@@ -66,20 +83,18 @@ const AppItemMenu = () => {
     appItemMenuBottomSheetRef?.current?.close()
   }
 
-  const pressableDynamicStyles = (pressed: boolean) => [
-    {
+  const pressableStyles = ({ pressed }: { pressed: boolean }) => {
+    return {
       flex: 1,
       backgroundColor: pressed ? 'rgba(255, 255, 255, .25)' : 'transparent',
-    },
-  ]
-
-  const snapPoints = useMemo(() => [200], [])
+    }
+  }
 
   return (
     <BottomSheetModalProvider>
       <BottomSheetModal
         ref={appItemMenuBottomSheetRef}
-        snapPoints={snapPoints}
+        snapPoints={[200]}
         // contentHeight={100}
         style={styles.bottomSheetModal}
         bottomInset={58}
@@ -107,43 +122,35 @@ const AppItemMenu = () => {
           </View>
 
           <View style={styles.itemContainer}>
-            {isFavoriteApp && (
-              <Pressable
-                android_disableSound={true}
-                android_ripple={settingItemButtonRippleConfig}
-                style={({ pressed }) => pressableDynamicStyles(pressed)}
-                onPress={removeFromFavoriteApps}>
-                <SettingsItemLabel title='Remove from favourite' />
-              </Pressable>
-            )}
-
-            {!isFavoriteApp && (
-              <Pressable
-                android_disableSound={true}
-                android_ripple={settingItemButtonRippleConfig}
-                style={({ pressed }) => pressableDynamicStyles(pressed)}
-                onPress={addToFavoriteApps}>
-                <SettingsItemLabel title='Add to favourite' />
-              </Pressable>
-            )}
+            <Pressable
+              onPress={isFavoriteApp ? removeFromFavoriteApps : addToFavoriteApps}
+              style={({ pressed }: { pressed: boolean }) => [
+                pressableStyles({ pressed }),
+                { opacity: !displayFavoriteAppsValue || (!isFavoriteApp && favoriteAppsCount === 5) ? 0.5 : 1 },
+              ]}
+              disabled={!displayFavoriteAppsValue || (!isFavoriteApp && favoriteAppsCount === 5)}
+              android_disableSound={true}
+              android_ripple={settingItemButtonRippleConfig}>
+              <SettingsItemLabel title={isFavoriteApp ? 'Remove from favourite' : 'Add to favourite'} />
+            </Pressable>
           </View>
 
           <View style={styles.itemContainer}>
             <Pressable
+              onPress={openAppInfo}
+              style={pressableStyles}
               android_disableSound={true}
-              android_ripple={settingItemButtonRippleConfig}
-              style={({ pressed }) => pressableDynamicStyles(pressed)}
-              onPress={openAppInfo}>
+              android_ripple={settingItemButtonRippleConfig}>
               <SettingsItemLabel title='Open App Info' />
             </Pressable>
           </View>
 
           <View style={styles.itemContainer}>
             <Pressable
+              onPress={uninstallApp}
+              style={pressableStyles}
               android_disableSound={true}
-              android_ripple={settingItemButtonRippleConfig}
-              style={({ pressed }) => [...pressableDynamicStyles(pressed)]}
-              onPress={uninstallApp}>
+              android_ripple={settingItemButtonRippleConfig}>
               <SettingsItemLabel title='Uninstall App' />
             </Pressable>
           </View>

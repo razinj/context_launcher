@@ -7,12 +7,9 @@ import android.content.IntentFilter;
 import android.content.pm.LauncherApps;
 import android.os.IBinder;
 import android.os.Process;
-import android.util.Log;
-import android.widget.Toast;
+import android.os.UserHandle;
 
 import androidx.annotation.Nullable;
-
-import java.util.Arrays;
 
 public class AppProvider extends Service {
     private PackageChangeReceiver packageChangeReceiver;
@@ -24,52 +21,53 @@ public class AppProvider extends Service {
 
         launcherApps.registerCallback(new LauncherAppsCallback() {
             @Override
-            public void onPackageAdded(String packageName, android.os.UserHandle user) {
-                if (Process.myUserHandle().equals(user)) return;
+            public void onPackageAdded(String packageName, UserHandle user) {
+                if (user.equals(Process.myUserHandle())) return;
 
                 PackageChangeReceiver.handleEvent(AppProvider.this, Intent.ACTION_PACKAGE_ADDED, packageName, false);
             }
 
             @Override
-            public void onPackageChanged(String packageName, android.os.UserHandle user) {
-                if (Process.myUserHandle().equals(user)) return;
+            public void onPackageChanged(String packageName, UserHandle user) {
+                if (user.equals(Process.myUserHandle())) return;
 
-                PackageChangeReceiver.handleEvent(AppProvider.this, Intent.ACTION_PACKAGE_ADDED, packageName, true);
+                PackageChangeReceiver.handleEvent(AppProvider.this, Intent.ACTION_PACKAGE_CHANGED, packageName, true);
             }
 
             @Override
-            public void onPackageRemoved(String packageName, android.os.UserHandle user) {
-                if (Process.myUserHandle().equals(user)) return;
+            public void onPackageRemoved(String packageName, UserHandle user) {
+                if (user.equals(Process.myUserHandle())) return;
 
                 PackageChangeReceiver.handleEvent(AppProvider.this, Intent.ACTION_PACKAGE_REMOVED, packageName, false);
             }
 
             @Override
-            public void onPackagesAvailable(String[] packageNames, android.os.UserHandle user, boolean replacing) {
-                if (Process.myUserHandle().equals(user)) return;
+            public void onPackagesAvailable(String[] packageNames, UserHandle user, boolean replacing) {
+                if (user.equals(Process.myUserHandle())) return;
 
                 PackageChangeReceiver.handleEvent(AppProvider.this, Intent.ACTION_MEDIA_MOUNTED, null, false);
             }
 
             @Override
-            public void onPackagesUnavailable(String[] packageNames, android.os.UserHandle user, boolean replacing) {
-                if (Process.myUserHandle().equals(user)) return;
+            public void onPackagesUnavailable(String[] packageNames, UserHandle user, boolean replacing) {
+                if (user.equals(Process.myUserHandle())) return;
 
                 PackageChangeReceiver.handleEvent(AppProvider.this, Intent.ACTION_MEDIA_UNMOUNTED, null, false);
             }
         });
 
-        packageChangeReceiver = new PackageChangeReceiver();
+        this.packageChangeReceiver = new PackageChangeReceiver();
 
-        IntentFilter appChangedFilter = new IntentFilter();
-        appChangedFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        appChangedFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-        appChangedFilter.addAction(Intent.ACTION_MEDIA_MOUNTED);
-        appChangedFilter.addAction(Intent.ACTION_MEDIA_REMOVED);
-        appChangedFilter.addDataScheme("package");
-        appChangedFilter.addDataScheme("file");
+        IntentFilter appChangedIntentFilter = new IntentFilter();
+        appChangedIntentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
+        appChangedIntentFilter.addAction(Intent.ACTION_PACKAGE_CHANGED);
+        appChangedIntentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        appChangedIntentFilter.addAction(Intent.ACTION_MEDIA_MOUNTED);
+        appChangedIntentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);
+        appChangedIntentFilter.addDataScheme("package");
+        appChangedIntentFilter.addDataScheme("file");
 
-        this.registerReceiver(packageChangeReceiver, appChangedFilter);
+        this.registerReceiver(packageChangeReceiver, appChangedIntentFilter);
 
         super.onCreate();
     }

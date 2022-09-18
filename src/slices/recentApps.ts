@@ -1,9 +1,8 @@
 // Redux
-import { createSelector, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 // Models
 import { RootState } from '../store'
-import { RecentAppDetails } from '../models/recent-app'
+import { RecentAppDetails, RecentAppDetailsOptionalIcon } from '../models/recent-app'
 
 export interface RecentAppsState {
   list: RecentAppDetails[]
@@ -17,19 +16,22 @@ export const recentAppsSlice = createSlice({
   name: 'recentApps',
   initialState,
   reducers: {
-    addRecentApp: (state: RecentAppsState, action: PayloadAction<RecentAppDetails>) => {
-      const list = state.list.filter((recentApp: RecentAppDetails) => recentApp.name !== action.payload.name)
+    addRecentApp: (state: RecentAppsState, { payload }: PayloadAction<RecentAppDetailsOptionalIcon>) => {
+      // Don't add app without icon
+      if (!payload.icon) return
+
+      const list = state.list.filter(({ name }: RecentAppDetails) => name !== payload.name)
 
       // Put most recent app first
-      list.unshift({ ...action.payload })
+      list.unshift({ ...payload, icon: payload.icon })
 
       // Keep only 5 elements
       if (list.length > 5) list.pop()
 
       state.list = list
     },
-    removeRecentApp: (state: RecentAppsState, action: PayloadAction<string>) => {
-      const foundAppIndex = state.list.findIndex((app: RecentAppDetails) => app.name === action.payload)
+    removeRecentApp: (state: RecentAppsState, { payload }: PayloadAction<string>) => {
+      const foundAppIndex = state.list.findIndex(({ name }: RecentAppDetails) => name === payload)
 
       if (foundAppIndex === -1) return
 

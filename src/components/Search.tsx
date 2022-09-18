@@ -2,6 +2,8 @@
 import React, { useContext, useEffect } from 'react'
 // React Native
 import { Pressable, PressableAndroidRippleConfig, StyleSheet, TextInput, View } from 'react-native'
+// Components
+import CustomView from './CustomView'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -12,7 +14,7 @@ import {
 } from '../slices/appsSearch'
 import { selectAppsListMemoized } from '../slices/appsList'
 // Contexts
-import SearchContext, { SearchContextType } from '../contexts/SearchContext'
+import SearchContext from '../contexts/SearchContext'
 // Icon
 import Icon from 'react-native-vector-icons/MaterialIcons'
 // Utils
@@ -31,12 +33,12 @@ const clearIconRippleConfig: PressableAndroidRippleConfig = {
 
 const Search = () => {
   const dispatch = useDispatch()
-  const allApps = useSelector(selectAppsListMemoized)
+  const apps = useSelector(selectAppsListMemoized)
   const searchQuery = useSelector(selectAppsSearchQuery)
-  const { searchInputRef, invalidCharacters, setInvalidCharacters } = useContext<SearchContextType>(SearchContext)
+  const { searchInputRef, invalidCharacters, setInvalidCharacters } = useContext(SearchContext)
 
   const onQueryChange = (query: string) => {
-    const trimmedQuery = query.trim().replace(/\./gi, '\\.')
+    const trimmedQuery = query.trim().replace(/\./g, '\\.')
 
     // Accept only ASCII based characters
     if (!trimmedQuery.match(/[A-z\s\d]/gi)) {
@@ -51,7 +53,7 @@ const Search = () => {
     // Reset invalid characters when it's valid (passes the above check)
     if (invalidCharacters) setInvalidCharacters(false)
 
-    dispatch(setAppsSearchResult(allApps.filter((app: AppDetails) => app.label.match(new RegExp(trimmedQuery, 'gi')))))
+    dispatch(setAppsSearchResult(apps.filter((app: AppDetails) => app.label.match(new RegExp(trimmedQuery, 'gi')))))
     dispatch(setAppsSearchQuery(trimmedQuery))
   }
 

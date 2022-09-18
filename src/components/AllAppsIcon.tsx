@@ -22,7 +22,7 @@ const AllAppsIcon = () => {
   return (
     <View style={styles.wrapper}>
       <Pressable onPress={toggleDisplayAllApps} android_disableSound={true} android_ripple={rippleConfig}>
-        <Icon name='dots-hexagon' size={34} style={styles.icon} color={PRIMARY_HEX_COLOR} />
+        <Icon name='hexagon-outline' size={34} style={styles.icon} color={PRIMARY_HEX_COLOR} />
       </Pressable>
     </View>
   )

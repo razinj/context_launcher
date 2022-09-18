@@ -11,8 +11,8 @@ import { removeFavoriteApp } from './slices/favoriteApps'
 import TopContainer from './containers/TopContainer'
 import BottomContainer from './containers/BottomContainer'
 // Contexts
-import GlobalContext, { GlobalContextType } from './contexts/GlobalContext'
-import SearchContext, { SearchContextType } from './contexts/SearchContext'
+import GlobalContext from './contexts/GlobalContext'
+import SearchContext from './contexts/SearchContext'
 // Custom hooks
 import { useBackHandler } from './hooks/useBackHandler'
 import { usePackageChange } from './hooks/usePackageChange'
@@ -20,41 +20,40 @@ import { usePackageChange } from './hooks/usePackageChange'
 import AppsModule from './native-modules/AppsModule'
 // Models
 import { AppDetails } from './models/app-details'
+import { PackageChange } from './models/event'
 
 const initialLoadValue = 'INITIAL_LOAD'
+const packageChangedInitialValue = {
+  packageName: initialLoadValue,
+  isRemoved: false,
+}
 
 const Home = () => {
   const dispatch = useDispatch()
-  const [packageChanged, setPackageChanged] = useState<string>(initialLoadValue)
-  const { searchInputRef } = useContext<SearchContextType>(SearchContext)
-  const { displayAllApps, toggleDisplayAllApps } = useContext<GlobalContextType>(GlobalContext)
+  const [packageChanged, setPackageChanged] = useState<PackageChange>(packageChangedInitialValue)
+  const { hideAllApps } = useContext(GlobalContext)
+  const { searchInputRef } = useContext(SearchContext)
 
   useEffect(() => {
-    if (packageChanged !== initialLoadValue) {
-      dispatch(removeRecentApp(packageChanged))
-      dispatch(removeFavoriteApp(packageChanged))
+    if (packageChanged.isRemoved && packageChanged.packageName !== initialLoadValue) {
+      dispatch(removeRecentApp(packageChanged.packageName))
+      dispatch(removeFavoriteApp(packageChanged.packageName))
     }
 
     AppsModule.getApplications((applications: string) => {
-      const localApps: AppDetails[] = JSON.parse(applications)
-
-      dispatch(
-        setAppsList(
-          [...localApps].sort((appOne: AppDetails, appTwo: AppDetails) => appOne.label.localeCompare(appTwo.label))
-        )
-      )
+      dispatch(setAppsList(JSON.parse(applications) as AppDetails[]))
     })
   }, [packageChanged])
 
   useBackHandler(() => {
-    if (displayAllApps) toggleDisplayAllApps()
+    hideAllApps()
     if (searchInputRef?.current?.isFocused()) searchInputRef?.current?.blur()
 
     // TODO: Read more about the return here: https://github.com/react-native-community/hooks#usebackhandler
     return true
   })
 
-  usePackageChange((packageName: string) => setPackageChanged(packageName))
+  usePackageChange((packageChange: PackageChange) => setPackageChanged(packageChange))
 
   return (
     <View style={styles.wrapper}>

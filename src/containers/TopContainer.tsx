@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { selectAppsSearchQuery } from '../slices/appsSearch'
 import { selectDisplayFavoriteAppsMemoized, selectDisplayRecentAppsMemoized } from '../slices/preferences'
 // Components
-import AllApps from '../components/BetaAlphabetList'
+import AllApps from '../components/AllApps'
 import RecentApps from '../components/RecentApps'
 import FavoriteApps from '../components/FavoriteApps'
 import FilteredApps from '../components/FilteredApps'
@@ -16,11 +16,10 @@ import SortableFavoriteApps from '../components/SortableFavoriteApps'
 import GlobalContext from '../contexts/GlobalContext'
 
 const TopContainer = () => {
-  const { displayAllApps, sortableFavoriteApps } = useContext(GlobalContext)
-
   const searchQuery = useSelector(selectAppsSearchQuery)
   const displayRecentApps = useSelector(selectDisplayRecentAppsMemoized)
   const displayFavoriteApps = useSelector(selectDisplayFavoriteAppsMemoized)
+  const { displayAllApps, sortableFavoriteApps } = useContext(GlobalContext)
 
   return (
     <View style={styles.wrapper}>

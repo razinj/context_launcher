@@ -16,8 +16,10 @@ const SearchContextWrapper = ({ children }: Props) => {
   const searchInputRef: RefObject<TextInput> | null = useRef(null)
   const [invalidCharacters, setInvalidCharacters] = useState(false)
 
-  const blurSearchInputAndDismissKeyboard = () => {
+  const dismissKeyboardAndBlurSearchInput = () => {
+    // Dismiss keyboard
     if (keyboard.isShown) dismissKeyboard()
+    // Remove search input focus
     if (searchInputRef.current?.isFocused()) searchInputRef.current?.blur()
   }
 
@@ -25,7 +27,7 @@ const SearchContextWrapper = ({ children }: Props) => {
     <SearchContext.Provider
       value={{
         searchInputRef,
-        triggerAppLaunchedProcedure: blurSearchInputAndDismissKeyboard,
+        searchAppLaunchProcedure: dismissKeyboardAndBlurSearchInput,
         invalidCharacters,
         setInvalidCharacters: (isInvalid: boolean) => setInvalidCharacters(isInvalid),
       }}>

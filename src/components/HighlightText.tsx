@@ -6,29 +6,31 @@ import { StyleSheet, Text } from 'react-native'
 import { useSelector } from 'react-redux'
 // Slices
 import { selectAppsSearchQuery } from '../slices/appsSearch'
-// Models
-import { HighlightTextProps as Props } from '../models/props'
 // Constants
 import { PRIMARY_HEX_COLOR } from '../constants'
+// Models
+import { HighlightTextProps as Props } from '../models/props'
 
 const HighlightText = ({ text }: Props) => {
   const searchQuery = useSelector(selectAppsSearchQuery)
 
-  if (!searchQuery || searchQuery.trim().length === 0) return <Text style={styles.normalText}>{text}</Text>
+  if (!searchQuery) {
+    return <Text style={styles.normalText}>{text}</Text>
+  }
 
   const regex = new RegExp(`(${searchQuery})`, 'gi')
 
   return (
     <Text style={styles.normalText}>
-      {text.split(regex).map((substring: string, index: number) => {
-        return regex.test(substring) ? (
+      {text.split(regex).map((substring: string, index: number) =>
+        regex.test(substring) ? (
           <Text style={styles.highlightedText} key={index}>
             {substring}
           </Text>
         ) : (
           <Text key={index}>{substring}</Text>
         )
-      })}
+      )}
     </Text>
   )
 }

@@ -8,7 +8,6 @@ import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -25,40 +24,46 @@ import java.util.List;
 
 public class AppsModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;
+
+    private BroadcastReceiver packageChangeBroadcastReceiver;
     private static DeviceEventManagerModule.RCTDeviceEventEmitter rctDeviceEventEmitter;
 
+    // TODO: Can these values be in a separate file?
+    // Package change intent action
     public static String PACKAGE_UPDATE_ACTION = "packageUpdateAction";
-    private BroadcastReceiver broadcastReceiver;
+    // Package change event
+    public static String PACKAGE_CHANGE_EVENT = "packageChange";
+    public static String PACKAGE_CHANGE_NAME = "packageName";
+    public static String PACKAGE_CHANGE_IS_REMOVED = "isRemoved";
 
     AppsModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
-        initializeBroadcastReceiver(reactContext);
+        initializePackageChangeBroadcastReceiver(reactContext);
     }
 
-
-    private void initializeBroadcastReceiver(ReactApplicationContext reactContext) {
+    private void initializePackageChangeBroadcastReceiver(ReactApplicationContext reactContext) {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(PACKAGE_UPDATE_ACTION);
 
-        broadcastReceiver = new BroadcastReceiver() {
+        packageChangeBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Bundle extras = intent.getExtras();
-
                 if (rctDeviceEventEmitter == null) {
                     rctDeviceEventEmitter = reactContext.getJSModule((DeviceEventManagerModule.RCTDeviceEventEmitter.class));
                 }
 
-                sendEvent((String) extras.get("packageName"));
+                Bundle extras = intent.getExtras();
+                sendPackageChangeEvent((String) extras.get(PACKAGE_CHANGE_NAME), (Boolean) extras.get(PACKAGE_CHANGE_IS_REMOVED));
             }
         };
-        this.reactContext.registerReceiver(broadcastReceiver, intentFilter);
+
+        this.reactContext.registerReceiver(packageChangeBroadcastReceiver, intentFilter);
     }
 
     @Override
     public void onCatalystInstanceDestroy() {
-        this.reactContext.unregisterReceiver(broadcastReceiver);
+        this.reactContext.unregisterReceiver(packageChangeBroadcastReceiver);
     }
 
     @NonNull
@@ -70,6 +75,11 @@ public class AppsModule extends ReactContextBaseJavaModule {
     private static class AppDetails {
         CharSequence name;
         CharSequence label;
+
+        AppDetails(CharSequence name, CharSequence label) {
+            this.name = name;
+            this.label = label;
+        }
 
         @NonNull
         public String toString() {
@@ -85,14 +95,13 @@ public class AppsModule extends ReactContextBaseJavaModule {
                 .getInstalledPackages(0);
 
         for (final PackageInfo packageInfo : packages) {
+            // TODO: Output a warning when package intent is null
             if (getPackageLaunchIntent(packageInfo.packageName) == null) continue;
 
-            AppDetails app = new AppDetails();
-
-            app.name = packageInfo.packageName;
-            app.label = packageInfo.applicationInfo.loadLabel(this.reactContext.getPackageManager());
-
-            apps.add(app);
+            apps.add(new AppDetails(
+                    packageInfo.packageName,
+                    packageInfo.applicationInfo.loadLabel(this.reactContext.getPackageManager())
+            ));
         }
 
         callBack.invoke(apps.toString());
@@ -102,6 +111,7 @@ public class AppsModule extends ReactContextBaseJavaModule {
     private void launchApplication(String packageName) {
         Intent intent = getPackageLaunchIntent(packageName);
 
+        // TODO: Output error message and/or return an error to RN
         if (intent == null) return;
 
         this.reactContext.startActivity(intent);
@@ -122,13 +132,12 @@ public class AppsModule extends ReactContextBaseJavaModule {
         callBack.invoke(Utils.getEncodedIcon(this.reactContext, packageName));
     }
 
-    public static void sendEvent(String packageName) {
-        assert rctDeviceEventEmitter != null;
-
+    public static void sendPackageChangeEvent(String packageName, Boolean isRemoved) {
         WritableMap map = Arguments.createMap();
-        map.putString("packageName", packageName);
+        map.putString(PACKAGE_CHANGE_NAME, packageName);
+        map.putBoolean(PACKAGE_CHANGE_IS_REMOVED, isRemoved);
 
-        rctDeviceEventEmitter.emit("packageChange", map);
+        rctDeviceEventEmitter.emit(PACKAGE_CHANGE_EVENT, map);
     }
 
     private void startActivity(String packageName, Intent intent) {
@@ -145,11 +154,13 @@ public class AppsModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void addListener(String eventName) {
+        // TODO: Should this method exist?
         // Set up any upstream listeners or background tasks as necessary
     }
 
     @ReactMethod
     public void removeListeners(Integer count) {
+        // TODO: Should this method exist?
         // Remove upstream listeners, stop unnecessary background tasks
     }
 }

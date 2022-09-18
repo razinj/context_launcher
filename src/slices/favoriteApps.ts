@@ -1,9 +1,8 @@
 // Redux
-import { createSelector, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 // Models
 import { RootState } from '../store'
-import { FavoriteApp, FavoriteAppDetails } from '../models/favorite-app'
+import { FavoriteApp } from '../models/favorite-app'
 
 export interface FavoriteAppsState {
   list: FavoriteApp[]
@@ -17,24 +16,23 @@ export const favoriteAppsSlice = createSlice({
   name: 'favoriteApps',
   initialState,
   reducers: {
-    addFavoriteApp: (state: FavoriteAppsState, action: PayloadAction<FavoriteAppDetails>) => {
+    addFavoriteApp: (state: FavoriteAppsState, { payload }: PayloadAction<FavoriteApp>) => {
       if (state.list.length == 5) return
 
-      const existingApp = state.list.find((app: FavoriteApp) => app.appDetails.name === action.payload.name)
+      const existingApp = state.list.find(({ name }: FavoriteApp) => name === payload.name)
 
       // Add to list only if it doesn't exists
-      // TODO: Add order through the action payload
-      if (!existingApp) state.list.push({ appDetails: action.payload, order: 1 })
+      if (!existingApp) state.list.push({ ...payload })
     },
-    removeFavoriteApp: (state: FavoriteAppsState, action: PayloadAction<string>) => {
-      const foundAppIndex = state.list.findIndex((app: FavoriteApp) => app.appDetails.name === action.payload)
+    removeFavoriteApp: (state: FavoriteAppsState, { payload }: PayloadAction<string>) => {
+      const foundAppIndex = state.list.findIndex(({ name }: FavoriteApp) => name === payload)
 
       if (foundAppIndex === -1) return
 
       state.list.splice(foundAppIndex, 1)
     },
-    setFavoriteApps: (state: FavoriteAppsState, action: PayloadAction<FavoriteApp[]>) => {
-      state.list = action.payload
+    setFavoriteApps: (state: FavoriteAppsState, { payload }: PayloadAction<FavoriteApp[]>) => {
+      state.list = payload
     },
   },
 })
@@ -43,8 +41,7 @@ export const { addFavoriteApp, removeFavoriteApp, setFavoriteApps } = favoriteAp
 
 const selectFavoriteApps = (state: RootState) => state.favoriteApps.list
 
-export const selectFavoriteAppsMemoized = createSelector(selectFavoriteApps, (list: FavoriteApp[]) => {
-  return [...list].sort((appOne: FavoriteApp, appTwo: FavoriteApp) => appOne.order - appTwo.order)
-})
+export const selectFavoriteAppsMemoized = createSelector(selectFavoriteApps, (list: FavoriteApp[]) => list)
+export const selectFavoriteAppsCountMemoized = createSelector(selectFavoriteApps, (list: FavoriteApp[]) => list.length)
 
 export default favoriteAppsSlice.reducer

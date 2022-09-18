@@ -3,9 +3,6 @@ package com.razinj.context_launcher;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -20,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
+    private final ReactNativeHost mNewArchitectureNativeHost = new MainApplicationReactNativeHost(this);
 
     private final ReactNativeHost mReactNativeHost =
             new ReactNativeHost(this) {
@@ -41,8 +39,6 @@ public class MainApplication extends Application implements ReactApplication {
                 }
             };
 
-    private final ReactNativeHost mNewArchitectureNativeHost = new MainApplicationReactNativeHost(this);
-
     @Override
     public ReactNativeHost getReactNativeHost() {
         if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) return mNewArchitectureNativeHost;
@@ -50,7 +46,6 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
     @Override
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onCreate() {
         super.onCreate();
 

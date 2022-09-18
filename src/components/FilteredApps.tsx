@@ -6,38 +6,43 @@ import { FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet, Text, View } 
 import AppItem from './AppItem'
 // Redux
 import { useSelector } from 'react-redux'
-import { selectAppsSearchResult } from '../slices/appsSearch'
+import { selectAppsSearchQuery, selectAppsSearchResult } from '../slices/appsSearch'
 // Contexts
-import SearchContext, { SearchContextType } from '../contexts/SearchContext'
-// Models
-import { AppDetails } from '../models/app-details'
-import { RenderedIn } from '../models/rendered-in'
+import SearchContext from '../contexts/SearchContext'
+// Constants
 import { BACKGROUND_COLOR } from '../constants'
+// Models
+import { RenderedIn } from '../models/rendered-in'
+import { AppDetails } from '../models/app-details'
+import CustomView from './CustomView'
+
+const keyExtractor = ({ name }: AppDetails) => name
 
 const FilteredApps = () => {
   const apps = useSelector(selectAppsSearchResult)
-  const { invalidCharacters } = useContext<SearchContextType>(SearchContext)
-
-  const renderAppItem: ListRenderItem<AppDetails> = ({ item }: ListRenderItemInfo<AppDetails>) => (
-    <AppItem appDetails={item} renderedIn={RenderedIn.FILTERED_APPS} />
-  )
+  const { invalidCharacters } = useContext(SearchContext)
+  const searchQuery = useSelector(selectAppsSearchQuery)
 
   if (apps.length === 0 || invalidCharacters) {
     return (
       <View style={[styles.wrapper, styles.noAppsWrapper]}>
-        <Text style={styles.noAppsWrapperText}>No applications found</Text>
+        <Text style={styles.noAppsWrapperText}>No applications found for "{searchQuery}"</Text>
       </View>
     )
   }
+
+  const renderItem: ListRenderItem<AppDetails> = ({ item }: ListRenderItemInfo<AppDetails>) => (
+    <AppItem appDetails={item} renderedIn={RenderedIn.FILTERED_APPS} />
+  )
 
   return (
     <View style={styles.wrapper}>
       <FlatList
         inverted
         data={apps}
-        renderItem={renderAppItem}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
         keyboardShouldPersistTaps={'handled'}
-        keyExtractor={appDetails => appDetails.name}
       />
     </View>
   )

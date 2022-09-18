@@ -14,52 +14,59 @@ import { launchApp } from '../utils/appsModule'
 // Native modules
 import AppsModule from '../native-modules/AppsModule'
 // Contexts
-import SearchContext, { SearchContextType } from '../contexts/SearchContext'
-import GlobalContext, { GlobalContextType } from '../contexts/GlobalContext'
+import SearchContext from '../contexts/SearchContext'
+import GlobalContext from '../contexts/GlobalContext'
 // Models
 import { RenderedIn } from '../models/rendered-in'
 import { AppItemProps as Props } from '../models/props'
 
-const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
+const AppItem = ({ appDetails, renderedIn, appIcon, displayLabel = true }: Props) => {
   const dispatch = useDispatch()
   const [icon, setIcon] = useState<string | undefined>(undefined)
-  const { hideAllApps, setAppItemMenuDetails, displayAppItemMenuBottomSheet } =
-    useContext<GlobalContextType>(GlobalContext)
-  const { triggerAppLaunchedProcedure } = useContext<SearchContextType>(SearchContext)
+  const { searchAppLaunchProcedure } = useContext(SearchContext)
+  const { setAppItemMenuDetails, displayAppItemMenuBottomSheet, globalAppLaunchProcedure } = useContext(GlobalContext)
 
-  const handleOnAppPress = () => {
+  const onPress = () => {
+    // Launch app
     launchApp(appDetails.name)
-    hideAllApps()
-    triggerAppLaunchedProcedure()
+
+    // Reset views and values
+    globalAppLaunchProcedure()
+    searchAppLaunchProcedure()
     dispatch(resetAppsSearchState())
 
-    if (icon && renderedIn === RenderedIn.FILTERED_APPS) dispatch(addRecentApp({ ...appDetails, icon }))
+    // Add app to recent apps list
+    if (renderedIn === RenderedIn.FILTERED_APPS || renderedIn === RenderedIn.ALL_APPS) {
+      dispatch(addRecentApp({ ...appDetails, icon }))
+    }
   }
 
-  const handleLongPress = () => {
-    setAppItemMenuDetails({ ...appDetails, icon: icon })
+  const onLongPress = () => {
+    setAppItemMenuDetails({ ...appDetails, icon })
     displayAppItemMenuBottomSheet()
   }
 
+  const pressableStyles = ({ pressed }: { pressed: boolean }) => {
+    return { ...styles.pressable, backgroundColor: pressed ? 'rgba(255, 255, 255, .25)' : 'transparent' }
+  }
+
   useEffect(() => {
-    if (renderedIn === RenderedIn.FILTERED_APPS || renderedIn === RenderedIn.ALL_APPS) {
+    if (renderedIn === RenderedIn.RECENT_APPS || renderedIn === RenderedIn.FAVORITE_APPS) {
+      setIcon(appIcon)
+    } else if (renderedIn === RenderedIn.ALL_APPS || renderedIn === RenderedIn.FILTERED_APPS) {
       AppsModule.getApplicationIcon(appDetails.name, (nativeAppIcon: string) => setIcon(nativeAppIcon))
-    } else if (renderedIn === RenderedIn.RECENT_APPS) setIcon(appIcon)
+    }
   }, [])
 
   return (
     <View>
-      <Pressable
-        style={({ pressed }) => [
-          styles.pressable,
-          {
-            backgroundColor: pressed ? 'rgba(255, 255, 255, .25)' : 'transparent',
-          },
-        ]}
-        onPress={handleOnAppPress}
-        onLongPress={handleLongPress}>
-        <Image resizeMode={'contain'} style={styles.appIcon} source={{ uri: `data:image/png;base64,${icon}` }} />
-        <HighlightText text={appDetails.label} />
+      <Pressable onPress={onPress} onLongPress={onLongPress} style={pressableStyles}>
+        <Image
+          resizeMode={'contain'}
+          source={{ uri: `data:image/png;base64,${icon}` }}
+          style={[styles.icon, { marginRight: displayLabel ? 10 : 0 }]}
+        />
+        {displayLabel && <HighlightText text={appDetails.label} />}
       </Pressable>
     </View>
   )
@@ -70,15 +77,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingVertical: 5,
-    paddingHorizontal: 5,
-    borderRadius: 10,
+    padding: 5,
     marginHorizontal: 5,
+    borderRadius: 10,
   },
-  appIcon: {
+  icon: {
     width: 50,
     height: 50,
-    marginRight: 10,
   },
 })
 

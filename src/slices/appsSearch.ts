@@ -1,6 +1,5 @@
 // Redux
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // Models
 import { RootState } from '../store'
 import { AppDetails } from '../models/app-details'
@@ -19,17 +18,17 @@ export const appsSearchSlice = createSlice({
   name: 'appsSearch',
   initialState,
   reducers: {
-    setAppsSearchQuery: (state: AppsSearchState, action: PayloadAction<string | undefined>) => {
-      state.query = action.payload
+    setAppsSearchQuery: (state: AppsSearchState, { payload }: PayloadAction<string | undefined>) => {
+      state.query = payload
     },
-    setAppsSearchResult: (state: AppsSearchState, action: PayloadAction<AppDetails[]>) => {
-      state.result = action.payload
+    setAppsSearchResult: (state: AppsSearchState, { payload }: PayloadAction<AppDetails[]>) => {
+      state.result = payload
     },
     resetAppsSearchState: (state: AppsSearchState) => {
-      if (state.query || state.result.length > 0) {
-        state.query = undefined
-        state.result = []
-      }
+      if (!state.query && state.result.length == 0) return
+
+      state.query = undefined
+      state.result = []
     },
   },
 })
