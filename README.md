@@ -7,6 +7,8 @@ Context Launcher is an Android list-based launcher made to be simple and straigh
 - [React Native Directory](https://reactnative.directory/) to search for RN libraries
 - [React Native Hooks](https://github.com/react-native-community/hooks)
 - [React Native Typescript Template](https://github.com/react-native-community/react-native-template-typescript)
+- [Android Asset Studio](https://romannurik.github.io/AndroidAssetStudio/index.html)
+- [IconKitchen](https://icon.kitchen/)
 
 ## Tools
 
