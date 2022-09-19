@@ -34,7 +34,7 @@ const AllApps = () => {
   )
 
   return (
-    <CustomView style={styles.wrapper} entryAnimation={SlideInDown} exitAnimation={undefined}>
+    <CustomView style={styles.wrapper} entryAnimation={SlideInDown}>
       <FlatList
         data={apps}
         ref={listRef}

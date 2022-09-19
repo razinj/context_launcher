@@ -1,11 +1,11 @@
 // React
 import React from 'react'
 // Reanimated
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 // Models
 import { CustomViewProps as Props } from '../models/props'
 
-const CustomView = ({ children, style, entryAnimation = FadeIn, exitAnimation = FadeOut }: Props) => {
+const CustomView = ({ children, style, entryAnimation, exitAnimation }: Props) => {
   return (
     <Animated.View style={style ? style : {}} entering={entryAnimation} exiting={exitAnimation}>
       {children}

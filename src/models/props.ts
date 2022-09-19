@@ -39,6 +39,6 @@ export type SettingsItemLabelProps = {
 export type CustomViewProps = {
   children: ReactNode
   style?: StyleProp<ViewStyle>
-  exitAnimation?: BaseAnimationBuilder | typeof BaseAnimationBuilder | undefined
-  entryAnimation?: BaseAnimationBuilder | typeof BaseAnimationBuilder | undefined
+  exitAnimation?: BaseAnimationBuilder | typeof BaseAnimationBuilder
+  entryAnimation?: BaseAnimationBuilder | typeof BaseAnimationBuilder
 }
