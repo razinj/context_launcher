@@ -22,6 +22,9 @@ import { BottomSheetModalProvider, BottomSheetModal } from '@gorhom/bottom-sheet
 import Icon from 'react-native-vector-icons/MaterialIcons'
 // Utils
 import { requestAppUninstall, showAppDetails } from '../utils/appsModule'
+// Analytics
+import perf from '@react-native-firebase/perf'
+import analytics from '@react-native-firebase/analytics'
 // Model
 import { FavoriteApp } from '../models/favorite-app'
 
@@ -53,34 +56,63 @@ const AppItemMenu = () => {
     setIsFavoriteApp(appIndex !== -1)
   }, [appItemMenuDetails, favoriteApps])
 
-  const addToFavoriteApps = () => {
+  const addToFavoriteApps = async () => {
     if (!appItemMenuDetails || !appItemMenuDetails.icon) return
+
+    const trace = await perf().startTrace('add_to_favorite')
 
     dispatch(addFavoriteApp({ ...appItemMenuDetails, icon: appItemMenuDetails.icon }))
     appItemMenuBottomSheetRef?.current?.close()
+
+    await trace.stop()
+    await analytics().logEvent('add_to_favorite_apps')
   }
 
-  const removeFromFavoriteApps = () => {
+  const removeFromFavoriteApps = async () => {
     if (!appItemMenuDetails?.icon) return
+
+    const trace = await perf().startTrace('remove_from_favorite')
 
     dispatch(removeFavoriteApp(appItemMenuDetails.name))
     appItemMenuBottomSheetRef?.current?.close()
+
+    await trace.stop()
+    await analytics().logEvent('remove_from_favorite_apps')
   }
 
-  const openAppInfo = () => {
+  const openAppInfo = async () => {
     if (!appItemMenuDetails) return
+
+    const trace = await perf().startTrace('open_app_info')
 
     dispatch(resetAppsSearchState())
     showAppDetails(appItemMenuDetails.name)
     appItemMenuBottomSheetRef?.current?.close()
+
+    await trace.stop()
+    await analytics().logEvent('open_app_info')
   }
 
-  const uninstallApp = () => {
+  const uninstallApp = async () => {
     if (!appItemMenuDetails) return
+
+    const trace = await perf().startTrace('uninstall_app')
 
     dispatch(resetAppsSearchState())
     requestAppUninstall(appItemMenuDetails.name)
     appItemMenuBottomSheetRef?.current?.close()
+
+    await trace.stop()
+    await analytics().logEvent('uninstall_app')
+  }
+
+  const closeMenu = async () => {
+    const trace = await perf().startTrace('close_app_item_menu')
+
+    appItemMenuBottomSheetRef?.current?.close()
+
+    await trace.stop()
+    await analytics().logEvent('close_app_item_menu')
   }
 
   const pressableStyles = ({ pressed }: { pressed: boolean }) => {
@@ -111,12 +143,7 @@ const AppItemMenu = () => {
               />
               <Text style={styles.headerTitle}>{appItemMenuDetails?.label}</Text>
             </View>
-            <Pressable
-              onPress={() => {
-                appItemMenuBottomSheetRef?.current?.close()
-              }}
-              android_disableSound={true}
-              android_ripple={appInfoIconRippleConfig}>
+            <Pressable onPress={closeMenu} android_disableSound={true} android_ripple={appInfoIconRippleConfig}>
               <Icon name='close' size={34} color='#808080' />
             </Pressable>
           </View>

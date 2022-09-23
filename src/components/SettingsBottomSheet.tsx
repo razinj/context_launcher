@@ -23,6 +23,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { showAppDetails } from '../utils/appsModule'
 // Constants
 import { CONTEXT_LAUNCHER_APP_ID, PRIMARY_HEX_COLOR } from '../constants'
+// Analytics
+import analytics from '@react-native-firebase/analytics'
 
 const activeSwitch = PRIMARY_HEX_COLOR
 const inActiveSwitch = '#f4f3f4'
@@ -48,17 +50,29 @@ const SettingsBottomSheet = () => {
   const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
   const { dismissKeyboard, settingsBottomSheetRef, toggleSortableFavoriteApps } = useContext(GlobalContext)
 
-  const toggleDisplayRecentApps = () => {
+  const toggleDisplayRecentApps = async () => {
     dispatch(displayRecentApps(!displayRecentAppsValue))
+
+    await analytics().logEvent('toggle_display_recent_apps', { value: !displayRecentAppsValue })
   }
 
-  const toggleDisplayFavoriteApps = () => {
+  const toggleDisplayFavoriteApps = async () => {
     dispatch(displayFavoriteApps(!displayFavoriteAppsValue))
+
+    await analytics().logEvent('toggle_display_favorite_apps', { value: !displayFavoriteAppsValue })
   }
 
-  const onFavoriteAppsSortViewClick = () => {
+  const onFavoriteAppsSortViewClick = async () => {
     dismissKeyboard()
     toggleSortableFavoriteApps()
+
+    await analytics().logEvent('on_favorite_apps_sort_view_click')
+  }
+
+  const onAppInfoClick = async () => {
+    showAppDetails(CONTEXT_LAUNCHER_APP_ID)
+
+    await analytics().logEvent('on_app_info_click')
   }
 
   const favoriteAppsSortDisabled = useMemo(
@@ -74,10 +88,7 @@ const SettingsBottomSheet = () => {
           {/* Header wrapper */}
           <View style={styles.headerWrapper}>
             <Text style={styles.headerTitle}>Context Settings</Text>
-            <Pressable
-              onPress={() => showAppDetails(CONTEXT_LAUNCHER_APP_ID)}
-              android_disableSound={true}
-              android_ripple={appInfoIconRippleConfig}>
+            <Pressable onPress={onAppInfoClick} android_disableSound={true} android_ripple={appInfoIconRippleConfig}>
               <Icon name='information-outline' size={34} color='#808080' />
             </Pressable>
           </View>

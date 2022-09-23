@@ -8,6 +8,8 @@ import SearchContext from './SearchContext'
 import { dismissKeyboard } from '../utils/keyboard'
 // Custom Hooks
 import { useKeyboard } from '../hooks/useKeyboard'
+// Analytics
+import perf from '@react-native-firebase/perf'
 // Models
 import { SearchContextWrapperProps as Props } from '../models/props'
 
@@ -16,11 +18,15 @@ const SearchContextWrapper = ({ children }: Props) => {
   const searchInputRef: RefObject<TextInput> | null = useRef(null)
   const [invalidCharacters, setInvalidCharacters] = useState(false)
 
-  const dismissKeyboardAndBlurSearchInput = () => {
+  const dismissKeyboardAndBlurSearchInput = async () => {
+    const trace = await perf().startTrace('search_context_dismiss_keyboard_blur_input')
+
     // Dismiss keyboard
     if (keyboard.isShown) dismissKeyboard()
     // Remove search input focus
     if (searchInputRef.current?.isFocused()) searchInputRef.current?.blur()
+
+    await trace.stop()
   }
 
   return (

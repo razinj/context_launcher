@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 import { selectRecentAppsMemoized } from '../slices/recentApps'
 // Components
 import AppItem from './AppItem'
-import CustomView from './CustomView'
 // Constants
 import { BACKGROUND_COLOR } from '../constants'
 // Models

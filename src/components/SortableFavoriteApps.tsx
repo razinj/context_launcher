@@ -13,6 +13,9 @@ import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-nativ
 import { BACKGROUND_COLOR } from '../constants'
 // Icon
 import Icon from 'react-native-vector-icons/MaterialIcons'
+// Analytics
+import perf from '@react-native-firebase/perf'
+import analytics from '@react-native-firebase/analytics'
 // Models
 import { FavoriteApp } from '../models/favorite-app'
 
@@ -50,11 +53,26 @@ const SortableFavoriteApps = () => {
     ])
   ).start()
 
-  const doneSorting = () => toggleSortableFavoriteApps()
+  const doneSorting = async () => {
+    const trace = await perf().startTrace('on_favorite_app_drag_done')
 
-  const onDragEnd = ({ data }: { data: FavoriteApp[] }) => {
+    toggleSortableFavoriteApps()
+
+    await trace.stop()
+    await analytics().logEvent('on_favorite_app_drag_done')
+  }
+
+  const onDragBegin = async () => {
+    await analytics().logEvent('on_favorite_app_drag_begin')
+  }
+
+  const onDragEnd = async ({ data }: { data: FavoriteApp[] }) => {
+    const trace = await perf().startTrace('on_favorite_app_drag_end')
+
     dispatch(setFavoriteApps(data))
     if (!sorted) setSorted(true)
+
+    await trace.stop()
   }
 
   const renderItem = ({ item, drag, isActive }: RenderItemParams<FavoriteApp>) => {
@@ -85,6 +103,7 @@ const SortableFavoriteApps = () => {
         <DraggableFlatList
           horizontal
           data={apps}
+          onDragBegin={onDragBegin}
           onDragEnd={onDragEnd}
           renderItem={renderItem}
           keyExtractor={keyExtractor}

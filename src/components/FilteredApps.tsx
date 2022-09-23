@@ -14,7 +14,6 @@ import { BACKGROUND_COLOR } from '../constants'
 // Models
 import { RenderedIn } from '../models/rendered-in'
 import { AppDetails } from '../models/app-details'
-import CustomView from './CustomView'
 
 const keyExtractor = ({ name }: AppDetails) => name
 

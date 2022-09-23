@@ -1,12 +1,13 @@
 // React
 import React, { useContext, useEffect, useState } from 'react'
 // React Native
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Platform, PlatformAndroidStatic } from 'react-native'
 // Redux
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setAppsList } from './slices/appsList'
 import { removeRecentApp } from './slices/recentApps'
 import { removeFavoriteApp } from './slices/favoriteApps'
+import { selectIdMemoized, selectIsFirebaseInfoSetMemoized, setIsFirebaseInfoSetValue } from './slices/global'
 // Components
 import TopContainer from './containers/TopContainer'
 import BottomContainer from './containers/BottomContainer'
@@ -18,9 +19,13 @@ import { useBackHandler } from './hooks/useBackHandler'
 import { usePackageChange } from './hooks/usePackageChange'
 // Native modules
 import AppsModule from './native-modules/AppsModule'
+// Analytics
+import perf from '@react-native-firebase/perf'
+import analytics from '@react-native-firebase/analytics'
 // Models
 import { AppDetails } from './models/app-details'
 import { PackageChange } from './models/event'
+import { GlobalProperties } from './models/global-state'
 
 const initialLoadValue = 'INITIAL_LOAD'
 const packageChangedInitialValue = {
@@ -34,15 +39,38 @@ const Home = () => {
   const { hideAllApps } = useContext(GlobalContext)
   const { searchInputRef } = useContext(SearchContext)
 
-  useEffect(() => {
-    if (packageChanged.isRemoved && packageChanged.packageName !== initialLoadValue) {
-      dispatch(removeRecentApp(packageChanged.packageName))
-      dispatch(removeFavoriteApp(packageChanged.packageName))
-    }
+  const id = useSelector(selectIdMemoized)
+  const isFirebaseInfoSet = useSelector(selectIsFirebaseInfoSetMemoized)
+
+  const loadApps = async () => {
+    const trace = await perf().startTrace('apps_list_load')
 
     AppsModule.getApplications((applications: string) => {
-      dispatch(setAppsList(JSON.parse(applications) as AppDetails[]))
+      const apps = JSON.parse(applications) as AppDetails[]
+
+      trace.putAttribute('apps_count', `${apps.length}`)
+
+      dispatch(setAppsList(apps))
     })
+
+    await trace.stop()
+  }
+
+  const removeAppFromLists = async () => {
+    const trace = await perf().startTrace('app_removed')
+
+    dispatch(removeRecentApp(packageChanged.packageName))
+    dispatch(removeFavoriteApp(packageChanged.packageName))
+
+    await trace.stop()
+  }
+
+  useEffect(() => {
+    if (packageChanged.isRemoved && packageChanged.packageName !== initialLoadValue) {
+      removeAppFromLists().catch(error => console.error(`Couldn't remove app from lists, error: `, error))
+    }
+
+    loadApps().catch(error => console.error(`Couldn't load apps list, error: `, error))
   }, [packageChanged])
 
   useBackHandler(() => {
@@ -54,6 +82,37 @@ const Home = () => {
   })
 
   usePackageChange((packageChange: PackageChange) => setPackageChanged(packageChange))
+
+  useEffect(() => {
+    if (isFirebaseInfoSet) return
+
+    const { reactNativeVersion, Version, Serial, Release, Fingerprint, Brand, Manufacturer, Model, uiMode } = (
+      Platform as PlatformAndroidStatic
+    ).constants
+    const { major, minor, patch } = reactNativeVersion
+    const properties: GlobalProperties = {
+      os: Platform.OS,
+      osVersion: Platform.Version.toString(),
+      reactNativeVersion: `${major}.${minor}.${patch}`,
+      isTesting: `${Platform.isTesting}`,
+      uiMode,
+      manufacturer: Manufacturer,
+      brand: Brand,
+      model: Model,
+      serial: Serial,
+      release: Release,
+      fingerprint: Fingerprint,
+      version: Version.toString(),
+    }
+
+    const setId = async () => analytics().setUserId(id)
+    const setProperties = async () => analytics().setUserProperties(properties)
+
+    setId().catch(error => console.error(`Couldn't set the user ID, error: `, error))
+    setProperties().catch(error => console.error(`Couldn't set the user properties, error: `, error))
+
+    dispatch(setIsFirebaseInfoSetValue())
+  }, [])
 
   return (
     <View style={styles.wrapper}>

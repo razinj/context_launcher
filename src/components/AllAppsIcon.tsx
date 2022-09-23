@@ -8,6 +8,8 @@ import GlobalContext from '../contexts/GlobalContext'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // Constants
 import { PRIMARY_HEX_COLOR, SECONDARY_HEX_COLOR } from '../constants'
+// Analytics
+import analytics from '@react-native-firebase/analytics'
 
 const rippleConfig: PressableAndroidRippleConfig = {
   color: SECONDARY_HEX_COLOR,
@@ -19,9 +21,15 @@ const rippleConfig: PressableAndroidRippleConfig = {
 const AllAppsIcon = () => {
   const { toggleDisplayAllApps } = useContext(GlobalContext)
 
+  const onPress = async () => {
+    toggleDisplayAllApps()
+
+    await analytics().logEvent('all_apps_click')
+  }
+
   return (
     <View style={styles.wrapper}>
-      <Pressable onPress={toggleDisplayAllApps} android_disableSound={true} android_ripple={rippleConfig}>
+      <Pressable onPress={onPress} android_disableSound={true} android_ripple={rippleConfig}>
         <Icon name='hexagon-outline' size={34} style={styles.icon} color={PRIMARY_HEX_COLOR} />
       </Pressable>
     </View>

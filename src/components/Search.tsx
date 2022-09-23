@@ -2,8 +2,6 @@
 import React, { useContext, useEffect } from 'react'
 // React Native
 import { Pressable, PressableAndroidRippleConfig, StyleSheet, TextInput, View } from 'react-native'
-// Components
-import CustomView from './CustomView'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -21,6 +19,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { dismissKeyboard } from '../utils/keyboard'
 // Constants
 import { SECONDARY_HEX_COLOR } from '../constants'
+// Analytics
+import analytics from '@react-native-firebase/analytics'
 // Models
 import { AppDetails } from '../models/app-details'
 
@@ -57,9 +57,22 @@ const Search = () => {
     dispatch(setAppsSearchQuery(trimmedQuery))
   }
 
-  const clearInputAndSearchState = () => {
+  const clearInputAndSearchState = async () => {
     searchInputRef?.current?.clear()
     dispatch(resetAppsSearchState())
+
+    await analytics().logEvent('clear_search_input_and_search_state')
+  }
+
+  const onInputFocus = async () => {
+    await analytics().logEvent('on_search_input_focus')
+  }
+
+  const onSubmitEditing = async () => {
+    dismissKeyboard()
+
+    await analytics().logEvent('on_search_input_submit_editing')
+    if (searchQuery) await analytics().logSearch({ search_term: searchQuery })
   }
 
   useEffect(() => {
@@ -75,8 +88,9 @@ const Search = () => {
         placeholderTextColor={SECONDARY_HEX_COLOR}
         returnKeyType='search'
         autoCapitalize='words'
+        onFocus={onInputFocus}
         onChangeText={onQueryChange}
-        onSubmitEditing={dismissKeyboard}
+        onSubmitEditing={onSubmitEditing}
       />
       {searchQuery && searchQuery?.length > 0 && (
         <Pressable
