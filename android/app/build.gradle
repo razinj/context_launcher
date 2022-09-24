@@ -216,10 +216,13 @@ android {
     signingConfigs {
         release {
             if (project.hasProperty('CONTEXT_LAUNCHER_UPLOAD_STORE_FILE')) {
+                project.logger.lifecycle('Release upload keystore file found.')
                 storeFile file(CONTEXT_LAUNCHER_UPLOAD_STORE_FILE)
                 storePassword CONTEXT_LAUNCHER_UPLOAD_STORE_PASSWORD
                 keyAlias CONTEXT_LAUNCHER_UPLOAD_KEY_ALIAS
                 keyPassword CONTEXT_LAUNCHER_UPLOAD_KEY_PASSWORD
+            } else {
+                project.logger.lifecycle('Release upload keystore file not found.')
             }
         }
         debug {
@@ -236,7 +239,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
