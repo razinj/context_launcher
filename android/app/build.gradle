@@ -214,6 +214,14 @@ android {
         }
     }
     signingConfigs {
+        release {
+            if (project.hasProperty('CONTEXT_LAUNCHER_UPLOAD_STORE_FILE')) {
+                storeFile file(CONTEXT_LAUNCHER_UPLOAD_STORE_FILE)
+                storePassword CONTEXT_LAUNCHER_UPLOAD_STORE_PASSWORD
+                keyAlias CONTEXT_LAUNCHER_UPLOAD_KEY_ALIAS
+                keyPassword CONTEXT_LAUNCHER_UPLOAD_KEY_PASSWORD
+            }
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
