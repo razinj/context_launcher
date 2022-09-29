@@ -16,6 +16,14 @@ import { FavoriteApp } from '../models/favorite-app'
 const FavoriteApps = () => {
   const apps = useSelector(selectFavoriteAppsMemoized)
 
+  const favoriteApps = useMemo(
+    () =>
+      apps.map((app: FavoriteApp) => (
+        <AppItem key={app.name} appDetails={app} appIcon={app.icon} renderedIn={RenderedIn.FAVORITE_APPS} />
+      )),
+    [apps]
+  )
+
   if (apps.length === 0) {
     return (
       <View style={[styles.wrapper, styles.noAppsWrapper]}>
@@ -23,20 +31,6 @@ const FavoriteApps = () => {
       </View>
     )
   }
-
-  const favoriteApps = useMemo(
-    () =>
-      apps.map((app: FavoriteApp) => (
-        <AppItem
-          key={app.name}
-          appDetails={app}
-          appIcon={app.icon}
-          displayLabel={false}
-          renderedIn={RenderedIn.FAVORITE_APPS}
-        />
-      )),
-    [apps]
-  )
 
   return <View style={styles.wrapper}>{favoriteApps}</View>
 }

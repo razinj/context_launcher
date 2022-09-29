@@ -10,7 +10,6 @@ import { RenderedIn } from './rendered-in'
 export type AppItemProps = {
   appDetails: AppDetails
   renderedIn: RenderedIn
-  displayLabel?: boolean
   appIcon?: string
 }
 

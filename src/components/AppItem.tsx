@@ -1,14 +1,14 @@
 // React
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 // React Native
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 // Components
 import HighlightText from './HighlightText'
 // Redux
-import { useDispatch } from 'react-redux'
-// Slices
+import { useDispatch, useSelector } from 'react-redux'
 import { addRecentApp } from '../slices/recentApps'
 import { resetAppsSearchState } from '../slices/appsSearch'
+import { selectDisplayAppsIconsMemoized } from '../slices/preferences'
 // Utils
 import { launchApp } from '../utils/appsModule'
 // Native modules
@@ -22,11 +22,12 @@ import perf from '@react-native-firebase/perf'
 import { RenderedIn } from '../models/rendered-in'
 import { AppItemProps as Props } from '../models/props'
 
-const AppItem = ({ appDetails, renderedIn, appIcon, displayLabel = true }: Props) => {
+const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
   const dispatch = useDispatch()
   const [icon, setIcon] = useState<string | undefined>(undefined)
   const { searchAppLaunchProcedure } = useContext(SearchContext)
   const { setAppItemMenuDetails, displayAppItemMenuBottomSheet, globalAppLaunchProcedure } = useContext(GlobalContext)
+  const displayAppsIconsValue = useSelector(selectDisplayAppsIconsMemoized)
 
   const onPress = async () => {
     const trace = await perf().startTrace('app_press')
@@ -48,6 +49,13 @@ const AppItem = ({ appDetails, renderedIn, appIcon, displayLabel = true }: Props
     await trace.stop()
   }
 
+  const displayAppsIcons = useMemo(
+    () => displayAppsIconsValue || renderedIn === RenderedIn.FAVORITE_APPS,
+    [displayAppsIconsValue, renderedIn]
+  )
+
+  const displayLabel = useMemo(() => renderedIn !== RenderedIn.FAVORITE_APPS, [renderedIn])
+
   const onLongPress = async () => {
     const trace = await perf().startTrace('app_long_press')
     trace.putAttribute('rendered_in', renderedIn)
@@ -59,7 +67,11 @@ const AppItem = ({ appDetails, renderedIn, appIcon, displayLabel = true }: Props
   }
 
   const pressableStyles = ({ pressed }: { pressed: boolean }) => {
-    return { ...styles.pressable, backgroundColor: pressed ? 'rgba(255, 255, 255, .25)' : 'transparent' }
+    return {
+      ...styles.pressable,
+      borderRadius: displayAppsIcons ? 10 : 5,
+      backgroundColor: pressed ? 'rgba(255, 255, 255, .25)' : 'transparent',
+    }
   }
 
   useEffect(() => {
@@ -73,11 +85,13 @@ const AppItem = ({ appDetails, renderedIn, appIcon, displayLabel = true }: Props
   return (
     <View>
       <Pressable onPress={onPress} onLongPress={onLongPress} style={pressableStyles}>
-        <Image
-          resizeMode={'contain'}
-          source={{ uri: `data:image/png;base64,${icon}` }}
-          style={[styles.icon, { marginRight: displayLabel ? 10 : 0 }]}
-        />
+        {displayAppsIcons && (
+          <Image
+            resizeMode={'contain'}
+            source={{ uri: `data:image/png;base64,${icon}` }}
+            style={[styles.icon, { marginRight: displayLabel ? 10 : 0 }]}
+          />
+        )}
         {displayLabel && <HighlightText text={appDetails.label} />}
       </Pressable>
     </View>
@@ -91,7 +105,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 5,
     marginHorizontal: 5,
-    borderRadius: 10,
   },
   icon: {
     width: 50,

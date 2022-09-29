@@ -7,8 +7,10 @@ import SettingsItemLabel from './SettingsItemLabel'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  displayAppsIcons,
   displayFavoriteApps,
   displayRecentApps,
+  selectDisplayAppsIconsMemoized,
   selectDisplayFavoriteAppsMemoized,
   selectDisplayRecentAppsMemoized,
 } from '../slices/preferences'
@@ -48,6 +50,7 @@ const SettingsBottomSheet = () => {
   const favoriteAppsCount = useSelector(selectFavoriteAppsCountMemoized)
   const displayRecentAppsValue = useSelector(selectDisplayRecentAppsMemoized)
   const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
+  const displayAppsIconsValue = useSelector(selectDisplayAppsIconsMemoized)
   const { dismissKeyboard, settingsBottomSheetRef, toggleSortableFavoriteApps } = useContext(GlobalContext)
 
   const toggleDisplayRecentApps = async () => {
@@ -60,6 +63,12 @@ const SettingsBottomSheet = () => {
     dispatch(displayFavoriteApps(!displayFavoriteAppsValue))
 
     await analytics().logEvent('toggle_display_favorite_apps', { value: !displayFavoriteAppsValue })
+  }
+
+  const toggleDisplayAppsIcons = async () => {
+    dispatch(displayAppsIcons(!displayAppsIconsValue))
+
+    await analytics().logEvent('toggle_display_apps_icons', { value: !displayAppsIconsValue })
   }
 
   const onFavoriteAppsSortViewClick = async () => {
@@ -112,6 +121,16 @@ const SettingsBottomSheet = () => {
               onValueChange={toggleDisplayFavoriteApps}
               trackColor={switchTrackColor}
               thumbColor={displayFavoriteAppsValue ? activeSwitch : inActiveSwitch}
+            />
+          </View>
+          {/* Apps icons switch */}
+          <View style={styles.itemContainer}>
+            <SettingsItemLabel title='Display apps icons' />
+            <Switch
+              value={displayAppsIconsValue}
+              onValueChange={toggleDisplayAppsIcons}
+              trackColor={switchTrackColor}
+              thumbColor={displayAppsIconsValue ? activeSwitch : inActiveSwitch}
             />
           </View>
           {/* Sort favorite apps */}
