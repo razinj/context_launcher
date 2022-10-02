@@ -3,7 +3,7 @@ import React from 'react'
 // React Native
 import { StyleSheet, Text, View } from 'react-native'
 // Models
-import { SettingsItemLabelProps as Props } from '../models/props'
+import { SettingsItemLabelProps as Props } from '../../models/props'
 
 const SettingsItemLabel = ({ title, description }: Props) => {
   return (

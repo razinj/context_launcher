@@ -1,13 +1,13 @@
 // React
 import React, { useContext } from 'react'
 // React Native
-import { Pressable, PressableAndroidRippleConfig, StyleSheet, Text, View } from 'react-native'
+import { Pressable, PressableAndroidRippleConfig, StyleSheet, View } from 'react-native'
 // Contexts
-import GlobalContext from '../contexts/GlobalContext'
+import GlobalContext from '../../contexts/GlobalContext'
 // Icons
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // Constants
-import { PRIMARY_HEX_COLOR, SECONDARY_HEX_COLOR } from '../constants'
+import { PRIMARY_HEX_COLOR, SECONDARY_HEX_COLOR } from '../../constants'
 // Analytics
 import analytics from '@react-native-firebase/analytics'
 

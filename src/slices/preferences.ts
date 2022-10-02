@@ -28,10 +28,15 @@ export const preferencesSlice = createSlice({
     displayAppsIcons: (state: PreferencesState, { payload }: PayloadAction<boolean>) => {
       state.displayAppsIcons = payload
     },
+    resetPreferences: (state: PreferencesState) => {
+      state.displayAppsIcons = true
+      state.displayRecentApps = true
+      state.displayFavoriteApps = true
+    },
   },
 })
 
-export const { displayRecentApps, displayFavoriteApps, displayAppsIcons } = preferencesSlice.actions
+export const { displayRecentApps, displayFavoriteApps, displayAppsIcons, resetPreferences } = preferencesSlice.actions
 
 const selectDisplayRecentApps = (state: RootState) => state.preferences.displayRecentApps
 const selectDisplayFavoriteApps = (state: RootState) => state.preferences.displayFavoriteApps

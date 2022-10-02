@@ -3,6 +3,7 @@ import React, { useContext, useMemo } from 'react'
 // React Native
 import { Pressable, PressableAndroidRippleConfig, StyleSheet, Switch, Text, View } from 'react-native'
 // Components
+import AdvancedSettings from './AdvancedSettings'
 import SettingsItemLabel from './SettingsItemLabel'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,18 +14,18 @@ import {
   selectDisplayAppsIconsMemoized,
   selectDisplayFavoriteAppsMemoized,
   selectDisplayRecentAppsMemoized,
-} from '../slices/preferences'
-import { selectFavoriteAppsCountMemoized } from '../slices/favoriteApps'
+} from '../../slices/preferences'
+import { selectFavoriteAppsCountMemoized } from '../../slices/favoriteApps'
 // Contexts
-import GlobalContext from '../contexts/GlobalContext'
+import GlobalContext from '../../contexts/GlobalContext'
 // BottomSheet
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // Utils
-import { showAppDetails } from '../utils/appsModule'
+import { showAppDetails } from '../../utils/appsModule'
 // Constants
-import { CONTEXT_LAUNCHER_APP_ID, PRIMARY_HEX_COLOR } from '../constants'
+import { CONTEXT_LAUNCHER_APP_ID, PRIMARY_HEX_COLOR } from '../../constants'
 // Analytics
 import analytics from '@react-native-firebase/analytics'
 
@@ -91,7 +92,10 @@ const SettingsBottomSheet = () => {
 
   return (
     <BottomSheetModalProvider>
-      <BottomSheetModal ref={settingsBottomSheetRef} snapPoints={['25%', '50%']} style={styles.bottomSheetModal}>
+      <BottomSheetModal
+        ref={settingsBottomSheetRef}
+        snapPoints={['25%', '50%', '75%', '90%']}
+        style={styles.bottomSheetModal}>
         {/* Settings wrapper */}
         <View style={styles.settingsWrapper}>
           {/* Header wrapper */}
@@ -153,6 +157,9 @@ const SettingsBottomSheet = () => {
               />
             </Pressable>
           </View>
+
+          {/* Advanced settings */}
+          <AdvancedSettings />
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>
