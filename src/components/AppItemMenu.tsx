@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 // React Native
 import { View, Text, Pressable, StyleSheet, PressableAndroidRippleConfig, Image } from 'react-native'
 // Components
-import SettingsItemLabel from './SettingsItemLabel'
+import SettingsItemLabel from './Settings/SettingsItemLabel'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import { resetAppsSearchState } from '../slices/appsSearch'

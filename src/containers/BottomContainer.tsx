@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native'
 // Components
 import Search from '../components/Search'
 import AllAppsIcon from '../components/AllAppsIcon'
-import SettingsIcon from '../components/SettingsIcon'
+import SettingsIcon from '../components/Settings/SettingsIcon'
 
 const BottomContainer = () => {
   return (
