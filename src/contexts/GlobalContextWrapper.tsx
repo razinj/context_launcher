@@ -8,8 +8,6 @@ import { useKeyboard } from '../hooks/useKeyboard'
 import { dismissKeyboard } from '../utils/keyboard'
 // BottomSheet
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-// Analytics
-import perf from '@react-native-firebase/perf'
 // Models
 import { AppDetailsOptionalIcon } from '../models/app-details'
 import { GlobalContextWrapperProps as Props } from '../models/props'
@@ -22,17 +20,11 @@ const GlobalContextWrapper = ({ children }: Props) => {
   const appItemMenuBottomSheetRef: RefObject<BottomSheetModal> | null = useRef(null)
   const [appItemMenuDetails, setAppItemMenuDetails] = useState<AppDetailsOptionalIcon | null>(null)
 
-  const hideAllApps = async () => {
-    const trace = await perf().startTrace('global_context_hide_all_apps')
-
+  const hideAllApps = () => {
     if (displayAllApps) setDisplayAllApps(false)
-
-    await trace.stop()
   }
 
-  const appLaunchProcedure = async () => {
-    const trace = await perf().startTrace('global_context_app_launch_procedure')
-
+  const appLaunchProcedure = () => {
     // Hide all apps view
     hideAllApps()
     // Hide favorite apps sort view
@@ -43,21 +35,13 @@ const GlobalContextWrapper = ({ children }: Props) => {
     appItemMenuBottomSheetRef.current?.close()
     // Reset app menu data
     if (!appItemMenuDetails) setAppItemMenuDetails(null)
-
-    await trace.stop()
   }
 
-  const closeKeyboard = async () => {
-    const trace = await perf().startTrace('global_context_close_keyboard')
-
+  const closeKeyboard = () => {
     if (keyboard.isShown) dismissKeyboard()
-
-    await trace.stop()
   }
 
-  const toggleSortableFavoriteApps = async () => {
-    const trace = await perf().startTrace('global_context_toggle_sortable_favorite_apps')
-
+  const toggleSortableFavoriteApps = () => {
     if (!sortableFavoriteApps) {
       // Hide all apps view
       hideAllApps()
@@ -66,8 +50,6 @@ const GlobalContextWrapper = ({ children }: Props) => {
     }
 
     setSortableFavoriteApps(!sortableFavoriteApps)
-
-    await trace.stop()
   }
 
   return (

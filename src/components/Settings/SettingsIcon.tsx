@@ -8,8 +8,6 @@ import GlobalContext from '../../contexts/GlobalContext'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // Constants
 import { PRIMARY_HEX_COLOR, SECONDARY_HEX_COLOR } from '../../constants'
-// Analytics
-import analytics from '@react-native-firebase/analytics'
 
 const rippleConfig: PressableAndroidRippleConfig = {
   color: SECONDARY_HEX_COLOR,
@@ -21,15 +19,9 @@ const rippleConfig: PressableAndroidRippleConfig = {
 const SettingsIcon = () => {
   const { displaySettingsBottomSheet } = useContext(GlobalContext)
 
-  const onPress = async () => {
-    displaySettingsBottomSheet()
-
-    await analytics().logEvent('settings_click')
-  }
-
   return (
     <View style={styles.wrapper}>
-      <Pressable onPress={onPress} android_disableSound={true} android_ripple={rippleConfig}>
+      <Pressable onPress={displaySettingsBottomSheet} android_disableSound={true} android_ripple={rippleConfig}>
         <Icon name='dots-vertical' size={34} style={styles.icon} color={PRIMARY_HEX_COLOR} />
       </Pressable>
     </View>

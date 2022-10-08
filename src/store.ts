@@ -1,7 +1,6 @@
 // Redux
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 // Reducers
-import globalReducer from './slices/global'
 import appsListReducer from './slices/appsList'
 import appsSearchReducer from './slices/appsSearch'
 import recentAppsReducer from './slices/recentApps'
@@ -13,7 +12,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 
 const rootReducer = combineReducers({
-  global: globalReducer,
   appsList: appsListReducer,
   appsSearch: appsSearchReducer,
   recentApps: recentAppsReducer,

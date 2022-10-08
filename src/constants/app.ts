@@ -11,4 +11,3 @@ export const HARDWARE_BACK_PRESS_EVENT_NAME = 'hardwareBackPress'
 // React Native
 export const KEYBOARD_DID_SHOW_EVENT_NAME = 'keyboardDidShow'
 export const KEYBOARD_DID_HIDE_EVENT_NAME = 'keyboardDidHide'
-export const APP_STATE_CHANGE_EVENT = 'change'

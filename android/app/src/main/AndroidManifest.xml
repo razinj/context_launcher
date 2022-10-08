@@ -43,9 +43,5 @@
             </intent-filter>
         </receiver>
         <service android:name=".AppProvider" />
-        <!-- TODO: Remove Firebase meta-data? -->
-        <meta-data
-            android:name="firebase_performance_logcat_enabled"
-            android:value="true" />
     </application>
 </manifest>

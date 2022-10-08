@@ -12,9 +12,6 @@ import { resetPreferences } from '../../slices/preferences'
 import { resetFavoriteApps } from '../../slices/favoriteApps'
 // Native modules
 import AppsModule from '../../native-modules/AppsModule'
-// Analytics
-import perf from '@react-native-firebase/perf'
-import analytics from '@react-native-firebase/analytics'
 // Models
 import { AppDetails } from '../../models/app-details'
 
@@ -27,46 +24,28 @@ const settingItemButtonRippleConfig: PressableAndroidRippleConfig = {
 const AdvancedSettings = () => {
   const dispatch = useDispatch()
 
-  const loadApps = async () => {
-    const trace = await perf().startTrace('settings_apps_list_load')
-
+  const reloadAllApps = () => {
     AppsModule.getApplications((applications: string) => {
       const apps = JSON.parse(applications) as AppDetails[]
 
-      trace.putAttribute('apps_count', `${apps.length}`)
-
       dispatch(setAppsList(apps))
+      displayToast('All apps reloaded successfully!')
     })
-
-    await trace.stop()
   }
 
-  const reloadAllApps = async () => {
-    await loadApps()
-    displayToast('All apps reloaded successfully!')
-
-    await analytics().logEvent('settings_reload_all_apps')
-  }
-
-  const onResetRecentApps = async () => {
+  const onResetRecentApps = () => {
     dispatch(resetRecentApps())
     displayToast('Recent apps reset successfully!')
-
-    await analytics().logEvent('settings_reset_recent_apps')
   }
 
-  const onResetFavoriteApps = async () => {
+  const onResetFavoriteApps = () => {
     dispatch(resetFavoriteApps())
     displayToast('Favorite apps reset successfully!')
-
-    await analytics().logEvent('settings_reset_favorite_apps')
   }
 
-  const onResetPreferences = async () => {
+  const onResetPreferences = () => {
     dispatch(resetPreferences())
     displayToast('Settings reset successfully!')
-
-    await analytics().logEvent('settings_reset_preferences')
   }
 
   const displayToast = (message: string, duration: number = ToastAndroid.LONG) => {

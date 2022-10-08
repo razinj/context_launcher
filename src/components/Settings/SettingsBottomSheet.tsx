@@ -26,8 +26,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { showAppDetails } from '../../utils/appsModule'
 // Constants
 import { CONTEXT_LAUNCHER_APP_ID, PRIMARY_HEX_COLOR } from '../../constants'
-// Analytics
-import analytics from '@react-native-firebase/analytics'
 
 const activeSwitch = PRIMARY_HEX_COLOR
 const inActiveSwitch = '#f4f3f4'
@@ -54,35 +52,25 @@ const SettingsBottomSheet = () => {
   const displayAppsIconsValue = useSelector(selectDisplayAppsIconsMemoized)
   const { dismissKeyboard, settingsBottomSheetRef, toggleSortableFavoriteApps } = useContext(GlobalContext)
 
-  const toggleDisplayRecentApps = async () => {
+  const toggleDisplayRecentApps = () => {
     dispatch(displayRecentApps(!displayRecentAppsValue))
-
-    await analytics().logEvent('toggle_display_recent_apps', { value: !displayRecentAppsValue })
   }
 
-  const toggleDisplayFavoriteApps = async () => {
+  const toggleDisplayFavoriteApps = () => {
     dispatch(displayFavoriteApps(!displayFavoriteAppsValue))
-
-    await analytics().logEvent('toggle_display_favorite_apps', { value: !displayFavoriteAppsValue })
   }
 
-  const toggleDisplayAppsIcons = async () => {
+  const toggleDisplayAppsIcons = () => {
     dispatch(displayAppsIcons(!displayAppsIconsValue))
-
-    await analytics().logEvent('toggle_display_apps_icons', { value: !displayAppsIconsValue })
   }
 
-  const onFavoriteAppsSortViewClick = async () => {
+  const onFavoriteAppsSortViewClick = () => {
     dismissKeyboard()
     toggleSortableFavoriteApps()
-
-    await analytics().logEvent('on_favorite_apps_sort_view_click')
   }
 
-  const onAppInfoClick = async () => {
+  const onAppInfoClick = () => {
     showAppDetails(CONTEXT_LAUNCHER_APP_ID)
-
-    await analytics().logEvent('on_app_info_click')
   }
 
   const favoriteAppsSortDisabled = useMemo(

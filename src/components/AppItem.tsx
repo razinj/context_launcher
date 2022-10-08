@@ -16,8 +16,6 @@ import AppsModule from '../native-modules/AppsModule'
 // Contexts
 import SearchContext from '../contexts/SearchContext'
 import GlobalContext from '../contexts/GlobalContext'
-// Analytics
-import perf from '@react-native-firebase/perf'
 // Models
 import { RenderedIn } from '../models/rendered-in'
 import { AppItemProps as Props } from '../models/props'
@@ -29,10 +27,7 @@ const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
   const { setAppItemMenuDetails, displayAppItemMenuBottomSheet, globalAppLaunchProcedure } = useContext(GlobalContext)
   const displayAppsIconsValue = useSelector(selectDisplayAppsIconsMemoized)
 
-  const onPress = async () => {
-    const trace = await perf().startTrace('app_press')
-    trace.putAttribute('rendered_in', renderedIn.toLowerCase())
-
+  const onPress = () => {
     // Launch app
     launchApp(appDetails.name)
 
@@ -45,8 +40,6 @@ const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
     if (renderedIn === RenderedIn.FILTERED_APPS || renderedIn === RenderedIn.ALL_APPS) {
       dispatch(addRecentApp({ ...appDetails, icon }))
     }
-
-    await trace.stop()
   }
 
   const displayAppsIcons = useMemo(
@@ -56,14 +49,9 @@ const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
 
   const displayLabel = useMemo(() => renderedIn !== RenderedIn.FAVORITE_APPS, [renderedIn])
 
-  const onLongPress = async () => {
-    const trace = await perf().startTrace('app_long_press')
-    trace.putAttribute('rendered_in', renderedIn)
-
+  const onLongPress = () => {
     setAppItemMenuDetails({ ...appDetails, icon })
     displayAppItemMenuBottomSheet()
-
-    await trace.stop()
   }
 
   const pressableStyles = ({ pressed }: { pressed: boolean }) => {

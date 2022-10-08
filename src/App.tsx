@@ -1,7 +1,7 @@
 // React
 import React, { useEffect } from 'react'
 // React Native
-import { AppStateStatus, StatusBar, useColorScheme } from 'react-native'
+import { StatusBar, useColorScheme } from 'react-native'
 // Redux
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux'
@@ -16,21 +16,9 @@ import Settings from './components/Settings/SettingsBottomSheet'
 import { persistor, store } from './store'
 // Gesture Handler
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-// Analytics
-import analytics from '@react-native-firebase/analytics'
-// Hooks
-import { useAppState } from './hooks/useAppState'
 
 const App = () => {
   const colorScheme = useColorScheme()
-
-  const logAppOpen = async () => analytics().logAppOpen()
-
-  useAppState((nextState: AppStateStatus) => {
-    if (nextState !== 'active') return
-
-    logAppOpen().catch(error => console.error('Error logging app open, error: ', error))
-  })
 
   useEffect(() => {
     if (!colorScheme) StatusBar.setBarStyle('default', true)

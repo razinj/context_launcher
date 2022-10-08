@@ -14,9 +14,6 @@ import { selectDisplayAppsIconsMemoized } from '../slices/preferences'
 import { SlideInDown } from 'react-native-reanimated'
 // Constants
 import { APP_ITEM_HEIGHT_ICON_DISPLAYED, APP_ITEM_HEIGHT_ICON_NOT_DISPLAYED, BACKGROUND_COLOR } from '../constants'
-// Analytics
-import perf from '@react-native-firebase/perf'
-import analytics from '@react-native-firebase/analytics'
 // Models
 import { RenderedIn } from '../models/rendered-in'
 import { AppDetails } from '../models/app-details'
@@ -28,14 +25,9 @@ const AllApps = () => {
   const listRef: MutableRefObject<FlatList<AppDetails> | null> = useRef(null)
   const displayAppsIcons = useSelector(selectDisplayAppsIconsMemoized)
 
-  const scrollToIndex = async (index: number) => {
-    const trace = await perf().startTrace('scroll_to_app')
-
+  const scrollToIndex = (index: number) => {
     const currentListRef = listRef.current as FlatList
     currentListRef.scrollToIndex({ index, animated: true })
-
-    await trace.stop()
-    await analytics().logEvent('on_app_letter_index_click')
   }
 
   const renderItem: ListRenderItem<AppDetails> = ({ item }: ListRenderItemInfo<AppDetails>) => (

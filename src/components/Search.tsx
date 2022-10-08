@@ -19,8 +19,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { dismissKeyboard } from '../utils/keyboard'
 // Constants
 import { SECONDARY_HEX_COLOR } from '../constants'
-// Analytics
-import analytics from '@react-native-firebase/analytics'
 // Models
 import { AppDetails } from '../models/app-details'
 
@@ -57,22 +55,13 @@ const Search = () => {
     dispatch(setAppsSearchQuery(trimmedQuery))
   }
 
-  const clearInputAndSearchState = async () => {
+  const clearInputAndSearchState = () => {
     searchInputRef?.current?.clear()
     dispatch(resetAppsSearchState())
-
-    await analytics().logEvent('clear_search_input_and_search_state')
   }
 
-  const onInputFocus = async () => {
-    await analytics().logEvent('on_search_input_focus')
-  }
-
-  const onSubmitEditing = async () => {
+  const onSubmitEditing = () => {
     dismissKeyboard()
-
-    await analytics().logEvent('on_search_input_submit_editing')
-    if (searchQuery) await analytics().logSearch({ search_term: searchQuery })
   }
 
   useEffect(() => {
@@ -88,7 +77,6 @@ const Search = () => {
         placeholderTextColor={SECONDARY_HEX_COLOR}
         returnKeyType='search'
         autoCapitalize='words'
-        onFocus={onInputFocus}
         onChangeText={onQueryChange}
         onSubmitEditing={onSubmitEditing}
       />
