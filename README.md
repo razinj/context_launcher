@@ -2,6 +2,8 @@
 
 Context Launcher is an Android list-based launcher made to be simple and straight forward to use.
 
+![Screenshots](https://public.razinj.com/context-launcher-screenshots.png)
+
 ## Links
 
 - [React Native Directory](https://reactnative.directory/) to search for RN libraries
