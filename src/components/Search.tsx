@@ -13,6 +13,7 @@ import {
 import { selectAppsListMemoized } from '../slices/appsList'
 // Contexts
 import SearchContext from '../contexts/SearchContext'
+import GlobalContext from '../contexts/GlobalContext'
 // Icon
 import Icon from 'react-native-vector-icons/MaterialIcons'
 // Utils
@@ -34,6 +35,7 @@ const Search = () => {
   const apps = useSelector(selectAppsListMemoized)
   const searchQuery = useSelector(selectAppsSearchQuery)
   const { searchInputRef, invalidCharacters, setInvalidCharacters } = useContext(SearchContext)
+  const { hideAllApps } = useContext(GlobalContext)
 
   const onQueryChange = (query: string) => {
     const trimmedQuery = query.trim().replace(/\./g, '\\.')
@@ -50,6 +52,8 @@ const Search = () => {
 
     // Reset invalid characters when it's valid (passes the above check)
     if (invalidCharacters) setInvalidCharacters(false)
+
+    hideAllApps()
 
     dispatch(setAppsSearchResult(apps.filter((app: AppDetails) => app.label.match(new RegExp(trimmedQuery, 'gi')))))
     dispatch(setAppsSearchQuery(trimmedQuery))
