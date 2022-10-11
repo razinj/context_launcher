@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 // React Native
 import { Pressable, PressableAndroidRippleConfig, StyleSheet, Switch, Text, View } from 'react-native'
 // Components
@@ -51,6 +51,7 @@ const SettingsBottomSheet = () => {
   const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
   const displayAppsIconsValue = useSelector(selectDisplayAppsIconsMemoized)
   const { dismissKeyboard, settingsBottomSheetRef, toggleSortableFavoriteApps } = useContext(GlobalContext)
+  const [displayAdvancedSettings, setDisplayAdvancedSettings] = useState(false)
 
   const toggleDisplayRecentApps = () => {
     dispatch(displayRecentApps(!displayRecentAppsValue))
@@ -77,6 +78,10 @@ const SettingsBottomSheet = () => {
     () => favoriteAppsCount <= 1 || !displayFavoriteAppsValue,
     [favoriteAppsCount, displayFavoriteAppsValue]
   )
+
+  const toggleAdvancedSettings = () => {
+    setDisplayAdvancedSettings(!displayAdvancedSettings)
+  }
 
   return (
     <BottomSheetModalProvider>
@@ -145,9 +150,23 @@ const SettingsBottomSheet = () => {
               />
             </Pressable>
           </View>
+          {/* Advanced settings wrapper */}
+          <>
+            {/* Toggle advanced settings */}
+            <View style={styles.itemContainer}>
+              <Pressable
+                onPress={toggleAdvancedSettings}
+                android_disableSound={true}
+                android_ripple={settingItemButtonRippleConfig}
+                style={styles.buttonItemPressable}>
+                <SettingsItemLabel title='Toggle advanced settings' />
+                <Icon name={`chevron-${displayAdvancedSettings ? 'up' : 'down'}`} size={30} />
+              </Pressable>
+            </View>
 
-          {/* Advanced settings */}
-          <AdvancedSettings />
+            {/* Advanced settings */}
+            {displayAdvancedSettings && <AdvancedSettings />}
+          </>
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>
@@ -166,6 +185,9 @@ const styles = StyleSheet.create({
   },
   buttonItemPressable: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerWrapper: {
     paddingBottom: 20,
