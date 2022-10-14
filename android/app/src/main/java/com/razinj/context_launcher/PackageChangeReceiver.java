@@ -7,6 +7,7 @@ import static com.razinj.context_launcher.AppsModule.PACKAGE_UPDATE_ACTION;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class PackageChangeReceiver extends BroadcastReceiver {
     @Override
@@ -35,6 +36,8 @@ public class PackageChangeReceiver extends BroadcastReceiver {
             intent.putExtra(PACKAGE_CHANGE_IS_REMOVED, Boolean.FALSE);
         } else if (!replacing) {
             intent.putExtra(PACKAGE_CHANGE_IS_REMOVED, Boolean.TRUE);
+        } else {
+            intent.putExtra(PACKAGE_CHANGE_IS_REMOVED, Boolean.FALSE);
         }
 
         context.sendBroadcast(intent);

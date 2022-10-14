@@ -3,6 +3,7 @@ package com.razinj.context_launcher;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -53,7 +54,9 @@ public class MainApplication extends Application implements ReactApplication {
         SoLoader.init(this, false);
         initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
 
-        startService(new Intent(this, AppProvider.class));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this, AppProvider.class));
+        } else startService(new Intent(this, AppProvider.class));
     }
 
     private static void initializeFlipper(Context context, ReactInstanceManager reactInstanceManager) {

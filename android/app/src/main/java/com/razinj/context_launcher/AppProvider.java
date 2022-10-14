@@ -1,15 +1,20 @@
 package com.razinj.context_launcher;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.LauncherApps;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Process;
 import android.os.UserHandle;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 public class AppProvider extends Service {
     private PackageChangeReceiver packageChangeReceiver;
@@ -70,6 +75,35 @@ public class AppProvider extends Service {
         this.registerReceiver(packageChangeReceiver, appChangedIntentFilter);
 
         super.onCreate();
+        startForegroundCustom();
+    }
+
+    private void startForegroundCustom() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Notification channel
+            String channelId = BuildConfig.APPLICATION_ID;
+            String channelName = "AppProvider Service";
+            NotificationChannel notificationChannel = new NotificationChannel(
+                    channelId,
+                    channelName,
+                    NotificationManager.IMPORTANCE_NONE
+            );
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
+            // Notification manager
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            assert notificationManager != null;
+            notificationManager.createNotificationChannel(notificationChannel);
+
+            // Notification builder
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
+            Notification notification = notificationBuilder
+                    .setPriority(NotificationManager.IMPORTANCE_MIN)
+                    .setCategory(Notification.CATEGORY_SERVICE)
+                    .setOngoing(true)
+                    .build();
+            startForeground(1, notification);
+        } else startForeground(2, new Notification());
     }
 
     @Override
