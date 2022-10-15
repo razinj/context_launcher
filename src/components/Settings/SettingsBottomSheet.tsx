@@ -79,13 +79,14 @@ const SettingsBottomSheet = () => {
     [favoriteAppsCount, displayFavoriteAppsValue]
   )
 
-  const toggleAdvancedSettings = () => {
-    setDisplayAdvancedSettings(!displayAdvancedSettings)
+  const toggleAdvancedSettings = (value: boolean = !displayAdvancedSettings) => {
+    setDisplayAdvancedSettings(value)
   }
 
   return (
     <BottomSheetModalProvider>
       <BottomSheetModal
+        onDismiss={() => toggleAdvancedSettings(false)}
         ref={settingsBottomSheetRef}
         snapPoints={['25%', '50%', '75%', '90%']}
         style={styles.bottomSheetModal}>
@@ -155,12 +156,12 @@ const SettingsBottomSheet = () => {
             {/* Toggle advanced settings */}
             <View style={styles.itemContainer}>
               <Pressable
-                onPress={toggleAdvancedSettings}
+                onPress={() => toggleAdvancedSettings()}
                 android_disableSound={true}
                 android_ripple={settingItemButtonRippleConfig}
                 style={styles.buttonItemPressable}>
                 <SettingsItemLabel title='Toggle advanced settings' />
-                <Icon name={`chevron-${displayAdvancedSettings ? 'up' : 'down'}`} size={30} />
+                <Icon name={`chevron-${displayAdvancedSettings ? 'up' : 'down'}`} size={30} color='#808080' />
               </Pressable>
             </View>
 
