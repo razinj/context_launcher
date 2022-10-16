@@ -1,5 +1,13 @@
+// Modules
+import AppsModule from '../native-modules/AppsModule'
+
+// Constant values
+const { appVersion, buildNumber, packageName } = AppsModule.getConstants()
+
 // Values
-export const CONTEXT_LAUNCHER_APP_ID = 'com.razinj.context_launcher'
+export const CONTEXT_LAUNCHER_APP_ID = packageName
+export const CONTEXT_LAUNCHER_APP_VERSION = appVersion
+export const CONTEXT_LAUNCHER_APP_BUILD_NUMBER = buildNumber
 export const APP_ITEM_HEIGHT_ICON_DISPLAYED = 60
 export const APP_ITEM_HEIGHT_ICON_NOT_DISPLAYED = 30
 // Colors
