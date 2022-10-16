@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
@@ -20,7 +21,9 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AppsModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;
@@ -162,5 +165,32 @@ public class AppsModule extends ReactContextBaseJavaModule {
     public void removeListeners(Integer count) {
         // TODO: Should this method exist?
         // Remove upstream listeners, stop unnecessary background tasks
+    }
+
+    private PackageInfo getPackageInfo() throws Exception {
+        return getReactApplicationContext().getPackageManager().getPackageInfo(getReactApplicationContext().getPackageName(), 0);
+    }
+
+    @Override
+    public Map<String, Object> getConstants() {
+        String appVersion, buildNumber, packageName;
+
+        try {
+            appVersion = getPackageInfo().versionName;
+            buildNumber = Integer.toString(getPackageInfo().versionCode);
+            packageName = getReactApplicationContext().getPackageName();
+        } catch (Exception e) {
+            appVersion = "unknown";
+            buildNumber = "unknown";
+            packageName = "unknown";
+        }
+
+        final Map<String, Object> constants = new HashMap<>();
+
+        constants.put("appVersion", appVersion);
+        constants.put("buildNumber", buildNumber);
+        constants.put("packageName", packageName);
+
+        return constants;
     }
 }
