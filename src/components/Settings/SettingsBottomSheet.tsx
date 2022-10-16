@@ -25,7 +25,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // Utils
 import { showAppDetails } from '../../utils/appsModule'
 // Constants
-import { CONTEXT_LAUNCHER_APP_ID, PRIMARY_HEX_COLOR } from '../../constants'
+import {
+  PRIMARY_HEX_COLOR,
+  CONTEXT_LAUNCHER_APP_ID,
+  CONTEXT_LAUNCHER_APP_VERSION,
+  CONTEXT_LAUNCHER_APP_BUILD_NUMBER,
+} from '../../constants'
 
 const activeSwitch = PRIMARY_HEX_COLOR
 const inActiveSwitch = '#f4f3f4'
@@ -72,6 +77,7 @@ const SettingsBottomSheet = () => {
 
   const onAppInfoClick = () => {
     showAppDetails(CONTEXT_LAUNCHER_APP_ID)
+    settingsBottomSheetRef?.current?.close()
   }
 
   const favoriteAppsSortDisabled = useMemo(
@@ -94,13 +100,28 @@ const SettingsBottomSheet = () => {
         <View style={styles.settingsWrapper}>
           {/* Header wrapper */}
           <View style={styles.headerWrapper}>
-            <Text style={styles.headerTitle}>Context Settings</Text>
+            <Text style={styles.headerTitle}>
+              Context Settings
+              <Text style={styles.appInfoText}>
+                &nbsp;&nbsp;v{CONTEXT_LAUNCHER_APP_VERSION} ({CONTEXT_LAUNCHER_APP_BUILD_NUMBER})
+              </Text>
+            </Text>
             <Pressable onPress={onAppInfoClick} android_disableSound={true} android_ripple={appInfoIconRippleConfig}>
               <Icon name='information-outline' size={34} color='#808080' />
             </Pressable>
           </View>
 
           {/* Settings */}
+          {/* Apps icons switch */}
+          <View style={styles.itemContainer}>
+            <SettingsItemLabel title='Display apps icons' />
+            <Switch
+              value={displayAppsIconsValue}
+              onValueChange={toggleDisplayAppsIcons}
+              trackColor={switchTrackColor}
+              thumbColor={displayAppsIconsValue ? activeSwitch : inActiveSwitch}
+            />
+          </View>
           {/* Recent apps switch */}
           <View style={styles.itemContainer}>
             <SettingsItemLabel title='Display recent apps' />
@@ -119,16 +140,6 @@ const SettingsBottomSheet = () => {
               onValueChange={toggleDisplayFavoriteApps}
               trackColor={switchTrackColor}
               thumbColor={displayFavoriteAppsValue ? activeSwitch : inActiveSwitch}
-            />
-          </View>
-          {/* Apps icons switch */}
-          <View style={styles.itemContainer}>
-            <SettingsItemLabel title='Display apps icons' />
-            <Switch
-              value={displayAppsIconsValue}
-              onValueChange={toggleDisplayAppsIcons}
-              trackColor={switchTrackColor}
-              thumbColor={displayAppsIconsValue ? activeSwitch : inActiveSwitch}
             />
           </View>
           {/* Sort favorite apps */}
@@ -203,6 +214,10 @@ const styles = StyleSheet.create({
   },
   bottomSheetModal: {
     marginHorizontal: 5,
+  },
+  appInfoText: {
+    color: '#ccc',
+    fontSize: 12,
   },
 })
 
