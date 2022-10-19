@@ -35,7 +35,7 @@ const Search = () => {
   const apps = useSelector(selectAppsListMemoized)
   const searchQuery = useSelector(selectAppsSearchQuery)
   const { searchInputRef, invalidCharacters, setInvalidCharacters } = useContext(SearchContext)
-  const { hideAllApps } = useContext(GlobalContext)
+  const { hideAllApps, displayAllApps } = useContext(GlobalContext)
 
   const onQueryChange = (query: string) => {
     const trimmedQuery = query.trim().replace(/\./g, '\\.')
@@ -78,7 +78,7 @@ const Search = () => {
         ref={searchInputRef}
         style={styles.searchInput}
         placeholder='Search'
-        placeholderTextColor={SECONDARY_HEX_COLOR}
+        placeholderTextColor={displayAllApps ? '#fff' : SECONDARY_HEX_COLOR}
         returnKeyType='search'
         autoCapitalize='words'
         onChangeText={onQueryChange}
