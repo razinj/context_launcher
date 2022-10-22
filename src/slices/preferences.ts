@@ -6,13 +6,11 @@ import { RootState } from '../store'
 export interface PreferencesState {
   displayRecentApps: boolean
   displayFavoriteApps: boolean
-  displayAppsIcons: boolean
 }
 
 const initialState: PreferencesState = {
   displayRecentApps: true,
   displayFavoriteApps: true,
-  displayAppsIcons: true,
 }
 
 export const preferencesSlice = createSlice({
@@ -25,25 +23,19 @@ export const preferencesSlice = createSlice({
     displayFavoriteApps: (state: PreferencesState, { payload }: PayloadAction<boolean>) => {
       state.displayFavoriteApps = payload
     },
-    displayAppsIcons: (state: PreferencesState, { payload }: PayloadAction<boolean>) => {
-      state.displayAppsIcons = payload
-    },
     resetPreferences: (state: PreferencesState) => {
-      state.displayAppsIcons = true
       state.displayRecentApps = true
       state.displayFavoriteApps = true
     },
   },
 })
 
-export const { displayRecentApps, displayFavoriteApps, displayAppsIcons, resetPreferences } = preferencesSlice.actions
+export const { displayRecentApps, displayFavoriteApps, resetPreferences } = preferencesSlice.actions
 
 const selectDisplayRecentApps = (state: RootState) => state.preferences.displayRecentApps
 const selectDisplayFavoriteApps = (state: RootState) => state.preferences.displayFavoriteApps
-const selectDisplayAppsIcons = (state: RootState) => state.preferences.displayAppsIcons
 
 export const selectDisplayRecentAppsMemoized = createSelector(selectDisplayRecentApps, (value: boolean) => value)
 export const selectDisplayFavoriteAppsMemoized = createSelector(selectDisplayFavoriteApps, (value: boolean) => value)
-export const selectDisplayAppsIconsMemoized = createSelector(selectDisplayAppsIcons, (value: boolean) => value)
 
 export default preferencesSlice.reducer

@@ -8,10 +8,8 @@ import SettingsItemLabel from './SettingsItemLabel'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  displayAppsIcons,
   displayFavoriteApps,
   displayRecentApps,
-  selectDisplayAppsIconsMemoized,
   selectDisplayFavoriteAppsMemoized,
   selectDisplayRecentAppsMemoized,
 } from '../../slices/preferences'
@@ -54,7 +52,6 @@ const SettingsBottomSheet = () => {
   const favoriteAppsCount = useSelector(selectFavoriteAppsCountMemoized)
   const displayRecentAppsValue = useSelector(selectDisplayRecentAppsMemoized)
   const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
-  const displayAppsIconsValue = useSelector(selectDisplayAppsIconsMemoized)
   const { dismissKeyboard, settingsBottomSheetRef, toggleSortableFavoriteApps } = useContext(GlobalContext)
   const [displayAdvancedSettings, setDisplayAdvancedSettings] = useState(false)
 
@@ -64,10 +61,6 @@ const SettingsBottomSheet = () => {
 
   const toggleDisplayFavoriteApps = () => {
     dispatch(displayFavoriteApps(!displayFavoriteAppsValue))
-  }
-
-  const toggleDisplayAppsIcons = () => {
-    dispatch(displayAppsIcons(!displayAppsIconsValue))
   }
 
   const onFavoriteAppsSortViewClick = () => {
@@ -112,16 +105,6 @@ const SettingsBottomSheet = () => {
           </View>
 
           {/* Settings */}
-          {/* Apps icons switch */}
-          <View style={styles.itemContainer}>
-            <SettingsItemLabel title='Display apps icons' />
-            <Switch
-              value={displayAppsIconsValue}
-              onValueChange={toggleDisplayAppsIcons}
-              trackColor={switchTrackColor}
-              thumbColor={displayAppsIconsValue ? activeSwitch : inActiveSwitch}
-            />
-          </View>
           {/* Recent apps switch */}
           <View style={styles.itemContainer}>
             <SettingsItemLabel title='Display recent apps' />
