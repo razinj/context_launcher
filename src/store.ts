@@ -9,7 +9,17 @@ import preferencesReducer from './slices/preferences'
 // Storage
 import AsyncStorage from '@react-native-async-storage/async-storage'
 // Redux Persist
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  createMigrate,
+} from 'redux-persist'
 
 const rootReducer = combineReducers({
   appsList: appsListReducer,
@@ -19,10 +29,23 @@ const rootReducer = combineReducers({
   preferences: preferencesReducer,
 })
 
+const migrations = {
+  2: (state: any) => {
+    return {
+      ...state,
+      preferences: {
+        displayRecentApps: true,
+        displayFavoriteApps: true,
+      },
+    }
+  },
+}
+
 const persistConfig = {
   key: 'root',
-  version: 1,
+  version: 2,
   storage: AsyncStorage,
+  migrate: createMigrate(migrations, { debug: false }),
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

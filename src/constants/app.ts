@@ -9,7 +9,6 @@ export const CONTEXT_LAUNCHER_APP_ID = packageName
 export const CONTEXT_LAUNCHER_APP_VERSION = appVersion
 export const CONTEXT_LAUNCHER_APP_BUILD_NUMBER = buildNumber
 export const APP_ITEM_HEIGHT_ICON_DISPLAYED = 60
-export const APP_ITEM_HEIGHT_ICON_NOT_DISPLAYED = 30
 // Colors
 export const PRIMARY_HEX_COLOR = '#42855B'
 export const SECONDARY_HEX_COLOR = '#A0C2AD'

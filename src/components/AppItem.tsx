@@ -5,10 +5,9 @@ import { Image, Pressable, StyleSheet, View } from 'react-native'
 // Components
 import HighlightText from './HighlightText'
 // Redux
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { addRecentApp } from '../slices/recentApps'
 import { resetAppsSearchState } from '../slices/appsSearch'
-import { selectDisplayAppsIconsMemoized } from '../slices/preferences'
 // Utils
 import { launchApp } from '../utils/appsModule'
 // Native modules
@@ -25,7 +24,6 @@ const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
   const [icon, setIcon] = useState<string | undefined>(undefined)
   const { searchAppLaunchProcedure } = useContext(SearchContext)
   const { setAppItemMenuDetails, displayAppItemMenuBottomSheet, globalAppLaunchProcedure } = useContext(GlobalContext)
-  const displayAppsIconsValue = useSelector(selectDisplayAppsIconsMemoized)
 
   const onPress = () => {
     // Launch app
@@ -42,12 +40,8 @@ const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
     }
   }
 
-  const displayAppsIcons = useMemo(
-    () => displayAppsIconsValue || renderedIn === RenderedIn.FAVORITE_APPS,
-    [displayAppsIconsValue, renderedIn]
-  )
-
   const displayLabel = useMemo(() => renderedIn !== RenderedIn.FAVORITE_APPS, [renderedIn])
+  const displayAppsIcons = useMemo(() => renderedIn === RenderedIn.FAVORITE_APPS, [renderedIn])
 
   const onLongPress = () => {
     setAppItemMenuDetails({ ...appDetails, icon })
