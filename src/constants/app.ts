@@ -2,12 +2,11 @@
 import AppsModule from '../native-modules/AppsModule'
 
 // Constant values
-const { appVersion, buildNumber, packageName } = AppsModule.getConstants()
-
-// Values
-export const CONTEXT_LAUNCHER_APP_ID = packageName
-export const CONTEXT_LAUNCHER_APP_VERSION = appVersion
-export const CONTEXT_LAUNCHER_APP_BUILD_NUMBER = buildNumber
+export const {
+  packageName: CONTEXT_LAUNCHER_APP_ID,
+  appVersion: CONTEXT_LAUNCHER_APP_VERSION,
+  buildNumber: CONTEXT_LAUNCHER_APP_BUILD_NUMBER,
+} = AppsModule.getConstants()
 export const APP_ITEM_HEIGHT_ICON_DISPLAYED = 60
 // Colors
 export const PRIMARY_HEX_COLOR = '#42855B'
