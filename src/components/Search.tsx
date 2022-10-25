@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 // Utils
 import { dismissKeyboard } from '../utils/keyboard'
 // Constants
-import { SECONDARY_HEX_COLOR } from '../constants'
+import { PRIMARY_HEX_COLOR, SECONDARY_HEX_COLOR } from '../constants'
 // Models
 import { AppDetails } from '../models/app-details'
 
@@ -78,7 +78,7 @@ const Search = () => {
         ref={searchInputRef}
         style={styles.searchInput}
         placeholder='Search'
-        placeholderTextColor={displayAllApps ? '#fff' : SECONDARY_HEX_COLOR}
+        placeholderTextColor={displayAllApps ? PRIMARY_HEX_COLOR : SECONDARY_HEX_COLOR}
         returnKeyType='search'
         autoCapitalize='words'
         onChangeText={onQueryChange}
