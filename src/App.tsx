@@ -1,7 +1,7 @@
 // React
 import React, { useEffect } from 'react'
 // React Native
-import { StatusBar, useColorScheme } from 'react-native'
+import { StatusBar } from 'react-native'
 // Redux
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux'
@@ -18,12 +18,10 @@ import { persistor, store } from './store'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const App = () => {
-  const colorScheme = useColorScheme()
-
   useEffect(() => {
-    if (!colorScheme) StatusBar.setBarStyle('default', true)
-    else StatusBar.setBarStyle(colorScheme === 'dark' ? 'light-content' : 'dark-content', true)
-  }, [colorScheme])
+    StatusBar.setTranslucent(true)
+    StatusBar.setBackgroundColor('transparent', true)
+  }, [])
 
   return (
     <Provider store={store}>
