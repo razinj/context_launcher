@@ -138,8 +138,8 @@ android {
         applicationId "com.razinj.context_launcher"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.4.4"
+        versionCode 9
+        versionName "1.4.5"
         archivesBaseName = "context-launcher-v$versionName-$versionCode"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 

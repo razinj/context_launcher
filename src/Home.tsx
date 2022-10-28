@@ -1,7 +1,7 @@
 // React
 import React, { useContext, useEffect, useState } from 'react'
 // React Native
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, StatusBar } from 'react-native'
 // Redux
 import { useDispatch } from 'react-redux'
 import { setAppsList } from './slices/appsList'
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     padding: 5,
+    marginTop: StatusBar.currentHeight,
     justifyContent: 'flex-end',
   },
 })
