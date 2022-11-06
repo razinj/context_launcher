@@ -2,6 +2,8 @@
 
 Context Launcher is an Android list-based launcher made to be simple and straight forward to use.
 
+[![Google Play Store](https://img.shields.io/endpoint?color=green&label=Google%20Play%20Store&logo=google-play&url=https://play.cuzi.workers.dev/play?i=com.razinj.context_launcher&m=v$version)](https://play.google.com/store/apps/details?id=com.razinj.context_launcher)
+
 ![Screenshots](https://public.razinj.com/context-launcher-screenshots.png)
 
 ## Links
