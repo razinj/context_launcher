@@ -31,3 +31,7 @@ Context Launcher is an Android list-based launcher made to be simple and straigh
 - Run the app (debug variant): `npm i && npm run android`
 - Run the app (release variant): `npm run android -- --variant release`
 - Open up the debugging menu: `adb shell input keyevent 82`
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=razinj/context_launcher&type=Date)](https://star-history.com/#razinj/context_launcher&Date)
