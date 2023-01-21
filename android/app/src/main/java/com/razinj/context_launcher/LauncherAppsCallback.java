@@ -9,17 +9,22 @@ import android.os.UserHandle;
  */
 public class LauncherAppsCallback extends LauncherApps.Callback {
     @Override
-    public void onPackageRemoved(String packageName, UserHandle user) {}
+    public void onPackageRemoved(String packageName, UserHandle user) {
+    }
 
     @Override
-    public void onPackageAdded(String packageName, UserHandle user) {}
+    public void onPackageAdded(String packageName, UserHandle user) {
+    }
 
     @Override
-    public void onPackageChanged(String packageName, UserHandle user) {}
+    public void onPackageChanged(String packageName, UserHandle user) {
+    }
 
     @Override
-    public void onPackagesAvailable(String[] packageNames, UserHandle user, boolean replacing) {}
+    public void onPackagesAvailable(String[] packageNames, UserHandle user, boolean replacing) {
+    }
 
     @Override
-    public void onPackagesUnavailable(String[] packageNames, UserHandle user, boolean replacing) {}
+    public void onPackagesUnavailable(String[] packageNames, UserHandle user, boolean replacing) {
+    }
 }
