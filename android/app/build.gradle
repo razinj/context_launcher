@@ -95,8 +95,8 @@ android {
         applicationId "com.razinj.context_launcher"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10
-        versionName "1.4.6"
+        versionCode 11
+        versionName "1.4.7"
         archivesBaseName = "context-launcher-v$versionName-$versionCode"
     }
 
