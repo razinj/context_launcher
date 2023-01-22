@@ -21,7 +21,7 @@ import { BottomSheetModalProvider, BottomSheetModal } from '@gorhom/bottom-sheet
 // Icon
 import Icon from 'react-native-vector-icons/MaterialIcons'
 // Utils
-import { requestAppUninstall, showAppDetails } from '../utils/appsModule'
+import { requestAppUninstall, showAppDetails } from '../utils/apps-module'
 // Model
 import { FavoriteApp } from '../models/favorite-app'
 

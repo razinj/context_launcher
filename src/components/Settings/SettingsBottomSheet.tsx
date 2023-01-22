@@ -21,7 +21,7 @@ import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // Utils
-import { showAppDetails } from '../../utils/appsModule'
+import { showAppDetails } from '../../utils/apps-module'
 // Constants
 import {
   PRIMARY_HEX_COLOR,

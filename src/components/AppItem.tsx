@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { addRecentApp } from '../slices/recentApps'
 import { resetAppsSearchState } from '../slices/appsSearch'
 // Utils
-import { launchApp } from '../utils/appsModule'
+import { launchApp } from '../utils/apps-module'
 // Native modules
 import AppsModule from '../native-modules/AppsModule'
 // Contexts
