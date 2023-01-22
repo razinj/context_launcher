@@ -2,15 +2,13 @@ import { Keyboard } from 'react-native'
 import { dismissKeyboard } from './keyboard'
 
 describe('Keyboard Tests', () => {
-  const rnKeyboardDismissSpy = jest.spyOn(Keyboard, 'dismiss')
-
-  beforeEach(() => {
-    rnKeyboardDismissSpy.mockReset()
+  beforeAll(() => {
+    jest.spyOn(Keyboard, 'dismiss')
   })
 
   it('should call keyboard dismiss method', () => {
     dismissKeyboard()
 
-    expect(rnKeyboardDismissSpy).toBeCalledTimes(1)
+    expect(Keyboard.dismiss).toBeCalledTimes(1)
   })
 })
