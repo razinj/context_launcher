@@ -70,7 +70,7 @@ const SettingsBottomSheet = () => {
 
   const onAppInfoClick = () => {
     showAppDetails(CONTEXT_LAUNCHER_APP_ID)
-    settingsBottomSheetRef?.current?.close()
+    settingsBottomSheetRef?.current?.dismiss()
   }
 
   const favoriteAppsSortDisabled = useMemo(

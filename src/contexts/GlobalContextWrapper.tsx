@@ -30,9 +30,9 @@ const GlobalContextWrapper = ({ children }: Props) => {
     // Hide favorite apps sort view
     if (sortableFavoriteApps) setSortableFavoriteApps(false)
     // Close settings bottom sheet
-    settingsBottomSheetRef.current?.close()
+    settingsBottomSheetRef.current?.dismiss()
     // Close app item menu sheet
-    appItemMenuBottomSheetRef.current?.close()
+    appItemMenuBottomSheetRef.current?.dismiss()
     // Reset app menu data
     if (!appItemMenuDetails) setAppItemMenuDetails(null)
   }
@@ -46,7 +46,7 @@ const GlobalContextWrapper = ({ children }: Props) => {
       // Hide all apps view
       hideAllApps()
       // Close settings bottom sheet
-      settingsBottomSheetRef.current?.close()
+      settingsBottomSheetRef.current?.dismiss()
     }
 
     setSortableFavoriteApps(!sortableFavoriteApps)
