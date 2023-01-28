@@ -35,7 +35,10 @@ const alphabet = [
   'Z',
 ]
 
-const getLettersMap = (): LetterMap => {
+/**
+ * @returns Indexed alphabet letters in an object where the key is the alphabet and the value is the index
+ */
+export const getLettersMap = (): LetterMap => {
   const letterMap: LetterMap = {}
 
   alphabet.forEach((letter: string, index: number) => (letterMap[letter] = index + 1))
@@ -43,6 +46,10 @@ const getLettersMap = (): LetterMap => {
   return letterMap
 }
 
+/**
+ * @param value Any string value
+ * @returns A letter if the first chareceter of the value is an alphabet, otherwise it returns a '#'
+ */
 export const getFirstLetter = (value: string): string => {
   const firstChar = value.trim().substring(0, 1).toUpperCase()
   const isValidLetter = getLettersMap()[firstChar]
