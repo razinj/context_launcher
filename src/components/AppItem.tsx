@@ -26,9 +26,6 @@ const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
   const { setAppItemMenuDetails, displayAppItemMenuBottomSheet, globalAppLaunchProcedure } = useContext(GlobalContext)
 
   const onPress = () => {
-    // Launch app
-    launchApp(appDetails.name)
-
     // Reset views and values
     globalAppLaunchProcedure()
     searchAppLaunchProcedure()
@@ -38,6 +35,9 @@ const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
     if (renderedIn === RenderedIn.FILTERED_APPS || renderedIn === RenderedIn.ALL_APPS) {
       dispatch(addRecentApp({ ...appDetails, icon }))
     }
+
+    // Launch app
+    launchApp(appDetails.name)
   }
 
   const displayLabel = useMemo(() => renderedIn !== RenderedIn.FAVORITE_APPS, [renderedIn])

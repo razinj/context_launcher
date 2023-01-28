@@ -57,14 +57,14 @@ const AppItemMenu = () => {
     if (!appItemMenuDetails || !appItemMenuDetails.icon) return
 
     dispatch(addFavoriteApp({ ...appItemMenuDetails, icon: appItemMenuDetails.icon }))
-    appItemMenuBottomSheetRef?.current?.close()
+    closeMenu()
   }
 
   const removeFromFavoriteApps = () => {
     if (!appItemMenuDetails?.icon) return
 
     dispatch(removeFavoriteApp(appItemMenuDetails.name))
-    appItemMenuBottomSheetRef?.current?.close()
+    closeMenu()
   }
 
   const openAppInfo = () => {
@@ -72,7 +72,7 @@ const AppItemMenu = () => {
 
     dispatch(resetAppsSearchState())
     showAppDetails(appItemMenuDetails.name)
-    appItemMenuBottomSheetRef?.current?.close()
+    closeMenu()
   }
 
   const uninstallApp = () => {
@@ -80,11 +80,11 @@ const AppItemMenu = () => {
 
     dispatch(resetAppsSearchState())
     requestAppUninstall(appItemMenuDetails.name)
-    appItemMenuBottomSheetRef?.current?.close()
+    closeMenu()
   }
 
   const closeMenu = () => {
-    appItemMenuBottomSheetRef?.current?.close()
+    appItemMenuBottomSheetRef?.current?.dismiss()
   }
 
   const pressableStyles = ({ pressed }: { pressed: boolean }) => {
