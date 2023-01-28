@@ -7,9 +7,9 @@ import static com.razinj.context_launcher.AppsModule.PACKAGE_UPDATE_ACTION;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 public class PackageChangeReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String packageName = intent.getData().getSchemeSpecificPart();
@@ -34,10 +34,10 @@ public class PackageChangeReceiver extends BroadcastReceiver {
             if (launchIntent == null) return;
 
             intent.putExtra(PACKAGE_CHANGE_IS_REMOVED, Boolean.FALSE);
-        } else if (!replacing) {
-            intent.putExtra(PACKAGE_CHANGE_IS_REMOVED, Boolean.TRUE);
-        } else {
+        } else if (replacing) {
             intent.putExtra(PACKAGE_CHANGE_IS_REMOVED, Boolean.FALSE);
+        } else {
+            intent.putExtra(PACKAGE_CHANGE_IS_REMOVED, Boolean.TRUE);
         }
 
         context.sendBroadcast(intent);
