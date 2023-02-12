@@ -1,5 +1,6 @@
 import { fireEvent } from '@testing-library/react-native'
-import { initialState, renderWithProviderAndContexts, renderWithProvider } from '../../utils/test/utils'
+import { initialStoreState } from '../../utils/test/data'
+import { renderWithProviderAndContexts, renderWithProvider } from '../../utils/test/utils'
 import Search from './Search'
 
 // TODO: Cover all possible cases for the search functionality
@@ -14,9 +15,9 @@ describe('<Search /> Tests', () => {
 
   it('should render correctly and match snapshot with clear button', () => {
     const customInitialState = {
-      ...initialState,
+      ...initialStoreState,
       appsSearch: {
-        ...initialState.appsSearch,
+        ...initialStoreState.appsSearch,
         query: 'a-search-query',
       },
     }
@@ -30,9 +31,9 @@ describe('<Search /> Tests', () => {
 
   it('should update query when text changes and clear query when clear button is pressed', () => {
     const customInitialState = {
-      ...initialState,
+      ...initialStoreState,
       appsSearch: {
-        ...initialState.appsSearch,
+        ...initialStoreState.appsSearch,
         query: undefined,
       },
     }
@@ -58,7 +59,7 @@ describe('<Search /> Tests', () => {
 
   it('should set correct result list when using correct query and reset search values when clear button is pressed', () => {
     const customInitialState = {
-      ...initialState,
+      ...initialStoreState,
       appsList: {
         list: [
           {
@@ -109,7 +110,7 @@ describe('<Search /> Tests', () => {
 
   it('should set correct result list when using wrong query and reset search values when clear button is pressed', () => {
     const customInitialState = {
-      ...initialState,
+      ...initialStoreState,
       appsList: {
         list: [
           {

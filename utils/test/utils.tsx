@@ -6,6 +6,7 @@ import { rootReducer, RootState } from '../../src/store'
 import { GlobalContextType, SearchContextType } from '../../src/models/context'
 import GlobalContext from '../../src/contexts/GlobalContext'
 import SearchContext from '../../src/contexts/SearchContext'
+import { defaultGlobalContextValue, defaultSearchContextValue, initialStoreState } from './data'
 
 interface ExtendedRenderOptions extends RenderOptions {
   preloadedState?: PreloadedState<RootState>
@@ -14,30 +15,10 @@ interface ExtendedRenderOptions extends RenderOptions {
   searchContextValue?: SearchContextType
 }
 
-export const initialState = {
-  appsList: {
-    list: [],
-  },
-  appsSearch: {
-    query: undefined,
-    result: [],
-  },
-  favoriteApps: {
-    list: [],
-  },
-  preferences: {
-    displayFavoriteApps: true,
-    displayRecentApps: true,
-  },
-  recentApps: {
-    list: [],
-  },
-}
-
 export const renderWithProvider = (
   component: ReactElement,
   {
-    preloadedState = initialState,
+    preloadedState = initialStoreState,
     store = configureStore({ reducer: rootReducer, preloadedState }),
     ...renderOptions
   }: ExtendedRenderOptions = {}
@@ -50,33 +31,10 @@ export const renderWithProvider = (
   return { store, ...render(component, { wrapper, ...renderOptions }) }
 }
 
-export const defaultGlobalContextValue: GlobalContextType = {
-  dismissKeyboard: jest.fn(),
-  globalAppLaunchProcedure: jest.fn(),
-  displayAllApps: false,
-  hideAllApps: jest.fn(),
-  toggleDisplayAllApps: jest.fn(),
-  sortableFavoriteApps: false,
-  toggleSortableFavoriteApps: jest.fn(),
-  appItemMenuBottomSheetRef: null,
-  displayAppItemMenuBottomSheet: jest.fn(),
-  appItemMenuDetails: null,
-  setAppItemMenuDetails: jest.fn(),
-  settingsBottomSheetRef: null,
-  displaySettingsBottomSheet: jest.fn(),
-}
-
-export const defaultSearchContextValue: SearchContextType = {
-  searchInputRef: null,
-  invalidCharacters: false,
-  setInvalidCharacters: jest.fn(),
-  searchAppLaunchProcedure: jest.fn(),
-}
-
 export const renderWithProviderAndContexts = (
   component: ReactElement,
   {
-    preloadedState = initialState,
+    preloadedState = initialStoreState,
     globalContextValue = defaultGlobalContextValue,
     searchContextValue = defaultSearchContextValue,
     store = configureStore({ reducer: rootReducer, preloadedState }),
