@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Search Tests should render correctly and match snapshot 1`] = `
+exports[`<Search /> Tests should render correctly and match snapshot 1`] = `
 <View
   style={
     {
@@ -31,7 +31,7 @@ exports[`Search Tests should render correctly and match snapshot 1`] = `
 </View>
 `;
 
-exports[`Search Tests should render correctly and match snapshot with clear button 1`] = `
+exports[`<Search /> Tests should render correctly and match snapshot with clear button 1`] = `
 <View
   style={
     {

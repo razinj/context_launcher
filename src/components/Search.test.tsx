@@ -3,7 +3,7 @@ import { initialState, renderWithProviderAndContexts, renderWithProvider } from 
 import Search from './Search'
 
 // TODO: Cover all possible cases for the search functionality
-describe('Search Tests', () => {
+describe('<Search /> Tests', () => {
   it('should render correctly and match snapshot', () => {
     const { toJSON, getByTestId, queryByTestId } = renderWithProvider(<Search />)
 
