@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot - required and optional props 1`] = `
+<View
+  style={
+    {
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "padding": 10,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "color": "#808080",
+      }
+    }
+  >
+    An item label
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#ccc",
+      }
+    }
+  >
+    An item description
+  </Text>
+</View>
+`;
+
+exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot - required props 1`] = `
+<View
+  style={
+    {
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "padding": 10,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "color": "#808080",
+      }
+    }
+  >
+    An item label
+  </Text>
+</View>
+`;
