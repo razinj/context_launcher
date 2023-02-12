@@ -21,7 +21,11 @@ const SettingsIcon = () => {
 
   return (
     <View style={styles.wrapper}>
-      <Pressable onPress={displaySettingsBottomSheet} android_disableSound={true} android_ripple={rippleConfig}>
+      <Pressable
+        testID='settings-button'
+        onPress={displaySettingsBottomSheet}
+        android_disableSound={true}
+        android_ripple={rippleConfig}>
         <Icon name='dots-vertical' size={34} style={styles.icon} color={PRIMARY_HEX_COLOR} />
       </Pressable>
     </View>
