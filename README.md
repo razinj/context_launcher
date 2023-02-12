@@ -4,6 +4,8 @@ Context Launcher is an Android list-based launcher made to be simple and straigh
 
 Find it on [Google Play Store](https://play.google.com/store/apps/details?id=com.razinj.context_launcher).
 
+Become a [tester](https://play.google.com/apps/testing/com.razinj.context_launcher).
+
 ## Preview
 
 ![Screenshots](https://public.razinj.com/context-launcher-screenshots.png)
