@@ -21,7 +21,11 @@ const AllAppsIcon = () => {
 
   return (
     <View style={styles.wrapper}>
-      <Pressable onPress={toggleDisplayAllApps} android_disableSound={true} android_ripple={rippleConfig}>
+      <Pressable
+        testID='all-apps-toggle-button'
+        onPress={toggleDisplayAllApps}
+        android_disableSound={true}
+        android_ripple={rippleConfig}>
         <Icon name='hexagon-outline' size={34} style={styles.icon} color={PRIMARY_HEX_COLOR} />
       </Pressable>
     </View>
