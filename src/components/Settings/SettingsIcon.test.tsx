@@ -1,5 +1,6 @@
 import { fireEvent } from '@testing-library/react-native'
-import { defaultGlobalContextValue, renderWithProvider, renderWithProviderAndContexts } from '../../../utils/test/utils'
+import { defaultGlobalContextValue } from '../../../utils/test/data'
+import { renderWithProvider, renderWithProviderAndContexts } from '../../../utils/test/utils'
 import { GlobalContextType } from '../../models/context'
 import SettingsIcon from './SettingsIcon'
 

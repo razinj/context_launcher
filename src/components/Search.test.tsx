@@ -22,7 +22,7 @@ describe('<Search /> Tests', () => {
       },
     }
 
-    const { getByTestId, toJSON } = renderWithProvider(<Search />, { preloadedState: customInitialState })
+    const { toJSON, getByTestId } = renderWithProvider(<Search />, { preloadedState: customInitialState })
 
     expect(toJSON()).toMatchSnapshot()
     expect(getByTestId('search-input')).toBeDefined()
