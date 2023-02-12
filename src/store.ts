@@ -21,7 +21,7 @@ import {
   createMigrate,
 } from 'redux-persist'
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   appsList: appsListReducer,
   appsSearch: appsSearchReducer,
   recentApps: recentAppsReducer,

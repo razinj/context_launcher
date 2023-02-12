@@ -8,6 +8,7 @@
     "info": "react-native info",
     "upgrade": "react-native upgrade",
     "test": "jest",
+    "test:coverage": "jest --collect-coverage",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "format": "prettier --write ."
   },
@@ -51,6 +52,9 @@
     "@types/react": "^18"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": [
+      "./jest-setup.js"
+    ]
   }
 }
