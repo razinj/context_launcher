@@ -3,12 +3,15 @@ import { Provider } from 'react-redux'
 import { configureStore, PreloadedState, Store } from '@reduxjs/toolkit'
 import { render, RenderOptions } from '@testing-library/react-native'
 import { rootReducer, RootState } from '../../src/store'
-import GlobalContextWrapper from '../../src/contexts/GlobalContextWrapper'
-import SearchContextWrapper from '../../src/contexts/SearchContextWrapper'
+import { GlobalContextType, SearchContextType } from '../../src/models/context'
+import GlobalContext from '../../src/contexts/GlobalContext'
+import SearchContext from '../../src/contexts/SearchContext'
 
 interface ExtendedRenderOptions extends RenderOptions {
   preloadedState?: PreloadedState<RootState>
   store?: Store
+  globalContextValue?: GlobalContextType
+  searchContextValue?: SearchContextType
 }
 
 export const initialState = {
@@ -47,10 +50,35 @@ export const renderWithProvider = (
   return { store, ...render(component, { wrapper, ...renderOptions }) }
 }
 
+export const defaultGlobalContextValue: GlobalContextType = {
+  dismissKeyboard: jest.fn(),
+  globalAppLaunchProcedure: jest.fn(),
+  displayAllApps: false,
+  hideAllApps: jest.fn(),
+  toggleDisplayAllApps: jest.fn(),
+  sortableFavoriteApps: false,
+  toggleSortableFavoriteApps: jest.fn(),
+  appItemMenuBottomSheetRef: null,
+  displayAppItemMenuBottomSheet: jest.fn(),
+  appItemMenuDetails: null,
+  setAppItemMenuDetails: jest.fn(),
+  settingsBottomSheetRef: null,
+  displaySettingsBottomSheet: jest.fn(),
+}
+
+export const defaultSearchContextValue: SearchContextType = {
+  searchInputRef: null,
+  invalidCharacters: false,
+  setInvalidCharacters: jest.fn(),
+  searchAppLaunchProcedure: jest.fn(),
+}
+
 export const renderWithProviderAndContexts = (
   component: ReactElement,
   {
     preloadedState = initialState,
+    globalContextValue = defaultGlobalContextValue,
+    searchContextValue = defaultSearchContextValue,
     store = configureStore({ reducer: rootReducer, preloadedState }),
     ...renderOptions
   }: ExtendedRenderOptions = {}
@@ -58,9 +86,9 @@ export const renderWithProviderAndContexts = (
   const wrapper = ({ children }: { children: ReactNode }): JSX.Element => {
     return (
       <Provider store={store}>
-        <GlobalContextWrapper>
-          <SearchContextWrapper>{children}</SearchContextWrapper>
-        </GlobalContextWrapper>
+        <GlobalContext.Provider value={globalContextValue}>
+          <SearchContext.Provider value={searchContextValue}>{children}</SearchContext.Provider>
+        </GlobalContext.Provider>
       </Provider>
     )
   }
