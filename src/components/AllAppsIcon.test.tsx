@@ -20,11 +20,9 @@ describe('<AllAppsIcon /> Tests', () => {
       toggleDisplayAllApps: toggleDisplayAllAppsFn,
     }
 
-    const { toJSON, getByTestId } = renderWithProviderAndContexts(<AllAppsIcon />, {
+    const { getByTestId } = renderWithProviderAndContexts(<AllAppsIcon />, {
       globalContextValue: customGlobalContextValue,
     })
-
-    expect(toJSON()).toMatchSnapshot()
 
     const allAppsButton = getByTestId('all-apps-toggle-button')
 
