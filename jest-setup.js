@@ -36,3 +36,4 @@ jest.mock('react-native', () => {
 
 // src: https://stackoverflow.com/questions/61639734/react-native-vector-icons-materialicons-jest-expo-snapshot-test-error-with-types
 jest.mock('react-native-vector-icons/MaterialIcons', () => 'Icon')
+jest.mock('react-native-vector-icons/MaterialCommunityIcons', () => 'Icon')
