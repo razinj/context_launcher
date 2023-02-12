@@ -8,6 +8,7 @@
     "info": "react-native info",
     "upgrade": "react-native upgrade",
     "test": "jest",
+    "test:ci": "jest --ci --no-cache --silent",
     "test:coverage": "jest --collect-coverage",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "format": "prettier --write ."
