@@ -4,16 +4,6 @@ import AppsModule from '../native-modules/AppsModule'
 describe('AppsModule Tests', () => {
   const aPackageName = 'com.a_package_name'
 
-  beforeAll(() => {
-    jest.spyOn(AppsModule, 'launchApplication')
-    jest.spyOn(AppsModule, 'showApplicationDetails')
-    jest.spyOn(AppsModule, 'requestApplicationUninstall')
-  })
-
-  beforeEach(() => {
-    jest.resetAllMocks()
-  })
-
   it('should call AppsModule.launchApplication with package name', () => {
     launchApp(aPackageName)
 
