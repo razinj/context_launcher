@@ -29,6 +29,7 @@ jest.mock('react-native', () => {
     launchApplication: jest.fn(),
     showApplicationDetails: jest.fn(),
     requestApplicationUninstall: jest.fn(),
+    getApplications: jest.fn(),
   }
 
   return ReactNative
