@@ -34,13 +34,13 @@ export const favoriteAppsSlice = createSlice({
     setFavoriteApps: (state: FavoriteAppsState, { payload }: PayloadAction<FavoriteApp[]>) => {
       state.list = payload
     },
-    resetFavoriteApps: (state: FavoriteAppsState) => {
+    clearFavoriteApps: (state: FavoriteAppsState) => {
       state.list = []
     },
   },
 })
 
-export const { addFavoriteApp, removeFavoriteApp, setFavoriteApps, resetFavoriteApps } = favoriteAppsSlice.actions
+export const { addFavoriteApp, removeFavoriteApp, setFavoriteApps, clearFavoriteApps } = favoriteAppsSlice.actions
 
 const selectFavoriteApps = (state: RootState) => state.favoriteApps.list
 
