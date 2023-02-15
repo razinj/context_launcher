@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react-native'
+import { fireEvent, screen } from '@testing-library/react-native'
 import { defaultGlobalContextValue } from '../../../utils/test/data'
 import { renderWithProvider, renderWithProviderAndContexts } from '../../../utils/test/utils'
 import { GlobalContextType } from '../../models/context'
@@ -6,10 +6,10 @@ import SettingsIcon from './SettingsIcon'
 
 describe('<SettingsIcon /> Tests', () => {
   it('should render correctly and match snapshot', () => {
-    const { toJSON, getByTestId } = renderWithProvider(<SettingsIcon />)
+    renderWithProvider(<SettingsIcon />)
 
-    expect(toJSON()).toMatchSnapshot()
-    expect(getByTestId('settings-button')).toBeDefined()
+    expect(screen.toJSON()).toMatchSnapshot()
+    expect(screen.getByTestId('settings-button')).toBeDefined()
   })
 
   it('should call function to display settings bottom sheet when pressed', () => {
@@ -20,11 +20,11 @@ describe('<SettingsIcon /> Tests', () => {
       displaySettingsBottomSheet: displaySettingsBottomSheetFn,
     }
 
-    const { getByTestId } = renderWithProviderAndContexts(<SettingsIcon />, {
+    renderWithProviderAndContexts(<SettingsIcon />, {
       globalContextValue: customGlobalContextValue,
     })
 
-    const settingsButton = getByTestId('settings-button')
+    const settingsButton = screen.getByTestId('settings-button')
 
     expect(settingsButton).toBeDefined()
 

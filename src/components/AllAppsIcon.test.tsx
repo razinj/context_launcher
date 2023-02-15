@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react-native'
+import { fireEvent, screen } from '@testing-library/react-native'
 import { defaultGlobalContextValue } from '../../utils/test/data'
 import { renderWithProvider, renderWithProviderAndContexts } from '../../utils/test/utils'
 import { GlobalContextType } from '../models/context'
@@ -6,10 +6,10 @@ import AllAppsIcon from './AllAppsIcon'
 
 describe('<AllAppsIcon /> Tests', () => {
   it('should render correctly and match snapshot', () => {
-    const { toJSON, getByTestId } = renderWithProvider(<AllAppsIcon />)
+    renderWithProvider(<AllAppsIcon />)
 
-    expect(toJSON()).toMatchSnapshot()
-    expect(getByTestId('all-apps-toggle-button')).toBeDefined()
+    expect(screen.toJSON()).toMatchSnapshot()
+    expect(screen.getByTestId('all-apps-toggle-button')).toBeDefined()
   })
 
   it('should call function to toggle all apps display when pressed', () => {
@@ -21,11 +21,11 @@ describe('<AllAppsIcon /> Tests', () => {
       toggleDisplayAllApps: toggleDisplayAllAppsFn,
     }
 
-    const { getByTestId } = renderWithProviderAndContexts(<AllAppsIcon />, {
+    renderWithProviderAndContexts(<AllAppsIcon />, {
       globalContextValue: customGlobalContextValue,
     })
 
-    const allAppsButton = getByTestId('all-apps-toggle-button')
+    const allAppsButton = screen.getByTestId('all-apps-toggle-button')
 
     expect(allAppsButton).toBeDefined()
 

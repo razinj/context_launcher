@@ -1,16 +1,15 @@
-import { fireEvent } from '@testing-library/react-native'
+import { fireEvent, screen } from '@testing-library/react-native'
 import { initialStoreState } from '../../utils/test/data'
 import { renderWithProviderAndContexts, renderWithProvider } from '../../utils/test/utils'
 import Search from './Search'
 
-// TODO: Cover all possible cases for the search functionality
 describe('<Search /> Tests', () => {
   it('should render correctly and match snapshot', () => {
-    const { toJSON, getByTestId, queryByTestId } = renderWithProvider(<Search />)
+    renderWithProvider(<Search />)
 
-    expect(toJSON()).toMatchSnapshot()
-    expect(getByTestId('search-input')).toBeDefined()
-    expect(queryByTestId('search-input-clear-button')).toBeNull()
+    expect(screen.toJSON()).toMatchSnapshot()
+    expect(screen.getByTestId('search-input')).toBeDefined()
+    expect(screen.queryByTestId('search-input-clear-button')).toBeNull()
   })
 
   it('should render correctly and match snapshot with clear button', () => {
@@ -22,11 +21,11 @@ describe('<Search /> Tests', () => {
       },
     }
 
-    const { toJSON, getByTestId } = renderWithProvider(<Search />, { preloadedState: customInitialState })
+    renderWithProvider(<Search />, { preloadedState: customInitialState })
 
-    expect(toJSON()).toMatchSnapshot()
-    expect(getByTestId('search-input')).toBeDefined()
-    expect(getByTestId('search-input-clear-button')).toBeDefined()
+    expect(screen.toJSON()).toMatchSnapshot()
+    expect(screen.getByTestId('search-input')).toBeDefined()
+    expect(screen.getByTestId('search-input-clear-button')).toBeDefined()
   })
 
   it('should update query when text changes and clear query when clear button is pressed', () => {
@@ -38,9 +37,9 @@ describe('<Search /> Tests', () => {
       },
     }
 
-    const { store, getByTestId } = renderWithProviderAndContexts(<Search />, { preloadedState: customInitialState })
+    const { store } = renderWithProviderAndContexts(<Search />, { preloadedState: customInitialState })
 
-    const searchInput = getByTestId('search-input')
+    const searchInput = screen.getByTestId('search-input')
 
     expect(searchInput).toBeDefined()
 
@@ -48,7 +47,7 @@ describe('<Search /> Tests', () => {
 
     expect(store.getState().appsSearch.query).toBe('a-search-query')
 
-    const searchInputClearButton = getByTestId('search-input-clear-button')
+    const searchInputClearButton = screen.getByTestId('search-input-clear-button')
 
     expect(searchInputClearButton).toBeDefined()
 
@@ -78,9 +77,9 @@ describe('<Search /> Tests', () => {
       },
     }
 
-    const { store, getByTestId } = renderWithProviderAndContexts(<Search />, { preloadedState: customInitialState })
+    const { store } = renderWithProviderAndContexts(<Search />, { preloadedState: customInitialState })
 
-    const searchInput = getByTestId('search-input')
+    const searchInput = screen.getByTestId('search-input')
 
     expect(searchInput).toBeDefined()
 
@@ -96,7 +95,7 @@ describe('<Search /> Tests', () => {
       },
     ])
 
-    const searchInputClearButton = getByTestId('search-input-clear-button')
+    const searchInputClearButton = screen.getByTestId('search-input-clear-button')
 
     expect(searchInputClearButton).toBeDefined()
 
@@ -125,9 +124,9 @@ describe('<Search /> Tests', () => {
       },
     }
 
-    const { store, getByTestId } = renderWithProviderAndContexts(<Search />, { preloadedState: customInitialState })
+    const { store } = renderWithProviderAndContexts(<Search />, { preloadedState: customInitialState })
 
-    const searchInput = getByTestId('search-input')
+    const searchInput = screen.getByTestId('search-input')
 
     expect(searchInput).toBeDefined()
 
@@ -138,7 +137,7 @@ describe('<Search /> Tests', () => {
     expect(currentState.appsSearch.query).toBe('youtube')
     expect(currentState.appsSearch.result).toEqual([])
 
-    const searchInputClearButton = getByTestId('search-input-clear-button')
+    const searchInputClearButton = screen.getByTestId('search-input-clear-button')
 
     expect(searchInputClearButton).toBeDefined()
 
@@ -149,4 +148,6 @@ describe('<Search /> Tests', () => {
     expect(currentState.appsSearch.query).toBeUndefined()
     expect(currentState.appsSearch.result).toEqual([])
   })
+
+  test.todo('cover all possible cases for the search functionality')
 })
