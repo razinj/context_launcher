@@ -1,5 +1,7 @@
 import { GlobalContextType, SearchContextType } from '../../src/models/context'
 
+export const CONTEXT_LAUNCHER_APP_ID = 'com.razinj.context_launcher'
+
 export const initialStoreState = {
   appsList: {
     list: [],
