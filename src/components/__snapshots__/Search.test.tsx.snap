@@ -96,11 +96,27 @@ exports[`<Search /> Tests should render correctly and match snapshot with clear 
     }
     testID="search-input-clear-button"
   >
-    <Icon
-      color="#808080"
-      name="clear"
-      size={25}
-    />
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#808080",
+            "fontSize": 25,
+          },
+          undefined,
+          {
+            "fontFamily": "Material Icons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
   </View>
 </View>
 `;

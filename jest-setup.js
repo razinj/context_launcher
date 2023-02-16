@@ -3,28 +3,23 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
 )
 
-// src: https://github.com/rt2zz/redux-persist/pull/1239
-jest.mock('redux-persist/lib/createPersistoid', () =>
-  jest.fn(() => ({
-    update: jest.fn(),
-    flush: jest.fn(),
-  }))
-)
-
-jest.mock('redux-persist/lib/persistStore', () =>
-  jest.fn(() => ({
+// src: https://github.com/rt2zz/redux-persist/issues/1243#issuecomment-692609748
+jest.mock('redux-persist', () => {
+  return {
+    ...jest.requireActual('redux-persist'),
     persistStore: jest.fn(),
-  }))
-)
+    persistReducer: jest.fn().mockImplementation((_config, reducers) => reducers),
+  }
+})
 
 jest.mock('react-native', () => {
   const ReactNative = jest.requireActual('react-native')
 
   ReactNative.NativeModules.AppsModule = {
     getConstants: () => ({
-      packageName: 'package_name',
-      appVersion: 'app_version',
-      buildNumber: 'build_number',
+      packageName: 'com.razinj.context_launcher',
+      appVersion: '1.4.8',
+      buildNumber: '12',
     }),
     launchApplication: jest.fn(),
     showApplicationDetails: jest.fn(),
@@ -35,6 +30,14 @@ jest.mock('react-native', () => {
   return ReactNative
 })
 
-// src: https://stackoverflow.com/questions/61639734/react-native-vector-icons-materialicons-jest-expo-snapshot-test-error-with-types
-jest.mock('react-native-vector-icons/MaterialIcons', () => 'Icon')
-jest.mock('react-native-vector-icons/MaterialCommunityIcons', () => 'Icon')
+// src: https://github.com/gorhom/react-native-bottom-sheet/issues/326#issuecomment-1117504554
+jest.mock('@gorhom/bottom-sheet', () => {
+  const { View } = jest.requireActual('react-native')
+
+  return {
+    __esModule: true,
+    default: View,
+    BottomSheetModal: View,
+    BottomSheetModalProvider: View,
+  }
+})

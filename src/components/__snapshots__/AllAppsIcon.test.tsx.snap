@@ -41,16 +41,29 @@ exports[`<AllAppsIcon /> Tests should render correctly and match snapshot 1`] = 
     onStartShouldSetResponder={[Function]}
     testID="all-apps-toggle-button"
   >
-    <Icon
-      color="#42855B"
-      name="hexagon-outline"
-      size={34}
+    <Text
+      allowFontScaling={false}
+      selectable={false}
       style={
-        {
-          "margin": 5,
-        }
+        [
+          {
+            "color": "#42855B",
+            "fontSize": 34,
+          },
+          {
+            "margin": 5,
+          },
+          {
+            "fontFamily": "Material Design Icons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
       }
-    />
+    >
+      󰋙
+    </Text>
   </View>
 </View>
 `;

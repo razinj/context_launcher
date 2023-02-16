@@ -1,3 +1,4 @@
+import React from 'react'
 import { fireEvent, screen } from '@testing-library/react-native'
 import { initialStoreState } from '../../../utils/test/data'
 import { renderWithProvider } from '../../../utils/test/utils'
