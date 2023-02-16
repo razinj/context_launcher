@@ -19,6 +19,9 @@ module.exports = {
   cacheDirectory: '.jest/cache',
   setupFiles: [
     './jest-setup.js',
+  ],
+  setupFilesAfterEnv: [
+    './jest-tests-setup.ts',
     './node_modules/react-native-gesture-handler/jestSetup.js', // src: https://docs.swmansion.com/react-native-gesture-handler/docs/guides/testing
   ],
 }
