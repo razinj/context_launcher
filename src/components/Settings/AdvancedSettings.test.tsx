@@ -22,10 +22,10 @@ describe('<AdvancedSettings /> Tests', () => {
     renderWithProvider(<AdvancedSettings />)
 
     expect(screen.toJSON()).toMatchSnapshot()
-    expect(screen.getByTestId('advanced-settings-reload-all-apps-button')).toBeDefined()
-    expect(screen.getByTestId('advanced-settings-clear-recent-apps-button')).toBeDefined()
-    expect(screen.getByTestId('advanced-settings-clear-favorite-apps-button')).toBeDefined()
-    expect(screen.getByTestId('advanced-settings-reset-preferences-button')).toBeDefined()
+    expect(screen.getByTestId('advanced-settings-reload-all-apps-button')).toBeOnTheScreen()
+    expect(screen.getByTestId('advanced-settings-clear-recent-apps-button')).toBeOnTheScreen()
+    expect(screen.getByTestId('advanced-settings-clear-favorite-apps-button')).toBeOnTheScreen()
+    expect(screen.getByTestId('advanced-settings-reset-preferences-button')).toBeOnTheScreen()
   })
 
   // TODO: Find a way to mock internal dispatched action
@@ -36,7 +36,7 @@ describe('<AdvancedSettings /> Tests', () => {
 
     const reloadAllAppsButton = screen.getByTestId('advanced-settings-reload-all-apps-button')
 
-    expect(reloadAllAppsButton).toBeDefined()
+    expect(reloadAllAppsButton).toBeOnTheScreen()
 
     fireEvent.press(reloadAllAppsButton)
 
@@ -66,7 +66,7 @@ describe('<AdvancedSettings /> Tests', () => {
 
     const clearRecentAppsButton = screen.getByTestId('advanced-settings-clear-recent-apps-button')
 
-    expect(clearRecentAppsButton).toBeDefined()
+    expect(clearRecentAppsButton).toBeOnTheScreen()
 
     fireEvent.press(clearRecentAppsButton)
 
@@ -97,7 +97,7 @@ describe('<AdvancedSettings /> Tests', () => {
 
     const clearFavoriteAppsButton = screen.getByTestId('advanced-settings-clear-favorite-apps-button')
 
-    expect(clearFavoriteAppsButton).toBeDefined()
+    expect(clearFavoriteAppsButton).toBeOnTheScreen()
 
     fireEvent.press(clearFavoriteAppsButton)
 
@@ -118,7 +118,7 @@ describe('<AdvancedSettings /> Tests', () => {
 
     const resetPreferencesButton = screen.getByTestId('advanced-settings-reset-preferences-button')
 
-    expect(resetPreferencesButton).toBeDefined()
+    expect(resetPreferencesButton).toBeOnTheScreen()
 
     fireEvent.press(resetPreferencesButton)
 

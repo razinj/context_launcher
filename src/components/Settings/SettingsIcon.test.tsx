@@ -10,7 +10,7 @@ describe('<SettingsIcon /> Tests', () => {
     renderWithProvider(<SettingsIcon />)
 
     expect(screen.toJSON()).toMatchSnapshot()
-    expect(screen.getByTestId('settings-button')).toBeDefined()
+    expect(screen.getByTestId('settings-button')).toBeOnTheScreen()
   })
 
   it('should call function to display settings bottom sheet when pressed', () => {
@@ -27,7 +27,7 @@ describe('<SettingsIcon /> Tests', () => {
 
     const settingsButton = screen.getByTestId('settings-button')
 
-    expect(settingsButton).toBeDefined()
+    expect(settingsButton).toBeOnTheScreen()
 
     fireEvent.press(settingsButton)
 

@@ -11,8 +11,8 @@ describe('<AllAppsLetterIndex /> Tests', () => {
     renderWithProvider(<AllAppsLetterIndex onPress={onPressFn} />)
 
     expect(screen.toJSON()).toMatchSnapshot()
-    expect(screen.getByTestId('all-apps-letter-index-wrapper')).toBeDefined()
-    expect(screen.getByTestId('all-apps-letter-index-list')).toBeDefined()
+    expect(screen.getByTestId('all-apps-letter-index-wrapper')).toBeOnTheScreen()
+    expect(screen.getByTestId('all-apps-letter-index-list')).toBeOnTheScreen()
   })
 
   it('should render correctly and match snapshot - populated list', () => {
@@ -31,15 +31,15 @@ describe('<AllAppsLetterIndex /> Tests', () => {
     renderWithProvider(<AllAppsLetterIndex onPress={onPressFn} />, { preloadedState: customInitialState })
 
     expect(screen.toJSON()).toMatchSnapshot()
-    expect(screen.getByTestId('all-apps-letter-index-wrapper')).toBeDefined()
+    expect(screen.getByTestId('all-apps-letter-index-wrapper')).toBeOnTheScreen()
 
     const list = screen.getByTestId('all-apps-letter-index-list')
 
-    expect(list).toBeDefined()
+    expect(list).toBeOnTheScreen()
 
     const letterIndexItem = screen.getByText('C')
 
-    expect(letterIndexItem).toBeDefined()
+    expect(letterIndexItem).toBeOnTheScreen()
     expect(list).toContainElement(letterIndexItem)
   })
 

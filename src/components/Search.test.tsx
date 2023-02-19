@@ -9,7 +9,7 @@ describe('<Search /> Tests', () => {
     renderWithProvider(<Search />)
 
     expect(screen.toJSON()).toMatchSnapshot()
-    expect(screen.getByTestId('search-input')).toBeDefined()
+    expect(screen.getByTestId('search-input')).toBeOnTheScreen()
     expect(screen.queryByTestId('search-input-clear-button')).toBeNull()
   })
 
@@ -25,8 +25,8 @@ describe('<Search /> Tests', () => {
     renderWithProvider(<Search />, { preloadedState: customInitialState })
 
     expect(screen.toJSON()).toMatchSnapshot()
-    expect(screen.getByTestId('search-input')).toBeDefined()
-    expect(screen.getByTestId('search-input-clear-button')).toBeDefined()
+    expect(screen.getByTestId('search-input')).toBeOnTheScreen()
+    expect(screen.getByTestId('search-input-clear-button')).toBeOnTheScreen()
   })
 
   it('should update query when text changes and clear query when clear button is pressed', () => {
@@ -42,7 +42,7 @@ describe('<Search /> Tests', () => {
 
     const searchInput = screen.getByTestId('search-input')
 
-    expect(searchInput).toBeDefined()
+    expect(searchInput).toBeOnTheScreen()
 
     fireEvent.changeText(searchInput, 'a-search-query')
 
@@ -50,7 +50,7 @@ describe('<Search /> Tests', () => {
 
     const searchInputClearButton = screen.getByTestId('search-input-clear-button')
 
-    expect(searchInputClearButton).toBeDefined()
+    expect(searchInputClearButton).toBeOnTheScreen()
 
     fireEvent.press(searchInputClearButton)
 
@@ -82,7 +82,7 @@ describe('<Search /> Tests', () => {
 
     const searchInput = screen.getByTestId('search-input')
 
-    expect(searchInput).toBeDefined()
+    expect(searchInput).toBeOnTheScreen()
 
     fireEvent.changeText(searchInput, '  chr  ') // Whitespace to test trimming
 
@@ -98,7 +98,7 @@ describe('<Search /> Tests', () => {
 
     const searchInputClearButton = screen.getByTestId('search-input-clear-button')
 
-    expect(searchInputClearButton).toBeDefined()
+    expect(searchInputClearButton).toBeOnTheScreen()
 
     fireEvent.press(searchInputClearButton)
 
@@ -129,7 +129,7 @@ describe('<Search /> Tests', () => {
 
     const searchInput = screen.getByTestId('search-input')
 
-    expect(searchInput).toBeDefined()
+    expect(searchInput).toBeOnTheScreen()
 
     fireEvent.changeText(searchInput, 'youtube')
 
@@ -140,7 +140,7 @@ describe('<Search /> Tests', () => {
 
     const searchInputClearButton = screen.getByTestId('search-input-clear-button')
 
-    expect(searchInputClearButton).toBeDefined()
+    expect(searchInputClearButton).toBeOnTheScreen()
 
     fireEvent.press(searchInputClearButton)
 

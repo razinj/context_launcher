@@ -10,7 +10,7 @@ describe('<AllAppsIcon /> Tests', () => {
     renderWithProvider(<AllAppsIcon />)
 
     expect(screen.toJSON()).toMatchSnapshot()
-    expect(screen.getByTestId('all-apps-toggle-button')).toBeDefined()
+    expect(screen.getByTestId('all-apps-toggle-button')).toBeOnTheScreen()
   })
 
   it('should call function to toggle all apps display when pressed', () => {
@@ -28,7 +28,7 @@ describe('<AllAppsIcon /> Tests', () => {
 
     const allAppsButton = screen.getByTestId('all-apps-toggle-button')
 
-    expect(allAppsButton).toBeDefined()
+    expect(allAppsButton).toBeOnTheScreen()
 
     fireEvent.press(allAppsButton)
 

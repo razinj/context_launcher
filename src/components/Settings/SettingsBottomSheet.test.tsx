@@ -17,14 +17,14 @@ describe('<SettingsBottomSheet /> Tests', () => {
 
     expect(screen.toJSON()).toMatchSnapshot()
     // Wrappers
-    expect(screen.getByTestId('settings-bottom-sheet-wrapper')).toBeDefined()
-    expect(screen.getByTestId('settings-bottom-sheet-header-wrapper')).toBeDefined()
+    expect(screen.getByTestId('settings-bottom-sheet-wrapper')).toBeOnTheScreen()
+    expect(screen.getByTestId('settings-bottom-sheet-header-wrapper')).toBeOnTheScreen()
     // Elements
-    expect(screen.getByTestId('settings-bottom-sheet-header-app-info-button')).toBeDefined()
-    expect(screen.getByTestId('settings-bottom-display-recent-apps-switch')).toBeDefined()
-    expect(screen.getByTestId('settings-bottom-display-favorite-apps-switch')).toBeDefined()
-    expect(screen.getByTestId('settings-bottom-sort-favorite-apps-button')).toBeDefined()
-    expect(screen.getByTestId('settings-bottom-toggle-advanced-settings-button')).toBeDefined()
+    expect(screen.getByTestId('settings-bottom-sheet-header-app-info-button')).toBeOnTheScreen()
+    expect(screen.getByTestId('settings-bottom-display-recent-apps-switch')).toBeOnTheScreen()
+    expect(screen.getByTestId('settings-bottom-display-favorite-apps-switch')).toBeOnTheScreen()
+    expect(screen.getByTestId('settings-bottom-sort-favorite-apps-button')).toBeOnTheScreen()
+    expect(screen.getByTestId('settings-bottom-toggle-advanced-settings-button')).toBeOnTheScreen()
   })
 
   it('should call native module function to open app info when pressed', () => {
@@ -32,7 +32,7 @@ describe('<SettingsBottomSheet /> Tests', () => {
 
     const appInfoButton = screen.getByTestId('settings-bottom-sheet-header-app-info-button')
 
-    expect(appInfoButton).toBeDefined()
+    expect(appInfoButton).toBeOnTheScreen()
 
     fireEvent.press(appInfoButton)
 
@@ -53,7 +53,7 @@ describe('<SettingsBottomSheet /> Tests', () => {
 
     const toggleRecentAppsSwitch = screen.getByTestId('settings-bottom-display-recent-apps-switch')
 
-    expect(toggleRecentAppsSwitch).toBeDefined()
+    expect(toggleRecentAppsSwitch).toBeOnTheScreen()
 
     fireEvent(toggleRecentAppsSwitch, 'valueChange')
 
@@ -73,7 +73,7 @@ describe('<SettingsBottomSheet /> Tests', () => {
 
     const toggleFavoriteAppsSwitch = screen.getByTestId('settings-bottom-display-favorite-apps-switch')
 
-    expect(toggleFavoriteAppsSwitch).toBeDefined()
+    expect(toggleFavoriteAppsSwitch).toBeOnTheScreen()
 
     fireEvent(toggleFavoriteAppsSwitch, 'valueChange')
 
@@ -102,8 +102,8 @@ describe('<SettingsBottomSheet /> Tests', () => {
       renderWithProvider(<SettingsBottomSheet />, { preloadedState: customInitialStoreState })
 
       expect(screen.getByTestId('settings-bottom-sort-favorite-apps-button')).toBeDisabled()
-      expect(screen.getByText(/Sort favorite apps/)).toBeDefined()
-      expect(screen.getByText(/Add more favorite apps to be able to sort/)).toBeDefined()
+      expect(screen.getByText(/Sort favorite apps/)).toBeOnTheScreen()
+      expect(screen.getByText(/Add more favorite apps to be able to sort/)).toBeOnTheScreen()
     })
 
     it('should render sort favorite apps button as disabled if display favorite apps value is false', () => {
@@ -132,8 +132,8 @@ describe('<SettingsBottomSheet /> Tests', () => {
       renderWithProvider(<SettingsBottomSheet />, { preloadedState: customInitialStoreState })
 
       expect(screen.getByTestId('settings-bottom-sort-favorite-apps-button')).toBeDisabled()
-      expect(screen.getByText(/Sort favorite apps/)).toBeDefined()
-      expect(screen.getByText(/Display favorite apps to be able to sort/)).toBeDefined()
+      expect(screen.getByText(/Sort favorite apps/)).toBeOnTheScreen()
+      expect(screen.getByText(/Display favorite apps to be able to sort/)).toBeOnTheScreen()
     })
 
     it('should not render sort favorite apps button as disabled if favorite apps are > 1 and display favorite apps value is true', () => {
@@ -162,8 +162,8 @@ describe('<SettingsBottomSheet /> Tests', () => {
       renderWithProvider(<SettingsBottomSheet />, { preloadedState: customInitialStoreState })
 
       expect(screen.getByTestId('settings-bottom-sort-favorite-apps-button')).not.toBeDisabled()
-      expect(screen.getByText(/Sort favorite apps/)).toBeDefined()
-      expect(screen.getByText(/Click to start sorting your favorite apps/)).toBeDefined()
+      expect(screen.getByText(/Sort favorite apps/)).toBeOnTheScreen()
+      expect(screen.getByText(/Click to start sorting your favorite apps/)).toBeOnTheScreen()
     })
 
     it('should dismiss keyboard when pressed and toggle sortable favorite apps view', () => {
@@ -206,8 +206,8 @@ describe('<SettingsBottomSheet /> Tests', () => {
       const sortFavoriteAppsButton = screen.getByTestId('settings-bottom-sort-favorite-apps-button')
 
       expect(sortFavoriteAppsButton).not.toBeDisabled()
-      expect(screen.getByText(/Sort favorite apps/)).toBeDefined()
-      expect(screen.getByText(/Click to start sorting your favorite apps/)).toBeDefined()
+      expect(screen.getByText(/Sort favorite apps/)).toBeOnTheScreen()
+      expect(screen.getByText(/Click to start sorting your favorite apps/)).toBeOnTheScreen()
 
       fireEvent.press(sortFavoriteAppsButton)
 
@@ -220,7 +220,7 @@ describe('<SettingsBottomSheet /> Tests', () => {
     it('should not display advanced settings when not toggled - default view', () => {
       renderWithProvider(<SettingsBottomSheet />)
 
-      expect(screen.getByTestId('settings-bottom-toggle-advanced-settings-button')).toBeDefined()
+      expect(screen.getByTestId('settings-bottom-toggle-advanced-settings-button')).toBeOnTheScreen()
       expect(screen.queryAllByTestId(/^advanced-settings/)).toHaveLength(0)
     })
 
@@ -229,7 +229,7 @@ describe('<SettingsBottomSheet /> Tests', () => {
 
       const toggleAdvancedSettingsButton = screen.getByTestId('settings-bottom-toggle-advanced-settings-button')
 
-      expect(toggleAdvancedSettingsButton).toBeDefined()
+      expect(toggleAdvancedSettingsButton).toBeOnTheScreen()
 
       fireEvent.press(toggleAdvancedSettingsButton)
 
