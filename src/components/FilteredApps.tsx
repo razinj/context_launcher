@@ -11,6 +11,8 @@ import { selectAppsSearchQuery, selectAppsSearchResult } from '../slices/appsSea
 import SearchContext from '../contexts/SearchContext'
 // Constants
 import { APP_ITEM_HEIGHT_ICON_DISPLAYED, BACKGROUND_COLOR } from '../constants'
+// Utils
+import { truncateString } from '../utils/string'
 // Models
 import { RenderedIn } from '../models/rendered-in'
 import { AppDetails } from '../models/app-details'
@@ -30,7 +32,7 @@ const FilteredApps = () => {
   if (apps.length === 0 || invalidCharacters) {
     return (
       <View style={[styles.wrapper, styles.noAppsWrapper]}>
-        <Text style={styles.noAppsWrapperText}>No applications found for "{searchQuery}"</Text>
+        <Text style={styles.noAppsWrapperText}>No application found for "{truncateString(searchQuery, 20)}"</Text>
       </View>
     )
   }
