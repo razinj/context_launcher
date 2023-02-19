@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HighlightText /> Tests should render correctly and match snapshot - with search query 1`] = `
+<Text
+  style={
+    {
+      "color": "#fff",
+      "fontWeight": "600",
+      "textShadowColor": "rgba(0, 0, 0, 0.75)",
+      "textShadowRadius": 2.5,
+    }
+  }
+>
+  <Text />
+  <Text
+    style={
+      {
+        "color": "#42855B",
+        "fontWeight": "600",
+        "textShadowColor": "rgba(255, 255, 255, 0.1)",
+        "textShadowRadius": 2.5,
+      }
+    }
+    testID="highlight-text-highlighted"
+  >
+    Chro
+  </Text>
+  <Text>
+    me
+  </Text>
+</Text>
+`;
+
+exports[`<HighlightText /> Tests should render correctly and match snapshot - without search query 1`] = `
+<Text
+  style={
+    {
+      "color": "#fff",
+      "fontWeight": "600",
+      "textShadowColor": "rgba(0, 0, 0, 0.75)",
+      "textShadowRadius": 2.5,
+    }
+  }
+>
+  Chrome
+</Text>
+`;

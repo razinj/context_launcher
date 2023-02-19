@@ -24,7 +24,7 @@ const HighlightText = ({ text }: Props) => {
     <Text style={styles.normalText}>
       {text.split(regex).map((substring: string, index: number) =>
         regex.test(substring) ? (
-          <Text style={styles.highlightedText} key={index}>
+          <Text style={styles.highlightedText} key={index} testID='highlight-text-highlighted'>
             {substring}
           </Text>
         ) : (
