@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux'
 import { selectAppsSearchQuery } from '../slices/appsSearch'
 // Constants
 import { PRIMARY_HEX_COLOR } from '../constants'
+// Utils
+import { createKeyForHighlightTextElement } from '../utils/string'
 // Models
 import { HighlightTextProps as Props } from '../models/props'
 
@@ -24,11 +26,14 @@ const HighlightText = ({ text }: Props) => {
     <Text style={styles.normalText}>
       {text.split(regex).map((substring: string, index: number) =>
         regex.test(substring) ? (
-          <Text style={styles.highlightedText} key={index} testID='highlight-text-highlighted'>
+          <Text
+            style={styles.highlightedText}
+            key={createKeyForHighlightTextElement(index, substring)}
+            testID='highlight-text-highlighted'>
             {substring}
           </Text>
         ) : (
-          <Text key={index}>{substring}</Text>
+          <Text key={createKeyForHighlightTextElement(index, substring)}>{substring}</Text>
         )
       )}
     </Text>

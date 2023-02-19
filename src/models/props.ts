@@ -15,7 +15,6 @@ export type AppItemProps = {
 
 export type HighlightTextProps = {
   text: string
-  highlightValue?: string
 }
 
 export type SearchContextWrapperProps = {
