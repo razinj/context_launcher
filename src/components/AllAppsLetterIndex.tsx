@@ -43,8 +43,9 @@ const AllAppsLetterIndex = ({ onPress }: Props) => {
   }
 
   return (
-    <View style={styles.letterIndexContainer}>
+    <View style={styles.letterIndexContainer} testID='all-apps-letter-index-wrapper'>
       <FlatList
+        testID='all-apps-letter-index-list'
         data={appsLetterList}
         renderItem={renderItem}
         keyExtractor={keyExtractor}

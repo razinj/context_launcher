@@ -75,6 +75,7 @@ const Search = () => {
   return (
     <View style={styles.wrapper}>
       <TextInput
+        testID='search-input'
         ref={searchInputRef}
         style={styles.searchInput}
         placeholder='Search'
@@ -86,6 +87,7 @@ const Search = () => {
       />
       {searchQuery && searchQuery?.length > 0 && (
         <Pressable
+          testID='search-input-clear-button'
           style={styles.clearIconWrapper}
           onPress={clearInputAndSearchState}
           android_disableSound={true}

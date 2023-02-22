@@ -7,9 +7,9 @@ import SettingsItemLabel from './SettingsItemLabel'
 // Redux
 import { useDispatch } from 'react-redux'
 import { setAppsList } from '../../slices/appsList'
-import { resetRecentApps } from '../../slices/recentApps'
+import { clearRecentApps } from '../../slices/recentApps'
 import { resetPreferences } from '../../slices/preferences'
-import { resetFavoriteApps } from '../../slices/favoriteApps'
+import { clearFavoriteApps } from '../../slices/favoriteApps'
 // Native modules
 import AppsModule from '../../native-modules/AppsModule'
 // Models
@@ -33,14 +33,14 @@ const AdvancedSettings = () => {
     })
   }
 
-  const onResetRecentApps = () => {
-    dispatch(resetRecentApps())
-    displayToast('Recent apps reset successfully!')
+  const onClearRecentApps = () => {
+    dispatch(clearRecentApps())
+    displayToast('Recent apps cleared successfully!')
   }
 
-  const onResetFavoriteApps = () => {
-    dispatch(resetFavoriteApps())
-    displayToast('Favorite apps reset successfully!')
+  const onClearFavoriteApps = () => {
+    dispatch(clearFavoriteApps())
+    displayToast('Favorite apps cleared successfully!')
   }
 
   const onResetPreferences = () => {
@@ -57,6 +57,7 @@ const AdvancedSettings = () => {
       {/* Reload all apps */}
       <View style={styles.itemContainer}>
         <Pressable
+          testID='advanced-settings-reload-all-apps-button'
           onPress={reloadAllApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
@@ -65,31 +66,34 @@ const AdvancedSettings = () => {
         </Pressable>
       </View>
 
-      {/* Reset recent apps */}
+      {/* Clear recent apps */}
       <View style={styles.itemContainer}>
         <Pressable
-          onPress={onResetRecentApps}
+          testID='advanced-settings-clear-recent-apps-button'
+          onPress={onClearRecentApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={styles.buttonItemPressable}>
-          <SettingsItemLabel title='Reset recent apps' />
+          <SettingsItemLabel title='Clear recent apps' />
         </Pressable>
       </View>
 
-      {/* Reset favorite apps */}
+      {/* Clear favorite apps */}
       <View style={styles.itemContainer}>
         <Pressable
-          onPress={onResetFavoriteApps}
+          testID='advanced-settings-clear-favorite-apps-button'
+          onPress={onClearFavoriteApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={styles.buttonItemPressable}>
-          <SettingsItemLabel title='Reset favorite apps' />
+          <SettingsItemLabel title='Clear favorite apps' />
         </Pressable>
       </View>
 
       {/* Reset preferences */}
       <View style={styles.itemContainer}>
         <Pressable
+          testID='advanced-settings-reset-preferences-button'
           onPress={onResetPreferences}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}

@@ -37,13 +37,13 @@ export const recentAppsSlice = createSlice({
 
       state.list.splice(foundAppIndex, 1)
     },
-    resetRecentApps: (state: RecentAppsState) => {
+    clearRecentApps: (state: RecentAppsState) => {
       state.list = []
     },
   },
 })
 
-export const { addRecentApp, removeRecentApp, resetRecentApps } = recentAppsSlice.actions
+export const { addRecentApp, removeRecentApp, clearRecentApps } = recentAppsSlice.actions
 
 const selectRecentApps = (state: RootState) => state.recentApps.list
 

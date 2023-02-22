@@ -3,11 +3,11 @@ name: 'Tests'
 on: push
 
 jobs:
-  run-jest-tests:
+  jest-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Install Dependencies
         run: npm ci
       - name: Run Tests
-        run: npm run test
+        run: npm run test:ci
