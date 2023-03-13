@@ -34,7 +34,11 @@ const AllApps = () => {
   }
 
   const renderItem: ListRenderItem<AppDetails> = ({ item }: ListRenderItemInfo<AppDetails>) => (
-    <AppItem appDetails={item} renderedIn={RenderedIn.ALL_APPS} />
+    <AppItem
+      appDetails={item}
+      renderedIn={RenderedIn.ALL_APPS}
+      pressableStyle={{ borderRadius: 0, paddingHorizontal: 7.5 }}
+    />
   )
 
   return (
@@ -57,7 +61,8 @@ const AllApps = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderRadius: 10,
+    marginTop: 50,
+    borderRadius: 5,
     paddingVertical: 5,
     position: 'relative',
     backgroundColor: BACKGROUND_COLOR,

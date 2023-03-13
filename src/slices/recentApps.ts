@@ -2,7 +2,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 // Models
 import { RootState } from '../store'
-import { RecentAppDetails, RecentAppDetailsOptionalIcon } from '../models/recent-app'
+import { RecentAppDetails, RecentAppDetailsWithOptionalIcon } from '../models/recent-app'
 
 export interface RecentAppsState {
   list: RecentAppDetails[]
@@ -16,7 +16,7 @@ export const recentAppsSlice = createSlice({
   name: 'recentApps',
   initialState,
   reducers: {
-    addRecentApp: (state: RecentAppsState, { payload }: PayloadAction<RecentAppDetailsOptionalIcon>) => {
+    addRecentApp: (state: RecentAppsState, { payload }: PayloadAction<RecentAppDetailsWithOptionalIcon>) => {
       // Don't add app without icon
       if (!payload.icon) return
 

@@ -38,7 +38,11 @@ const FilteredApps = () => {
   }
 
   const renderItem: ListRenderItem<AppDetails> = ({ item }: ListRenderItemInfo<AppDetails>) => (
-    <AppItem appDetails={item} renderedIn={RenderedIn.FILTERED_APPS} />
+    <AppItem
+      pressableStyle={{ borderRadius: 0, paddingHorizontal: 7.5 }}
+      appDetails={item}
+      renderedIn={RenderedIn.FILTERED_APPS}
+    />
   )
 
   return (
@@ -57,12 +61,12 @@ const FilteredApps = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    minHeight: 70,
+    borderRadius: 5,
     paddingVertical: 5,
-    borderRadius: 10,
     backgroundColor: BACKGROUND_COLOR,
   },
   noAppsWrapper: {
+    height: 70,
     paddingVertical: 0,
     alignItems: 'center',
     flexDirection: 'row',

@@ -2,6 +2,8 @@
 import React, { useContext, useState } from 'react'
 // React Native
 import { Pressable, Image, StyleSheet, View, Animated, Easing, Text, PressableAndroidRippleConfig } from 'react-native'
+// Components
+import CustomIcon from './shared/CustomIcon'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import { selectFavoriteAppsMemoized, setFavoriteApps } from '../slices/favoriteApps'
@@ -11,8 +13,6 @@ import GlobalContext from '../contexts/GlobalContext'
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist'
 // Constants
 import { BACKGROUND_COLOR } from '../constants'
-// Icon
-import Icon from 'react-native-vector-icons/MaterialIcons'
 // Models
 import { FavoriteApp } from '../models/favorite-app'
 
@@ -80,7 +80,7 @@ const SortableFavoriteApps = () => {
           onPress={doneSorting}
           android_disableSound={true}
           android_ripple={doneButtonRippleConfig}>
-          <Icon name={sorted ? 'check' : 'clear'} size={18} color='#fff' />
+          <CustomIcon name={sorted ? 'check' : 'close'} size={18} color='#fff' />
         </Pressable>
       </View>
       <View style={styles.draggableListWrapper}>

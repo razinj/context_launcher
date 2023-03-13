@@ -1,7 +1,7 @@
 // React
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 // React Native
-import { StyleSheet, View } from 'react-native'
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 // Components
 import Search from '../components/Search'
 import AllAppsIcon from '../components/AllAppsIcon'
@@ -9,13 +9,17 @@ import SettingsIcon from '../components/Settings/SettingsIcon'
 // Contexts
 import GlobalContext from '../contexts/GlobalContext'
 // Constants
-import { SECONDARY_HEX_COLOR } from '../constants'
+import { SECONDARY_COLOR, WHITE_COLOR } from '../constants'
 
 const BottomContainer = () => {
   const { displayAllApps } = useContext(GlobalContext)
 
+  const adaptiveStyle: StyleProp<ViewStyle> = useMemo(() => {
+    return { backgroundColor: displayAllApps ? SECONDARY_COLOR : WHITE_COLOR }
+  }, [displayAllApps])
+
   return (
-    <View style={[styles.wrapper, { backgroundColor: displayAllApps ? SECONDARY_HEX_COLOR : '#fff' }]}>
+    <View style={[styles.wrapper, adaptiveStyle]}>
       <AllAppsIcon />
       <Search />
       <SettingsIcon />
@@ -25,7 +29,7 @@ const BottomContainer = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderRadius: 50,
+    borderRadius: 5,
     flexDirection: 'row',
   },
 })

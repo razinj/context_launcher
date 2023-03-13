@@ -9,6 +9,7 @@ import { selectRecentAppsMemoized } from '../slices/recentApps'
 import AppItem from './AppItem'
 // Constants
 import { APP_ITEM_HEIGHT_ICON_DISPLAYED, BACKGROUND_COLOR } from '../constants'
+import { singleRowAppsViewStyle, whiteTextColorStyle } from '../shared/styles'
 // Models
 import { RenderedIn } from '../models/rendered-in'
 import { RecentAppDetails } from '../models/recent-app'
@@ -23,47 +24,60 @@ const getItemLayout = (_data: unknown, index: number) => ({
 const RecentApps = () => {
   const apps = useSelector(selectRecentAppsMemoized)
 
-  if (apps.length === 0) {
-    return (
-      <View style={[styles.wrapper, styles.noAppsWrapper]}>
-        <Text style={styles.noAppsWrapperText}>No recent apps yet</Text>
-      </View>
-    )
-  }
-
   const renderItem: ListRenderItem<RecentAppDetails> = ({ item }: ListRenderItemInfo<RecentAppDetails>) => (
-    <AppItem appDetails={item} appIcon={item.icon} renderedIn={RenderedIn.RECENT_APPS} />
+    <AppItem
+      pressableStyle={{ borderRadius: 0, paddingHorizontal: 7.5 }}
+      appDetails={item}
+      appIcon={item.icon}
+      renderedIn={RenderedIn.RECENT_APPS}
+    />
   )
 
   return (
     <View style={styles.wrapper}>
-      <FlatList
-        inverted
-        data={apps}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        getItemLayout={getItemLayout}
-        keyboardShouldPersistTaps={'handled'}
-      />
+      <View style={styles.headerWrapper}>
+        <Text style={styles.headerLabel}>Recent</Text>
+      </View>
+      {apps.length > 0 ? (
+        <View style={styles.verticalAppsWrapper}>
+          <FlatList
+            inverted
+            data={apps}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            getItemLayout={getItemLayout}
+            keyboardShouldPersistTaps={'handled'}
+          />
+        </View>
+      ) : (
+        <View style={singleRowAppsViewStyle}>
+          <Text style={whiteTextColorStyle}>No recent apps yet</Text>
+        </View>
+      )}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    minHeight: 310,
-    paddingVertical: 5,
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: BACKGROUND_COLOR,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
-  noAppsWrapper: {
-    paddingVertical: 0,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
+  headerLabel: {
+    color: 'rgba(255,255,255,0.75)',
+    fontSize: 12,
   },
-  noAppsWrapperText: {
-    color: '#fff',
+  headerWrapper: {
+    paddingVertical: 2.5,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.5)',
+  },
+  verticalAppsWrapper: {
+    paddingVertical: 5,
   },
 })
 

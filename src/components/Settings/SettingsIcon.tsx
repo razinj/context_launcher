@@ -1,45 +1,25 @@
 // React
 import React, { useContext } from 'react'
 // React Native
-import { Pressable, PressableAndroidRippleConfig, StyleSheet, View } from 'react-native'
+import { Pressable, View } from 'react-native'
+// Components
+import CustomIcon from '../shared/CustomIcon'
 // Contexts
 import GlobalContext from '../../contexts/GlobalContext'
-// Icons
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // Constants
-import { PRIMARY_HEX_COLOR, SECONDARY_HEX_COLOR } from '../../constants'
-
-const rippleConfig: PressableAndroidRippleConfig = {
-  color: SECONDARY_HEX_COLOR,
-  borderless: true,
-  foreground: true,
-  radius: 20,
-}
+import { PRIMARY_COLOR } from '../../constants'
+import { iconsStyle, iconsPressableConfig } from '../../shared/bottom-container'
 
 const SettingsIcon = () => {
   const { displaySettingsBottomSheet } = useContext(GlobalContext)
 
   return (
-    <View style={styles.wrapper}>
-      <Pressable
-        testID='settings-button'
-        onPress={displaySettingsBottomSheet}
-        android_disableSound={true}
-        android_ripple={rippleConfig}>
-        <Icon name='dots-vertical' size={34} style={styles.icon} color={PRIMARY_HEX_COLOR} />
+    <View style={iconsStyle.wrapper}>
+      <Pressable testID='settings-button' onPress={displaySettingsBottomSheet} {...iconsPressableConfig}>
+        <CustomIcon name='dots-vertical' size={34} style={iconsStyle.icon} color={PRIMARY_COLOR} />
       </Pressable>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  wrapper: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  icon: {
-    margin: 5,
-  },
-})
 
 export default SettingsIcon

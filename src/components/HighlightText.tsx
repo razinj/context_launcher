@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 // Slices
 import { selectAppsSearchQuery } from '../slices/appsSearch'
 // Constants
-import { PRIMARY_HEX_COLOR } from '../constants'
+import { PRIMARY_COLOR } from '../constants'
 // Utils
 import { createKeyForHighlightTextElement } from '../utils/string'
 // Models
@@ -42,7 +42,7 @@ const HighlightText = ({ text }: Props) => {
 
 const styles = StyleSheet.create({
   highlightedText: {
-    color: PRIMARY_HEX_COLOR,
+    color: PRIMARY_COLOR,
     fontWeight: '600',
     textShadowColor: 'rgba(255, 255, 255, 0.1)',
     textShadowRadius: 2.5,

@@ -95,8 +95,8 @@ android {
         applicationId "com.razinj.context_launcher"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
-        versionName "1.4.8"
+        versionCode 13
+        versionName "1.5.0"
         archivesBaseName = "context-launcher-v$versionName-$versionCode"
     }
 
@@ -176,7 +176,7 @@ dependencies {
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 
 project.ext.vectoricons = [
-        iconFontNames: ['MaterialIcons.ttf', 'MaterialCommunityIcons.ttf']
+    iconFontNames: ['MaterialCommunityIcons.ttf']
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

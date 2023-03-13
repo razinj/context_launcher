@@ -1,6 +1,6 @@
 // Models
-import { AppDetails } from './app-details'
+import { AppDetailsWithIcon, AppDetailsWithOptionalIcon } from './app-details'
 
-export type RecentAppDetails = AppDetails & { icon: string }
+export type RecentAppDetails = AppDetailsWithIcon
 
-export type RecentAppDetailsOptionalIcon = AppDetails & { icon?: string }
+export type RecentAppDetailsWithOptionalIcon = AppDetailsWithOptionalIcon

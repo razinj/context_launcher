@@ -1,3 +1,4 @@
+// Models
 import { GlobalContextType, SearchContextType } from '../../src/models/context'
 
 export const CONTEXT_LAUNCHER_APP_ID = 'com.razinj.context_launcher'
@@ -14,11 +15,20 @@ export const initialStoreState = {
     list: [],
   },
   preferences: {
-    displayFavoriteApps: false,
-    displayRecentApps: false,
+    displayRecentApps: true,
+    displayFavoriteApps: true,
+    displayPinnedApps: false,
+    displayTemporaryPinnedApps: false,
   },
   recentApps: {
     list: [],
+  },
+  pinnedApps: {
+    list: [],
+    temporaryAppsConfig: {
+      startDate: undefined,
+      endDate: undefined,
+    },
   },
 }
 

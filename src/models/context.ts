@@ -5,7 +5,7 @@ import { TextInput } from 'react-native'
 // BottomSheet
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 // Models
-import { AppDetailsOptionalIcon } from '../models/app-details'
+import { AppDetailsWithOptionalIcon } from '../models/app-details'
 
 export type GlobalContextType = {
   // All apps
@@ -16,8 +16,8 @@ export type GlobalContextType = {
   settingsBottomSheetRef: RefObject<BottomSheetModal> | null
   displaySettingsBottomSheet: () => void
   // App item menu
-  appItemMenuDetails: AppDetailsOptionalIcon | null
-  setAppItemMenuDetails: (appDetails: AppDetailsOptionalIcon) => void
+  appItemMenuDetails: AppDetailsWithOptionalIcon | null
+  setAppItemMenuDetails: (appDetails: AppDetailsWithOptionalIcon) => void
   appItemMenuBottomSheetRef: RefObject<BottomSheetModal> | null
   displayAppItemMenuBottomSheet: () => void
   // Favorite apps sort
