@@ -3,12 +3,12 @@ import React from 'react'
 // React Native
 import { StyleSheet, Text, View } from 'react-native'
 // Models
-import { SettingsItemLabelProps as Props } from '../../models/props'
+import { SettingsItemLabelProps as Props } from '../../../models/props'
 
-const SettingsItemLabel = ({ title, description }: Props) => {
+const SettingsItemLabel = ({ title, description, titleStyle, wrapperStyle }: Props) => {
   return (
-    <View style={styles.wrapper}>
-      <Text style={styles.label}>{title}</Text>
+    <View style={[styles.wrapper, wrapperStyle]}>
+      <Text style={[styles.label, titleStyle]}>{title}</Text>
       {description && <Text style={styles.description}>{description}</Text>}
     </View>
   )
@@ -17,8 +17,6 @@ const SettingsItemLabel = ({ title, description }: Props) => {
 const styles = StyleSheet.create({
   wrapper: {
     padding: 10,
-    flexDirection: 'column',
-    justifyContent: 'center',
   },
   label: {
     color: '#808080',

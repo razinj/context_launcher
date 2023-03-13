@@ -1,12 +1,19 @@
+// React
 import React from 'react'
 import { ReactElement, ReactNode } from 'react'
+// Redux
 import { Provider } from 'react-redux'
 import { configureStore, PreloadedState, Store } from '@reduxjs/toolkit'
+// Testing Library
 import { render, RenderOptions } from '@testing-library/react-native'
+// Store
 import { rootReducer, RootState } from '../../src/store'
+// Models
 import { GlobalContextType, SearchContextType } from '../../src/models/context'
+// Contexts
 import GlobalContext from '../../src/contexts/GlobalContext'
 import SearchContext from '../../src/contexts/SearchContext'
+// Constants
 import { defaultGlobalContextValue, defaultSearchContextValue, initialStoreState } from './data'
 
 interface ExtendedRenderOptions extends RenderOptions {

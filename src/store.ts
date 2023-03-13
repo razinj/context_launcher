@@ -6,6 +6,7 @@ import appsSearchReducer from './slices/appsSearch'
 import recentAppsReducer from './slices/recentApps'
 import FavoriteAppsReducer from './slices/favoriteApps'
 import preferencesReducer from './slices/preferences'
+import pinnedAppsReducer from './slices/pinnedApps'
 // Storage
 import AsyncStorage from '@react-native-async-storage/async-storage'
 // Redux Persist
@@ -19,6 +20,8 @@ import {
   PURGE,
   REGISTER,
   createMigrate,
+  MigrationManifest,
+  PersistConfig,
 } from 'redux-persist'
 
 export const rootReducer = combineReducers({
@@ -27,9 +30,10 @@ export const rootReducer = combineReducers({
   recentApps: recentAppsReducer,
   favoriteApps: FavoriteAppsReducer,
   preferences: preferencesReducer,
+  pinnedApps: pinnedAppsReducer,
 })
 
-const migrations = {
+const migrations: MigrationManifest = {
   2: (state: any) => {
     return {
       ...state,
@@ -39,11 +43,29 @@ const migrations = {
       },
     }
   },
+  3: (state: any) => {
+    return {
+      ...state,
+      pinnedApps: {
+        list: [],
+        temporaryAppsConfig: {
+          startDate: undefined,
+          endDate: undefined,
+        },
+      },
+      preferences: {
+        ...state.preferences,
+        displayPinnedApps: true,
+        displayTemporaryPinnedApps: false,
+      },
+    }
+  },
 }
 
-const persistConfig = {
+const persistConfig: PersistConfig<any> = {
   key: 'root',
-  version: 2,
+  debug: false,
+  version: 3,
   storage: AsyncStorage,
   migrate: createMigrate(migrations, { debug: false }),
 }

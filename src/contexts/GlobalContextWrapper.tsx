@@ -9,7 +9,7 @@ import { dismissKeyboard } from '../utils/keyboard'
 // BottomSheet
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 // Models
-import { AppDetailsOptionalIcon } from '../models/app-details'
+import { AppDetailsWithOptionalIcon } from '../models/app-details'
 import { GlobalContextWrapperProps as Props } from '../models/props'
 
 const GlobalContextWrapper = ({ children }: Props) => {
@@ -18,7 +18,7 @@ const GlobalContextWrapper = ({ children }: Props) => {
   const [sortableFavoriteApps, setSortableFavoriteApps] = useState(false)
   const settingsBottomSheetRef: RefObject<BottomSheetModal> | null = useRef(null)
   const appItemMenuBottomSheetRef: RefObject<BottomSheetModal> | null = useRef(null)
-  const [appItemMenuDetails, setAppItemMenuDetails] = useState<AppDetailsOptionalIcon | null>(null)
+  const [appItemMenuDetails, setAppItemMenuDetails] = useState<AppDetailsWithOptionalIcon | null>(null)
 
   const hideAllApps = () => {
     if (displayAllApps) setDisplayAllApps(false)
@@ -62,7 +62,7 @@ const GlobalContextWrapper = ({ children }: Props) => {
         settingsBottomSheetRef,
         displaySettingsBottomSheet: () => settingsBottomSheetRef.current?.present(),
         appItemMenuDetails,
-        setAppItemMenuDetails: (appDetails: AppDetailsOptionalIcon) => setAppItemMenuDetails(appDetails),
+        setAppItemMenuDetails: (appDetails: AppDetailsWithOptionalIcon) => setAppItemMenuDetails(appDetails),
         appItemMenuBottomSheetRef,
         displayAppItemMenuBottomSheet: () => appItemMenuBottomSheetRef.current?.present(),
         sortableFavoriteApps,

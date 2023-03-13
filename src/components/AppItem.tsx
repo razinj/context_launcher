@@ -1,7 +1,7 @@
 // React
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 // React Native
-import { Image, Pressable, StyleSheet, View } from 'react-native'
+import { Image, Pressable, StyleSheet, View, StyleProp, ViewStyle } from 'react-native'
 // Components
 import HighlightText from './HighlightText'
 // Redux
@@ -19,44 +19,46 @@ import GlobalContext from '../contexts/GlobalContext'
 import { RenderedIn } from '../models/rendered-in'
 import { AppItemProps as Props } from '../models/props'
 
-const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
+const AppItem = ({ appDetails, renderedIn, appIcon, wrapperStyle, pressableStyle }: Props) => {
   const dispatch = useDispatch()
   const [icon, setIcon] = useState<string | undefined>(undefined)
-  const { searchAppLaunchProcedure } = useContext(SearchContext)
+  const { searchAppLaunchProcedure, searchInputRef } = useContext(SearchContext)
   const { setAppItemMenuDetails, displayAppItemMenuBottomSheet, globalAppLaunchProcedure } = useContext(GlobalContext)
 
   const onPress = () => {
     // Reset views and values
     globalAppLaunchProcedure()
     searchAppLaunchProcedure()
+    searchInputRef?.current?.clear()
     dispatch(resetAppsSearchState())
-
     // Add app to recent apps list
     if (renderedIn === RenderedIn.FILTERED_APPS || renderedIn === RenderedIn.ALL_APPS) {
       dispatch(addRecentApp({ ...appDetails, icon }))
     }
-
     // Launch app
     launchApp(appDetails.name)
   }
 
-  const displayLabel = useMemo(() => renderedIn !== RenderedIn.FAVORITE_APPS, [renderedIn])
+  const displayLabel = useMemo(
+    () => renderedIn !== RenderedIn.FAVORITE_APPS && renderedIn !== RenderedIn.PINNED_APPS,
+    [renderedIn]
+  )
 
   const onLongPress = () => {
     setAppItemMenuDetails({ ...appDetails, icon })
     displayAppItemMenuBottomSheet()
   }
 
-  const pressableStyles = ({ pressed }: { pressed: boolean }) => {
-    return {
-      ...styles.pressable,
-      borderRadius: 10,
-      backgroundColor: pressed ? 'rgba(255, 255, 255, .25)' : 'transparent',
-    }
+  const pressableStyles = ({ pressed }: { pressed: boolean }): StyleProp<ViewStyle> => {
+    return [{ backgroundColor: pressed ? 'rgba(255, 255, 255, .25)' : 'transparent' }, styles.pressable, pressableStyle]
   }
 
   useEffect(() => {
-    if (renderedIn === RenderedIn.RECENT_APPS || renderedIn === RenderedIn.FAVORITE_APPS) {
+    if (
+      renderedIn === RenderedIn.RECENT_APPS ||
+      renderedIn === RenderedIn.FAVORITE_APPS ||
+      renderedIn === RenderedIn.PINNED_APPS
+    ) {
       setIcon(appIcon)
     } else if (renderedIn === RenderedIn.ALL_APPS || renderedIn === RenderedIn.FILTERED_APPS) {
       AppsModule.getApplicationIcon(appDetails.name, (nativeAppIcon: string) => setIcon(nativeAppIcon))
@@ -64,7 +66,7 @@ const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
   }, [])
 
   return (
-    <View>
+    <View style={wrapperStyle}>
       <Pressable onPress={onPress} onLongPress={onLongPress} style={pressableStyles}>
         <Image
           resizeMode={'contain'}
@@ -79,11 +81,10 @@ const AppItem = ({ appDetails, renderedIn, appIcon }: Props) => {
 
 const styles = StyleSheet.create({
   pressable: {
-    display: 'flex',
+    padding: 5,
+    borderRadius: 5,
     alignItems: 'center',
     flexDirection: 'row',
-    padding: 5,
-    marginHorizontal: 5,
   },
   icon: {
     width: 50,

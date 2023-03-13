@@ -1,7 +1,9 @@
 // React
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 // React Native
 import { Pressable, PressableAndroidRippleConfig, StyleSheet, TextInput, View } from 'react-native'
+// Components
+import CustomIcon from './shared/CustomIcon'
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -14,63 +16,69 @@ import { selectAppsListMemoized } from '../slices/appsList'
 // Contexts
 import SearchContext from '../contexts/SearchContext'
 import GlobalContext from '../contexts/GlobalContext'
-// Icon
-import Icon from 'react-native-vector-icons/MaterialIcons'
-// Utils
-import { dismissKeyboard } from '../utils/keyboard'
 // Constants
-import { PRIMARY_HEX_COLOR, SECONDARY_HEX_COLOR } from '../constants'
-// Models
-import { AppDetails } from '../models/app-details'
+import { PRIMARY_COLOR, SECONDARY_COLOR } from '../constants'
+// Utils
+import { getAppsByLabel } from '../utils/apps'
 
-const clearIconRippleConfig: PressableAndroidRippleConfig = {
+const clearButtonRippleConfig: PressableAndroidRippleConfig = {
   borderless: true,
-  foreground: true,
-  color: '#ccc',
-  radius: 15,
 }
 
 const Search = () => {
   const dispatch = useDispatch()
   const apps = useSelector(selectAppsListMemoized)
   const searchQuery = useSelector(selectAppsSearchQuery)
+  const { displayAllApps, hideAllApps } = useContext(GlobalContext)
   const { searchInputRef, invalidCharacters, setInvalidCharacters } = useContext(SearchContext)
-  const { hideAllApps, displayAllApps } = useContext(GlobalContext)
 
   const onQueryChange = (query: string) => {
+    hideAllApps()
+
     const trimmedQuery = query.trim().replace(/\./g, '\\.')
 
-    // Accept only ASCII based characters
+    if (trimmedQuery.length === 0) {
+      dispatch(resetAppsSearchState())
+      return
+    }
+
+    // Check for only ASCII based characters
     if (!trimmedQuery.match(/[A-z\s\d]/gi)) {
       setInvalidCharacters(true)
       dispatch(setAppsSearchQuery(trimmedQuery))
-      return
-    } else if (trimmedQuery.length === 0) {
-      dispatch(resetAppsSearchState())
       return
     }
 
     // Reset invalid characters when it's valid (passes the above check)
     if (invalidCharacters) setInvalidCharacters(false)
 
-    hideAllApps()
-
-    dispatch(setAppsSearchResult(apps.filter((app: AppDetails) => app.label.match(new RegExp(trimmedQuery, 'gi')))))
+    dispatch(setAppsSearchResult(getAppsByLabel(apps, trimmedQuery)))
     dispatch(setAppsSearchQuery(trimmedQuery))
   }
 
-  const clearInputAndSearchState = () => {
+  const clearInputAndSearchState = useCallback(() => {
     searchInputRef?.current?.clear()
     dispatch(resetAppsSearchState())
+  }, [searchInputRef])
+
+  const clearButton = (): JSX.Element | null => {
+    if (!searchQuery) return null
+
+    return (
+      <Pressable
+        testID='search-input-clear-button'
+        onPress={clearInputAndSearchState}
+        android_disableSound={true}
+        android_ripple={clearButtonRippleConfig}>
+        <CustomIcon name='close' size={30} color='#808080' />
+      </Pressable>
+    )
   }
 
-  const onSubmitEditing = () => {
-    dismissKeyboard()
-  }
-
-  useEffect(() => {
-    if (!searchQuery) searchInputRef?.current?.clear()
-  }, [searchQuery])
+  const placeholderTextColor: string = useMemo(
+    () => (displayAllApps ? PRIMARY_COLOR : SECONDARY_COLOR),
+    [displayAllApps]
+  )
 
   return (
     <View style={styles.wrapper}>
@@ -79,41 +87,25 @@ const Search = () => {
         ref={searchInputRef}
         style={styles.searchInput}
         placeholder='Search'
-        placeholderTextColor={displayAllApps ? PRIMARY_HEX_COLOR : SECONDARY_HEX_COLOR}
+        placeholderTextColor={placeholderTextColor}
         returnKeyType='search'
         autoCapitalize='words'
         onChangeText={onQueryChange}
-        onSubmitEditing={onSubmitEditing}
       />
-      {searchQuery && searchQuery?.length > 0 && (
-        <Pressable
-          testID='search-input-clear-button'
-          style={styles.clearIconWrapper}
-          onPress={clearInputAndSearchState}
-          android_disableSound={true}
-          android_ripple={clearIconRippleConfig}>
-          <Icon name='clear' size={25} color='#808080' />
-        </Pressable>
-      )}
+      {clearButton()}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    display: 'flex',
+    flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 5,
-    flex: 1,
   },
   searchInput: {
     flex: 1,
     color: '#000',
-    fontSize: 16,
-  },
-  clearIconWrapper: {
-    padding: 5,
   },
 })
 

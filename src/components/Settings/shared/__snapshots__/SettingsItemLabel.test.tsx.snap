@@ -3,18 +3,22 @@
 exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot - required and optional props 1`] = `
 <View
   style={
-    {
-      "flexDirection": "column",
-      "justifyContent": "center",
-      "padding": 10,
-    }
+    [
+      {
+        "padding": 10,
+      },
+      undefined,
+    ]
   }
 >
   <Text
     style={
-      {
-        "color": "#808080",
-      }
+      [
+        {
+          "color": "#808080",
+        },
+        undefined,
+      ]
     }
   >
     An item label
@@ -34,18 +38,22 @@ exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot 
 exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot - required props 1`] = `
 <View
   style={
-    {
-      "flexDirection": "column",
-      "justifyContent": "center",
-      "padding": 10,
-    }
+    [
+      {
+        "padding": 10,
+      },
+      undefined,
+    ]
   }
 >
   <Text
     style={
-      {
-        "color": "#808080",
-      }
+      [
+        {
+          "color": "#808080",
+        },
+        undefined,
+      ]
     }
   >
     An item label

@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AdvancedSettings /> Tests should render correctly and match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+      testID="advanced-settings-reload-all-apps-button"
+    >
+      <View
+        style={
+          [
+            {
+              "padding": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#808080",
+              },
+              undefined,
+            ]
+          }
+        >
+          Reload all apps
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+      testID="advanced-settings-reset-preferences-button"
+    >
+      <View
+        style={
+          [
+            {
+              "padding": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#808080",
+              },
+              undefined,
+            ]
+          }
+        >
+          Reset settings
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;

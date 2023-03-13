@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     padding: 5,
+    overflow: 'hidden',
     marginTop: StatusBar.currentHeight,
     justifyContent: 'flex-end',
   },

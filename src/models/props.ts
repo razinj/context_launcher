@@ -1,7 +1,7 @@
 // React
 import { ReactNode } from 'react'
 // React Native
-import { StyleProp, ViewStyle } from 'react-native'
+import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 import { BaseAnimationBuilder } from 'react-native-reanimated'
 // Models
 import { AppDetails } from './app-details'
@@ -11,6 +11,8 @@ export type AppItemProps = {
   appDetails: AppDetails
   renderedIn: RenderedIn
   appIcon?: string
+  wrapperStyle?: StyleProp<ViewStyle>
+  pressableStyle?: StyleProp<ViewStyle>
 }
 
 export type HighlightTextProps = {
@@ -32,6 +34,12 @@ export type AllAppsLetterIndexProps = {
 export type SettingsItemLabelProps = {
   title: string
   description?: string
+  titleStyle?: StyleProp<TextStyle>
+  wrapperStyle?: StyleProp<ViewStyle>
+}
+
+export type ToggleSettingsProps = SettingsItemLabelProps & {
+  children: ReactNode
 }
 
 export type CustomViewProps = {
@@ -39,4 +47,11 @@ export type CustomViewProps = {
   style?: StyleProp<ViewStyle>
   exitAnimation?: BaseAnimationBuilder | typeof BaseAnimationBuilder
   entryAnimation?: BaseAnimationBuilder | typeof BaseAnimationBuilder
+}
+
+export type CustomIconProps = {
+  name: string
+  size: number
+  color: string
+  style?: Record<string, string | number>
 }

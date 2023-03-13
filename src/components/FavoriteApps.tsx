@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { selectFavoriteAppsMemoized } from '../slices/favoriteApps'
 // Constants
 import { BACKGROUND_COLOR } from '../constants'
+import { singleRowAppsViewStyle, whiteTextColorStyle } from '../shared/styles'
 // Models
 import { RenderedIn } from '../models/rendered-in'
 import { FavoriteApp } from '../models/favorite-app'
@@ -24,32 +25,41 @@ const FavoriteApps = () => {
     [apps]
   )
 
-  if (apps.length === 0) {
-    return (
-      <View style={[styles.wrapper, styles.noAppsWrapper]}>
-        <Text style={styles.noAppsWrapperText}>No favorite apps set yet</Text>
+  return (
+    <View style={styles.wrapper}>
+      <View style={styles.headerWrapper}>
+        <Text style={styles.headerLabel}>Favorite</Text>
       </View>
-    )
-  }
-
-  return <View style={styles.wrapper}>{favoriteApps}</View>
+      {apps.length > 0 ? (
+        <View style={styles.horizontalAppsWrapper}>{favoriteApps}</View>
+      ) : (
+        <View style={singleRowAppsViewStyle}>
+          <Text style={whiteTextColorStyle}>No favorite apps yet</Text>
+        </View>
+      )}
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    minHeight: 65,
-    borderRadius: 10,
-    paddingVertical: 2.5,
+    borderRadius: 5,
     backgroundColor: BACKGROUND_COLOR,
   },
-  noAppsWrapper: {
-    alignItems: 'center',
-    paddingVertical: 0,
+  headerLabel: {
+    color: 'rgba(255,255,255,0.75)',
+    fontSize: 12,
   },
-  noAppsWrapperText: {
-    color: '#fff',
+  headerWrapper: {
+    paddingVertical: 2.5,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.5)',
+  },
+  horizontalAppsWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingVertical: 5,
   },
 })
 
