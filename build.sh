@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd ./android
+cd ./android || exit
 
 echo "[!] Current directory $(pwd)"
 
