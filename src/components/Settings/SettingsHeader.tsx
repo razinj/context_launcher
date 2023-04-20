@@ -1,19 +1,10 @@
-// React
-import React, { useContext } from 'react'
-// React Native
-import { View, Text, Pressable, StyleSheet, PressableAndroidRippleConfig } from 'react-native'
-// Components
-import CustomIcon from '../shared/CustomIcon'
-// Contexts
-import GlobalContext from '../../contexts/GlobalContext'
-// Utils
+import React from 'react'
+import { Pressable, PressableAndroidRippleConfig, StyleSheet, Text, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { APP_BUILD_NUMBER, APP_ID, APP_VERSION } from '../../constants'
+import { setDisplaySettings } from '../../slices/appState'
 import { showAppDetails } from '../../utils/apps-module'
-// Constants
-import {
-  CONTEXT_LAUNCHER_APP_VERSION,
-  CONTEXT_LAUNCHER_APP_BUILD_NUMBER,
-  CONTEXT_LAUNCHER_APP_ID,
-} from '../../constants'
+import CustomIcon from '../shared/CustomIcon'
 
 const appInfoIconRippleConfig: PressableAndroidRippleConfig = {
   borderless: true,
@@ -23,26 +14,26 @@ const appInfoIconRippleConfig: PressableAndroidRippleConfig = {
 }
 
 const SettingsHeader = () => {
-  const { settingsBottomSheetRef } = useContext(GlobalContext)
+  const dispatch = useDispatch()
 
   const onAppInfoClick = () => {
-    showAppDetails(CONTEXT_LAUNCHER_APP_ID)
-    settingsBottomSheetRef?.current?.dismiss()
+    showAppDetails(APP_ID)
+    dispatch(setDisplaySettings(false))
   }
 
   return (
-    <View style={styles.wrapper} testID='settings-bottom-sheet-header-wrapper'>
+    <View style={styles.wrapper} testID='settings-header-wrapper'>
       <Text style={styles.title}>
         Context Settings
         <Text style={styles.appInfoText}>
-          &nbsp;&nbsp;v{CONTEXT_LAUNCHER_APP_VERSION} ({CONTEXT_LAUNCHER_APP_BUILD_NUMBER})
+          &nbsp;&nbsp;v{APP_VERSION} ({APP_BUILD_NUMBER})
         </Text>
       </Text>
       <Pressable
         onPress={onAppInfoClick}
         android_disableSound={true}
         android_ripple={appInfoIconRippleConfig}
-        testID='settings-bottom-sheet-header-app-info-button'>
+        testID='settings-header-app-info-button'>
         <CustomIcon name='information-outline' size={34} color='#808080' />
       </Pressable>
     </View>

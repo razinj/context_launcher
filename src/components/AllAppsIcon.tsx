@@ -1,24 +1,26 @@
-// React
-import React, { useContext } from 'react'
-// React Native
-import { Pressable, View } from 'react-native'
-// Components
-import CustomIcon from './shared/CustomIcon'
-// Contexts
-import GlobalContext from '../contexts/GlobalContext'
-// Constants
+import React from 'react'
+import { IconButton } from 'react-native-paper'
+import { useDispatch } from 'react-redux'
 import { PRIMARY_COLOR } from '../constants'
-import { iconsStyle, iconsPressableConfig } from '../shared/bottom-container'
+import { iconButtonStyle } from '../shared/bottom-container'
+import { toogleAllApps } from '../slices/appState'
 
 const AllAppsIcon = () => {
-  const { toggleDisplayAllApps } = useContext(GlobalContext)
+  const dispatch = useDispatch()
+
+  const _toogleAllApps = () => {
+    dispatch(toogleAllApps())
+  }
 
   return (
-    <View style={iconsStyle.wrapper}>
-      <Pressable testID='all-apps-toggle-button' onPress={toggleDisplayAllApps} {...iconsPressableConfig}>
-        <CustomIcon name='hexagon-outline' size={34} style={iconsStyle.icon} color={PRIMARY_COLOR} />
-      </Pressable>
-    </View>
+    <IconButton
+      size={30}
+      icon='hexagon-outline'
+      style={iconButtonStyle}
+      iconColor={PRIMARY_COLOR}
+      onPress={_toogleAllApps}
+      testID='all-apps-toggle-button'
+    />
   )
 }
 

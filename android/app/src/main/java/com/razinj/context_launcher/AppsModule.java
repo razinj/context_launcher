@@ -1,18 +1,27 @@
 package com.razinj.context_launcher;
 
+import static com.razinj.context_launcher.Constants.PACKAGE_CHANGE_EVENT;
+import static com.razinj.context_launcher.Constants.PACKAGE_CHANGE_IS_REMOVED;
+import static com.razinj.context_launcher.Constants.PACKAGE_CHANGE_NAME;
+import static com.razinj.context_launcher.Constants.PACKAGE_UPDATE_ACTION;
+import static com.razinj.context_launcher.Constants.SHORT_NOT_AVAILABLE;
+import static com.razinj.context_launcher.Utils.getPackageInfo;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -23,49 +32,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class AppsModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;
-
-    private BroadcastReceiver packageChangeBroadcastReceiver;
-    private static DeviceEventManagerModule.RCTDeviceEventEmitter rctDeviceEventEmitter;
-
-    // TODO: Can these values be in a separate file?
-    // Package change intent action
-    public static String PACKAGE_UPDATE_ACTION = "packageUpdateAction";
-    // Package change event
-    public static String PACKAGE_CHANGE_EVENT = "packageChange";
-    public static String PACKAGE_CHANGE_NAME = "packageName";
-    public static String PACKAGE_CHANGE_IS_REMOVED = "isRemoved";
+    private static BroadcastReceiver packageChangeBroadcastReceiver;
 
     AppsModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
-        initializePackageChangeBroadcastReceiver(reactContext);
-    }
-
-    private void initializePackageChangeBroadcastReceiver(ReactApplicationContext reactContext) {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(PACKAGE_UPDATE_ACTION);
-
-        packageChangeBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (rctDeviceEventEmitter == null) {
-                    rctDeviceEventEmitter = reactContext.getJSModule((DeviceEventManagerModule.RCTDeviceEventEmitter.class));
-                }
-
-                Bundle extras = intent.getExtras();
-                sendPackageChangeEvent((String) extras.get(PACKAGE_CHANGE_NAME), (Boolean) extras.get(PACKAGE_CHANGE_IS_REMOVED));
-            }
-        };
-
-        this.reactContext.registerReceiver(packageChangeBroadcastReceiver, intentFilter);
-    }
-
-    @Override
-    public void onCatalystInstanceDestroy() {
-        this.reactContext.unregisterReceiver(packageChangeBroadcastReceiver);
+        initializePackageChangeBroadcastReceiver();
     }
 
     @NonNull
@@ -74,117 +51,112 @@ public class AppsModule extends ReactContextBaseJavaModule {
         return "AppsModule";
     }
 
-    private static class AppDetails {
-        CharSequence name;
-        CharSequence label;
+    @Override
+    public void onCatalystInstanceDestroy() {
+        reactContext.unregisterReceiver(packageChangeBroadcastReceiver);
+    }
 
-        AppDetails(CharSequence name, CharSequence label) {
-            this.name = name;
-            this.label = label;
-        }
+    private void initializePackageChangeBroadcastReceiver() {
+        packageChangeBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (!reactContext.hasActiveReactInstance()) return;
 
-        @NonNull
-        public String toString() {
-            return "{\"label\":\"" + this.label + "\",\"name\":\"" + this.name + "\"}";
-        }
+                Bundle extras = intent.getExtras();
+                WritableMap map = Arguments.createMap();
+
+                map.putString(PACKAGE_CHANGE_NAME, extras.getString(PACKAGE_CHANGE_NAME));
+                map.putBoolean(PACKAGE_CHANGE_IS_REMOVED, extras.getBoolean(PACKAGE_CHANGE_IS_REMOVED));
+
+                reactContext.getJSModule((DeviceEventManagerModule.RCTDeviceEventEmitter.class)).emit(PACKAGE_CHANGE_EVENT, map);
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(PACKAGE_UPDATE_ACTION);
+
+        reactContext.registerReceiver(packageChangeBroadcastReceiver, intentFilter);
     }
 
     @ReactMethod
-    public void getApplications(Callback callBack) {
+    public void getApplications(Promise promise) {
+        PackageManager pm = reactContext.getPackageManager();
         List<AppDetails> apps = new ArrayList<>();
-        List<PackageInfo> packages = this.reactContext
-                .getPackageManager()
-                .getInstalledPackages(0);
+        List<PackageInfo> packages;
 
-        for (final PackageInfo packageInfo : packages) {
-            // TODO: Output a warning when package intent is null
-            if (getPackageLaunchIntent(packageInfo.packageName) == null) continue;
-
-            apps.add(new AppDetails(
-                    packageInfo.packageName,
-                    packageInfo.applicationInfo.loadLabel(this.reactContext.getPackageManager())
-            ));
+        // Get installed packages
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            packages = pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(0));
+        } else {
+            packages = pm.getInstalledPackages(0);
         }
 
-        callBack.invoke(apps.toString());
+        // Filter and map to AppDetails
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            apps = packages.stream().filter(packageInfo -> Objects.nonNull(pm.getLaunchIntentForPackage(packageInfo.packageName))).map(packageInfo -> new AppDetails(packageInfo.packageName, packageInfo.applicationInfo.loadLabel(pm).toString(), Utils.getEncodedIcon(pm, packageInfo.packageName))).collect(Collectors.toList());
+        } else {
+            for (PackageInfo packageInfo : packages) {
+                if (Objects.isNull(pm.getLaunchIntentForPackage(packageInfo.packageName))) continue;
+
+                apps.add(new AppDetails(packageInfo.packageName, packageInfo.applicationInfo.loadLabel(pm).toString(), Utils.getEncodedIcon(pm, packageInfo.packageName)));
+            }
+        }
+
+        promise.resolve(apps.toString());
     }
 
     @ReactMethod
     private void launchApplication(String packageName) {
-        Intent intent = getPackageLaunchIntent(packageName);
+        Intent intent = reactContext.getPackageManager().getLaunchIntentForPackage(packageName);
 
-        // TODO: Output error message and/or return an error to RN
-        if (intent == null) return;
-
-        this.reactContext.startActivity(intent);
+        reactContext.startActivity(intent);
     }
 
     @ReactMethod
     public void showApplicationDetails(String packageName) {
-        startActivity(packageName, new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS));
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setData(Uri.fromParts("package", packageName, null));
+
+        reactContext.startActivity(intent);
     }
 
     @ReactMethod
     public void requestApplicationUninstall(String packageName) {
-        startActivity(packageName, new Intent(Intent.ACTION_DELETE));
-    }
+        Intent intent = new Intent(Intent.ACTION_DELETE).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setData(Uri.fromParts("package", packageName, null));
 
-    @ReactMethod
-    public void getApplicationIcon(String packageName, Callback callBack) {
-        callBack.invoke(Utils.getEncodedIcon(this.reactContext, packageName));
-    }
-
-    public static void sendPackageChangeEvent(String packageName, Boolean isRemoved) {
-        WritableMap map = Arguments.createMap();
-        map.putString(PACKAGE_CHANGE_NAME, packageName);
-        map.putBoolean(PACKAGE_CHANGE_IS_REMOVED, isRemoved);
-
-        rctDeviceEventEmitter.emit(PACKAGE_CHANGE_EVENT, map);
-    }
-
-    private void startActivity(String packageName, Intent intent) {
-        // TODO: Check if the flag can be removed or not (read more about the behavior)
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setData(Uri.fromParts("package", packageName, null));
-
-        this.reactContext.startActivity(intent);
-    }
-
-    private Intent getPackageLaunchIntent(String packageName) {
-        return this.reactContext.getPackageManager().getLaunchIntentForPackage(packageName);
+        reactContext.startActivity(intent);
     }
 
     @ReactMethod
     public void addListener(String eventName) {
-        // TODO: Should this method exist?
-        // Set up any upstream listeners or background tasks as necessary
+        // Required for NativeEventEmitter
     }
 
     @ReactMethod
     public void removeListeners(Integer count) {
-        // TODO: Should this method exist?
-        // Remove upstream listeners, stop unnecessary background tasks
-    }
-
-    private PackageInfo getPackageInfo() throws Exception {
-        return getReactApplicationContext().getPackageManager().getPackageInfo(getReactApplicationContext().getPackageName(), 0);
+        // Required for NativeEventEmitter
     }
 
     @Override
     public Map<String, Object> getConstants() {
-        String appVersion, buildNumber, packageName;
+        String appVersion;
+        String buildNumber;
+        String packageName;
 
         try {
-            appVersion = getPackageInfo().versionName;
-            buildNumber = Integer.toString(getPackageInfo().versionCode);
+            appVersion = getPackageInfo(reactContext).versionName;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                buildNumber = Long.toString(getPackageInfo(reactContext).getLongVersionCode());
+            } else {
+                buildNumber = Long.toString(getPackageInfo(reactContext).versionCode);
+            }
             packageName = getReactApplicationContext().getPackageName();
-        } catch (Exception e) {
-            appVersion = "unknown";
-            buildNumber = "unknown";
-            packageName = "unknown";
+        } catch (PackageManager.NameNotFoundException e) {
+            appVersion = SHORT_NOT_AVAILABLE;
+            buildNumber = SHORT_NOT_AVAILABLE;
+            packageName = SHORT_NOT_AVAILABLE;
         }
 
-        final Map<String, Object> constants = new HashMap<>();
+        Map<String, Object> constants = new HashMap<>();
 
         constants.put("appVersion", appVersion);
         constants.put("buildNumber", buildNumber);

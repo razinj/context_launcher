@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -11,6 +13,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
+
+import org.jetbrains.annotations.Contract;
 
 import java.util.List;
 
@@ -22,6 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
             return BuildConfig.DEBUG;
         }
 
+        @NonNull
         @Override
         protected List<ReactPackage> getPackages() {
             List<ReactPackage> packages = new PackageList(this).getPackages();
@@ -29,6 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
             return packages;
         }
 
+        @NonNull
+        @Contract(pure = true)
         @Override
         protected String getJSMainModuleName() {
             return "index";

@@ -1,4 +1,3 @@
-// Native modules
 import AppsModule from '../native-modules/AppsModule'
 
 export const launchApp = (packageName: string) => AppsModule.launchApplication(packageName)

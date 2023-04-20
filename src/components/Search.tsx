@@ -1,39 +1,31 @@
-// React
 import React, { useCallback, useContext, useMemo } from 'react'
-// React Native
-import { Pressable, PressableAndroidRippleConfig, StyleSheet, TextInput, View } from 'react-native'
-// Components
-import CustomIcon from './shared/CustomIcon'
-// Redux
+import { StyleSheet, TextInput, View } from 'react-native'
+import { IconButton } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
+import { NEUTRAL_COLOR, PRIMARY_COLOR, SECONDARY_COLOR } from '../constants'
+import SearchContext from '../contexts/SearchContext'
+import { iconButtonStyle } from '../shared/bottom-container'
+import { selectAppsListMemoized } from '../slices/appsList'
 import {
+  appLaunchFromSearch,
   resetAppsSearchState,
   selectAppsSearchQuery,
+  selectDisplayAllApps,
   setAppsSearchQuery,
   setAppsSearchResult,
-} from '../slices/appsSearch'
-import { selectAppsListMemoized } from '../slices/appsList'
-// Contexts
-import SearchContext from '../contexts/SearchContext'
-import GlobalContext from '../contexts/GlobalContext'
-// Constants
-import { PRIMARY_COLOR, SECONDARY_COLOR } from '../constants'
-// Utils
+  setDisplayAllApps,
+} from '../slices/appState'
 import { getAppsByLabel } from '../utils/apps'
-
-const clearButtonRippleConfig: PressableAndroidRippleConfig = {
-  borderless: true,
-}
 
 const Search = () => {
   const dispatch = useDispatch()
   const apps = useSelector(selectAppsListMemoized)
   const searchQuery = useSelector(selectAppsSearchQuery)
-  const { displayAllApps, hideAllApps } = useContext(GlobalContext)
-  const { searchInputRef, invalidCharacters, setInvalidCharacters } = useContext(SearchContext)
+  const displayAllApps = useSelector(selectDisplayAllApps)
+  const { searchInputRef, clearSearchInput, searchAppLaunchProcedure } = useContext(SearchContext)
 
   const onQueryChange = (query: string) => {
-    hideAllApps()
+    dispatch(setDisplayAllApps(false))
 
     const trimmedQuery = query.trim().replace(/\./g, '\\.')
 
@@ -44,20 +36,17 @@ const Search = () => {
 
     // Check for only ASCII based characters
     if (!trimmedQuery.match(/[A-z\s\d]/gi)) {
-      setInvalidCharacters(true)
+      dispatch(setAppsSearchResult([]))
       dispatch(setAppsSearchQuery(trimmedQuery))
       return
     }
-
-    // Reset invalid characters when it's valid (passes the above check)
-    if (invalidCharacters) setInvalidCharacters(false)
 
     dispatch(setAppsSearchResult(getAppsByLabel(apps, trimmedQuery)))
     dispatch(setAppsSearchQuery(trimmedQuery))
   }
 
   const clearInputAndSearchState = useCallback(() => {
-    searchInputRef?.current?.clear()
+    clearSearchInput()
     dispatch(resetAppsSearchState())
   }, [searchInputRef])
 
@@ -65,13 +54,14 @@ const Search = () => {
     if (!searchQuery) return null
 
     return (
-      <Pressable
-        testID='search-input-clear-button'
+      <IconButton
+        icon='close'
+        size={30}
+        style={iconButtonStyle}
+        iconColor={NEUTRAL_COLOR}
         onPress={clearInputAndSearchState}
-        android_disableSound={true}
-        android_ripple={clearButtonRippleConfig}>
-        <CustomIcon name='close' size={30} color='#808080' />
-      </Pressable>
+        testID='search-input-clear-button'
+      />
     )
   }
 
@@ -79,6 +69,13 @@ const Search = () => {
     () => (displayAllApps ? PRIMARY_COLOR : SECONDARY_COLOR),
     [displayAllApps]
   )
+
+  const onSubmit = () => {
+    // Reset app state
+    searchAppLaunchProcedure()
+    // Clean up state and launch app
+    dispatch(appLaunchFromSearch())
+  }
 
   return (
     <View style={styles.wrapper}>
@@ -88,9 +85,10 @@ const Search = () => {
         style={styles.searchInput}
         placeholder='Search'
         placeholderTextColor={placeholderTextColor}
-        returnKeyType='search'
+        returnKeyType='go'
         autoCapitalize='words'
         onChangeText={onQueryChange}
+        onSubmitEditing={onSubmit}
       />
       {clearButton()}
     </View>
@@ -105,7 +103,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    color: '#000',
+    color: NEUTRAL_COLOR,
   },
 })
 

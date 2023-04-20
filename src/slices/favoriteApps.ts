@@ -1,8 +1,7 @@
-// Redux
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-// Models
-import { RootState } from '../store'
 import { FavoriteApp } from '../models/favorite-app'
+import { RootState } from '../store'
+import { getApp, getAppIndex } from '../utils/apps'
 
 export interface FavoriteAppsState {
   list: FavoriteApp[]
@@ -17,15 +16,13 @@ export const favoriteAppsSlice = createSlice({
   initialState,
   reducers: {
     addFavoriteApp: (state: FavoriteAppsState, { payload }: PayloadAction<FavoriteApp>) => {
-      if (state.list.length == 5) return
-
-      const existingApp = state.list.find(({ name }: FavoriteApp) => name === payload.name)
+      if (state.list.length === 5) return
 
       // Add to list only if it doesn't exists
-      if (!existingApp) state.list.push({ ...payload })
+      if (!getApp(state.list, payload.packageName)) state.list.push({ ...payload })
     },
     removeFavoriteApp: (state: FavoriteAppsState, { payload }: PayloadAction<string>) => {
-      const foundAppIndex = state.list.findIndex(({ name }: FavoriteApp) => name === payload)
+      const foundAppIndex = getAppIndex(state.list, payload)
 
       if (foundAppIndex === -1) return
 

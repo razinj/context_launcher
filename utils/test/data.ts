@@ -1,15 +1,11 @@
-// Models
-import { GlobalContextType, SearchContextType } from '../../src/models/context'
+import { SearchContextType } from '../../src/contexts/SearchContext'
+import { RootState } from '../../src/store'
 
-export const CONTEXT_LAUNCHER_APP_ID = 'com.razinj.context_launcher'
+export const APP_ID = 'com.razinj.context_launcher'
 
-export const initialStoreState = {
+export const initialStoreState: RootState = {
   appsList: {
     list: [],
-  },
-  appsSearch: {
-    query: undefined,
-    result: [],
   },
   favoriteApps: {
     list: [],
@@ -25,32 +21,29 @@ export const initialStoreState = {
   },
   pinnedApps: {
     list: [],
+    temporarily: [],
     temporaryAppsConfig: {
       startDate: undefined,
       endDate: undefined,
     },
   },
-}
-
-export const defaultGlobalContextValue: GlobalContextType = {
-  dismissKeyboard: jest.fn(),
-  globalAppLaunchProcedure: jest.fn(),
-  displayAllApps: false,
-  hideAllApps: jest.fn(),
-  toggleDisplayAllApps: jest.fn(),
-  sortableFavoriteApps: false,
-  toggleSortableFavoriteApps: jest.fn(),
-  appItemMenuBottomSheetRef: null,
-  displayAppItemMenuBottomSheet: jest.fn(),
-  appItemMenuDetails: null,
-  setAppItemMenuDetails: jest.fn(),
-  settingsBottomSheetRef: null,
-  displaySettingsBottomSheet: jest.fn(),
+  appState: {
+    displayAllApps: false,
+    displaySettings: false,
+    menuAppDetails: undefined,
+    displayAppMenu: false,
+    displaySortableFavoriteApps: false,
+    displaySortablePinnedApps: false,
+    displaySortableTemporaryPinnedApps: false,
+    search: {
+      query: undefined,
+      result: [],
+    },
+  },
 }
 
 export const defaultSearchContextValue: SearchContextType = {
   searchInputRef: null,
-  invalidCharacters: false,
-  setInvalidCharacters: jest.fn(),
+  clearSearchInput: jest.fn(),
   searchAppLaunchProcedure: jest.fn(),
 }

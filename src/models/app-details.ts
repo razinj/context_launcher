@@ -1,8 +1,5 @@
 export type AppDetails = {
-  label: string
+  packageName: string
   name: string
+  icon: string
 }
-
-export type AppDetailsWithOptionalIcon = AppDetails & { icon?: string }
-
-export type AppDetailsWithIcon = AppDetails & { icon: string }

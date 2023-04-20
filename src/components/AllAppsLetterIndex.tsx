@@ -1,22 +1,22 @@
-// React
 import React from 'react'
-// React Native
 import {
-  Text,
-  View,
   FlatList,
-  Pressable,
-  StyleSheet,
   ListRenderItem,
   ListRenderItemInfo,
+  Pressable,
   PressableAndroidRippleConfig,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native'
-// Redux
 import { useSelector } from 'react-redux'
-import { selectAppsLetterListMemoized } from '../slices/appsList'
-// Models
+import { WHITE_COLOR } from '../constants'
 import { AppLetterIndex } from '../models/list-letter-index'
-import { AllAppsLetterIndexProps as Props } from '../models/props'
+import { selectAppsLetterListMemoized } from '../slices/appsList'
+
+type Props = {
+  onPress: (letterIndex: number) => void
+}
 
 const rippleConfig: PressableAndroidRippleConfig = {
   borderless: false,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   letterIndexLabel: {
-    color: '#fff',
+    color: WHITE_COLOR,
     fontSize: 12,
     fontWeight: '600',
     textShadowColor: 'rgba(0, 0, 0, 0.75)',

@@ -1,20 +1,21 @@
-// React
-import React, { useContext, useState } from 'react'
-// React Native
-import { Pressable, Image, StyleSheet, View, Animated, Easing, Text, PressableAndroidRippleConfig } from 'react-native'
-// Components
-import CustomIcon from './shared/CustomIcon'
-// Redux
-import { useDispatch, useSelector } from 'react-redux'
-import { selectFavoriteAppsMemoized, setFavoriteApps } from '../slices/favoriteApps'
-// Contexts
-import GlobalContext from '../contexts/GlobalContext'
-// DraggableFlatList
+import React, { useEffect, useState } from 'react'
+import { Pressable, PressableAndroidRippleConfig, StyleSheet, Text, View } from 'react-native'
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist'
-// Constants
-import { BACKGROUND_COLOR } from '../constants'
-// Models
+import Animated, {
+  cancelAnimation,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated'
+import { useDispatch, useSelector } from 'react-redux'
+import { BACKGROUND_COLOR, WHITE_COLOR } from '../constants'
 import { FavoriteApp } from '../models/favorite-app'
+import { setDisplaySortableFavoriteApps } from '../slices/appState'
+import { selectFavoriteAppsMemoized, setFavoriteApps } from '../slices/favoriteApps'
+import { getListKey } from '../utils/apps'
+import AppIcon from './shared/AppIcon'
+import CustomIcon from './shared/CustomIcon'
 
 const doneButtonRippleConfig: PressableAndroidRippleConfig = {
   borderless: true,
@@ -23,35 +24,23 @@ const doneButtonRippleConfig: PressableAndroidRippleConfig = {
   radius: 10,
 }
 
-const keyExtractor = ({ name }: FavoriteApp) => name
-
 const SortableFavoriteApps = () => {
   const dispatch = useDispatch()
   const apps = useSelector(selectFavoriteAppsMemoized)
-  const { toggleSortableFavoriteApps } = useContext(GlobalContext)
   const [sorted, setSorted] = useState(false)
 
-  const animatedValueX = new Animated.Value(-1)
+  const rotateValue = useSharedValue(-5)
 
-  Animated.loop(
-    Animated.sequence([
-      Animated.timing(animatedValueX, {
-        toValue: 1,
-        duration: 200,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }),
-      Animated.timing(animatedValueX, {
-        toValue: -1,
-        duration: 200,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }),
-    ])
-  ).start()
+  useEffect(() => {
+    rotateValue.value = withRepeat(withTiming(5), -1, true)
+
+    return () => cancelAnimation(rotateValue)
+  }, [])
+
+  const animatedStyles = useAnimatedStyle(() => ({ transform: [{ rotate: `${rotateValue.value}deg` }] }))
 
   const doneSorting = () => {
-    toggleSortableFavoriteApps()
+    dispatch(setDisplaySortableFavoriteApps(false))
   }
 
   const onDragEnd = async ({ data }: { data: FavoriteApp[] }) => {
@@ -62,9 +51,9 @@ const SortableFavoriteApps = () => {
   const renderItem = ({ item, drag, isActive }: RenderItemParams<FavoriteApp>) => {
     return (
       <ScaleDecorator>
-        <Animated.View style={{ transform: [{ translateX: isActive ? 0 : animatedValueX }] }}>
-          <Pressable key={item.name} style={[styles.pressable]} onLongPress={drag} disabled={isActive}>
-            <Image style={styles.image} resizeMode={'contain'} source={{ uri: `data:image/png;base64,${item.icon}` }} />
+        <Animated.View style={isActive ? undefined : animatedStyles}>
+          <Pressable key={item.packageName} style={styles.pressable} onLongPress={drag} disabled={isActive}>
+            <AppIcon style={styles.image} icon={item.icon} />
           </Pressable>
         </Animated.View>
       </ScaleDecorator>
@@ -80,7 +69,7 @@ const SortableFavoriteApps = () => {
           onPress={doneSorting}
           android_disableSound={true}
           android_ripple={doneButtonRippleConfig}>
-          <CustomIcon name={sorted ? 'check' : 'close'} size={18} color='#fff' />
+          <CustomIcon name={sorted ? 'check' : 'close'} size={18} color={WHITE_COLOR} />
         </Pressable>
       </View>
       <View style={styles.draggableListWrapper}>
@@ -89,7 +78,8 @@ const SortableFavoriteApps = () => {
           data={apps}
           onDragEnd={onDragEnd}
           renderItem={renderItem}
-          keyExtractor={keyExtractor}
+          keyExtractor={getListKey}
+          keyboardShouldPersistTaps={'handled'}
         />
       </View>
     </View>
@@ -102,7 +92,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 100,
-    borderRadius: 10,
+    borderRadius: 5,
     paddingVertical: 2.5,
     backgroundColor: BACKGROUND_COLOR,
   },
@@ -126,11 +116,11 @@ const styles = StyleSheet.create({
     margin: 2.5,
     padding: 2.5,
     position: 'relative',
-    borderBottomColor: '#fff',
+    borderBottomColor: WHITE_COLOR,
     borderBottomWidth: 1,
   },
   infoText: {
-    color: '#fff',
+    color: WHITE_COLOR,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowRadius: 2.5,
   },

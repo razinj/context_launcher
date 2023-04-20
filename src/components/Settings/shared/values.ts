@@ -1,6 +1,4 @@
-// React Native
 import { PressableAndroidRippleConfig, StyleProp, ViewStyle } from 'react-native'
-// Constants
 import { PRIMARY_COLOR } from '../../../constants'
 
 export const activeSwitch = PRIMARY_COLOR

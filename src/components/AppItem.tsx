@@ -1,90 +1,85 @@
-// React
-import React, { useContext, useEffect, useMemo, useState } from 'react'
-// React Native
-import { Image, Pressable, StyleSheet, View, StyleProp, ViewStyle } from 'react-native'
-// Components
-import HighlightText from './HighlightText'
-// Redux
+import React, { useContext } from 'react'
+import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { List } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
-import { addRecentApp } from '../slices/recentApps'
-import { resetAppsSearchState } from '../slices/appsSearch'
-// Utils
-import { launchApp } from '../utils/apps-module'
-// Native modules
-import AppsModule from '../native-modules/AppsModule'
-// Contexts
+import { APP_ITEM_HEIGHT, PRESSABLE_RIPPLE_COLOR } from '../constants'
 import SearchContext from '../contexts/SearchContext'
-import GlobalContext from '../contexts/GlobalContext'
-// Models
+import { AppDetails } from '../models/app-details'
 import { RenderedIn } from '../models/rendered-in'
-import { AppItemProps as Props } from '../models/props'
+import { appLaunch, setDisplayAppMenu, setMenuAppDetails } from '../slices/appState'
+import { launchApp } from '../utils/apps-module'
+import HighlightText from './HighlightText'
+import AppIcon from './shared/AppIcon'
 
-const AppItem = ({ appDetails, renderedIn, appIcon, wrapperStyle, pressableStyle }: Props) => {
+type Props = {
+  appDetails: AppDetails
+  renderedIn: RenderedIn
+  listItemStyle?: StyleProp<ViewStyle>
+}
+
+const AppItem = ({ appDetails, renderedIn }: Props) => {
   const dispatch = useDispatch()
-  const [icon, setIcon] = useState<string | undefined>(undefined)
-  const { searchAppLaunchProcedure, searchInputRef } = useContext(SearchContext)
-  const { setAppItemMenuDetails, displayAppItemMenuBottomSheet, globalAppLaunchProcedure } = useContext(GlobalContext)
+  const { searchAppLaunchProcedure } = useContext(SearchContext)
+
+  const displayLabel = ![RenderedIn.PINNED_APPS, RenderedIn.FAVORITE_APPS].includes(renderedIn)
 
   const onPress = () => {
-    // Reset views and values
-    globalAppLaunchProcedure()
-    searchAppLaunchProcedure()
-    searchInputRef?.current?.clear()
-    dispatch(resetAppsSearchState())
-    // Add app to recent apps list
-    if (renderedIn === RenderedIn.FILTERED_APPS || renderedIn === RenderedIn.ALL_APPS) {
-      dispatch(addRecentApp({ ...appDetails, icon }))
-    }
-    // Launch app
-    launchApp(appDetails.name)
-  }
+    launchApp(appDetails.packageName)
 
-  const displayLabel = useMemo(
-    () => renderedIn !== RenderedIn.FAVORITE_APPS && renderedIn !== RenderedIn.PINNED_APPS,
-    [renderedIn]
-  )
+    // Reset app state
+    searchAppLaunchProcedure()
+    // Clean up state and launch app
+    dispatch(appLaunch({ renderedIn, appDetails }))
+  }
 
   const onLongPress = () => {
-    setAppItemMenuDetails({ ...appDetails, icon })
-    displayAppItemMenuBottomSheet()
+    dispatch(setMenuAppDetails(appDetails))
+    dispatch(setDisplayAppMenu(true))
   }
 
-  const pressableStyles = ({ pressed }: { pressed: boolean }): StyleProp<ViewStyle> => {
-    return [{ backgroundColor: pressed ? 'rgba(255, 255, 255, .25)' : 'transparent' }, styles.pressable, pressableStyle]
-  }
+  const getAppIconElement = () => <AppIcon style={styles.icon} icon={appDetails.icon} />
+  const getAppTitle = () => <HighlightText text={appDetails.name} />
 
-  useEffect(() => {
-    if (
-      renderedIn === RenderedIn.RECENT_APPS ||
-      renderedIn === RenderedIn.FAVORITE_APPS ||
-      renderedIn === RenderedIn.PINNED_APPS
-    ) {
-      setIcon(appIcon)
-    } else if (renderedIn === RenderedIn.ALL_APPS || renderedIn === RenderedIn.FILTERED_APPS) {
-      AppsModule.getApplicationIcon(appDetails.name, (nativeAppIcon: string) => setIcon(nativeAppIcon))
-    }
-  }, [])
+  if (displayLabel) {
+    return (
+      <List.Item
+        style={styles.listItem}
+        rippleColor={PRESSABLE_RIPPLE_COLOR}
+        title={getAppTitle}
+        left={getAppIconElement}
+        onPress={onPress}
+        onLongPress={onLongPress}
+      />
+    )
+  }
 
   return (
-    <View style={wrapperStyle}>
-      <Pressable onPress={onPress} onLongPress={onLongPress} style={pressableStyles}>
-        <Image
-          resizeMode={'contain'}
-          source={{ uri: `data:image/png;base64,${icon}` }}
-          style={[styles.icon, { marginRight: displayLabel ? 10 : 0 }]}
-        />
-        {displayLabel && <HighlightText text={appDetails.label} />}
+    <View style={styles.pressableWrapper}>
+      <Pressable
+        onPress={onPress}
+        onLongPress={onLongPress}
+        style={styles.pressable}
+        android_ripple={{ borderless: true, color: PRESSABLE_RIPPLE_COLOR }}>
+        {getAppIconElement()}
       </Pressable>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  listItem: {
+    paddingLeft: 10,
+    paddingVertical: 0,
+    height: APP_ITEM_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   pressable: {
     padding: 5,
+  },
+  pressableWrapper: {
     borderRadius: 5,
-    alignItems: 'center',
-    flexDirection: 'row',
+    height: APP_ITEM_HEIGHT,
   },
   icon: {
     width: 50,

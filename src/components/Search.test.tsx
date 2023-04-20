@@ -1,7 +1,8 @@
-import React from 'react'
 import { fireEvent, screen } from '@testing-library/react-native'
+import React from 'react'
 import { initialStoreState } from '../../utils/test/data'
-import { renderWithProviderAndContexts, renderWithProvider } from '../../utils/test/utils'
+import { renderWithProvider, renderWithProviderAndContexts } from '../../utils/test/utils'
+import { RootState } from '../store'
 import Search from './Search'
 
 describe('<Search /> Tests', () => {
@@ -14,11 +15,14 @@ describe('<Search /> Tests', () => {
   })
 
   it('should render correctly and match snapshot with clear button', () => {
-    const customInitialState = {
+    const customInitialState: RootState = {
       ...initialStoreState,
-      appsSearch: {
-        ...initialStoreState.appsSearch,
-        query: 'a-search-query',
+      appState: {
+        ...initialStoreState.appState,
+        search: {
+          query: 'a-search-query',
+          result: [],
+        },
       },
     }
 
@@ -30,11 +34,14 @@ describe('<Search /> Tests', () => {
   })
 
   it('should update query when text changes and clear query when clear button is pressed', () => {
-    const customInitialState = {
+    const customInitialState: RootState = {
       ...initialStoreState,
-      appsSearch: {
-        ...initialStoreState.appsSearch,
-        query: undefined,
+      appState: {
+        ...initialStoreState.appState,
+        search: {
+          query: undefined,
+          result: [],
+        },
       },
     }
 
@@ -44,9 +51,9 @@ describe('<Search /> Tests', () => {
 
     expect(searchInput).toBeOnTheScreen()
 
-    fireEvent.changeText(searchInput, 'a-search-query')
+    fireEvent.changeText(searchInput, 'A search token')
 
-    expect(store.getState().appsSearch.query).toBe('a-search-query')
+    expect(store.getState().appState.search.query).toBe('A search token')
 
     const searchInputClearButton = screen.getByTestId('search-input-clear-button')
 
@@ -54,27 +61,32 @@ describe('<Search /> Tests', () => {
 
     fireEvent.press(searchInputClearButton)
 
-    expect(store.getState().appsSearch.query).toBeUndefined()
+    expect(store.getState().appState.search.query).toBeUndefined()
   })
 
   it('should set correct result list when using correct query and reset search values when clear button is pressed', () => {
-    const customInitialState = {
+    const customInitialState: RootState = {
       ...initialStoreState,
       appsList: {
         list: [
           {
-            name: 'com.google.chrome',
-            label: 'Chrome',
+            packageName: 'com.google.chrome',
+            name: 'Chrome',
+            icon: 'ICON',
           },
           {
-            name: 'com.google.maps',
-            label: 'Maps',
+            packageName: 'com.google.maps',
+            name: 'Maps',
+            icon: 'ICON',
           },
         ],
       },
-      appsSearch: {
-        query: undefined,
-        result: [],
+      appState: {
+        ...initialStoreState.appState,
+        search: {
+          query: undefined,
+          result: [],
+        },
       },
     }
 
@@ -88,11 +100,12 @@ describe('<Search /> Tests', () => {
 
     let currentState = store.getState()
 
-    expect(currentState.appsSearch.query).toBe('chr')
-    expect(currentState.appsSearch.result).toEqual([
+    expect(currentState.appState.search.query).toBe('chr')
+    expect(currentState.appState.search.result).toEqual([
       {
-        name: 'com.google.chrome',
-        label: 'Chrome',
+        packageName: 'com.google.chrome',
+        name: 'Chrome',
+        icon: 'ICON',
       },
     ])
 
@@ -104,24 +117,28 @@ describe('<Search /> Tests', () => {
 
     currentState = { ...store.getState() }
 
-    expect(currentState.appsSearch.query).toBeUndefined()
-    expect(currentState.appsSearch.result).toEqual([])
+    expect(currentState.appState.search.query).toBeUndefined()
+    expect(currentState.appState.search.result).toEqual([])
   })
 
   it('should set correct result list when using wrong query and reset search values when clear button is pressed', () => {
-    const customInitialState = {
+    const customInitialState: RootState = {
       ...initialStoreState,
       appsList: {
         list: [
           {
-            name: 'com.google.chrome',
-            label: 'Chrome',
+            packageName: 'com.google.chrome',
+            name: 'Chrome',
+            icon: 'ICON',
           },
         ],
       },
-      appsSearch: {
-        query: undefined,
-        result: [],
+      appState: {
+        ...initialStoreState.appState,
+        search: {
+          query: undefined,
+          result: [],
+        },
       },
     }
 
@@ -135,8 +152,8 @@ describe('<Search /> Tests', () => {
 
     let currentState = store.getState()
 
-    expect(currentState.appsSearch.query).toBe('youtube')
-    expect(currentState.appsSearch.result).toEqual([])
+    expect(currentState.appState.search.query).toBe('youtube')
+    expect(currentState.appState.search.result).toEqual([])
 
     const searchInputClearButton = screen.getByTestId('search-input-clear-button')
 
@@ -146,8 +163,8 @@ describe('<Search /> Tests', () => {
 
     currentState = { ...store.getState() }
 
-    expect(currentState.appsSearch.query).toBeUndefined()
-    expect(currentState.appsSearch.result).toEqual([])
+    expect(currentState.appState.search.query).toBeUndefined()
+    expect(currentState.appState.search.result).toEqual([])
   })
 
   test.todo('cover all possible cases for the search functionality')

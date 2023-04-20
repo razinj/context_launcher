@@ -1,9 +1,15 @@
-import React from 'react'
 import { fireEvent, screen } from '@testing-library/react-native'
-import { defaultGlobalContextValue } from '../../utils/test/data'
+import React from 'react'
 import { renderWithProvider, renderWithProviderAndContexts } from '../../utils/test/utils'
-import { GlobalContextType } from '../models/context'
+import { toogleAllApps } from '../slices/appState'
 import AllAppsIcon from './AllAppsIcon'
+
+const useDispatchMock = jest.fn()
+
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'),
+  useDispatch: () => useDispatchMock,
+}))
 
 describe('<AllAppsIcon /> Tests', () => {
   it('should render correctly and match snapshot', () => {
@@ -14,17 +20,7 @@ describe('<AllAppsIcon /> Tests', () => {
   })
 
   it('should call function to toggle all apps display when pressed', () => {
-    const toggleDisplayAllAppsFn = jest.fn()
-
-    const customGlobalContextValue: GlobalContextType = {
-      ...defaultGlobalContextValue,
-      displayAllApps: false,
-      toggleDisplayAllApps: toggleDisplayAllAppsFn,
-    }
-
-    renderWithProviderAndContexts(<AllAppsIcon />, {
-      globalContextValue: customGlobalContextValue,
-    })
+    renderWithProviderAndContexts(<AllAppsIcon />, {})
 
     const allAppsButton = screen.getByTestId('all-apps-toggle-button')
 
@@ -32,6 +28,6 @@ describe('<AllAppsIcon /> Tests', () => {
 
     fireEvent.press(allAppsButton)
 
-    expect(toggleDisplayAllAppsFn).toBeCalled()
+    expect(useDispatchMock).toBeCalledWith(toogleAllApps())
   })
 })

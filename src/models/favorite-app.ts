@@ -1,4 +1,3 @@
-// Models
-import { AppDetailsWithIcon } from './app-details'
+import { AppDetails } from './app-details'
 
-export type FavoriteApp = AppDetailsWithIcon
+export type FavoriteApp = AppDetails

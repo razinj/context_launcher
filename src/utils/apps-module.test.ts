@@ -1,5 +1,5 @@
-import { launchApp, requestAppUninstall, showAppDetails } from './apps-module'
 import AppsModule from '../native-modules/AppsModule'
+import { launchApp, requestAppUninstall, showAppDetails } from './apps-module'
 
 describe('AppsModule Tests', () => {
   const aPackageName = 'com.a_package_name'

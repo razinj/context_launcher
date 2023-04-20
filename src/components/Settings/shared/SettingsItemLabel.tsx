@@ -1,11 +1,14 @@
-// React
 import React from 'react'
-// React Native
-import { StyleSheet, Text, View } from 'react-native'
-// Models
-import { SettingsItemLabelProps as Props } from '../../../models/props'
+import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 
-const SettingsItemLabel = ({ title, description, titleStyle, wrapperStyle }: Props) => {
+export type SettingsItemLabelProps = {
+  title: string
+  description?: string
+  titleStyle?: StyleProp<TextStyle>
+  wrapperStyle?: StyleProp<ViewStyle>
+}
+
+const SettingsItemLabel = ({ title, description, wrapperStyle, titleStyle }: SettingsItemLabelProps) => {
   return (
     <View style={[styles.wrapper, wrapperStyle]}>
       <Text style={[styles.label, titleStyle]}>{title}</Text>

@@ -1,65 +1,56 @@
-// React
 import React, { useMemo } from 'react'
-// React Native
 import { StyleSheet, Text, View } from 'react-native'
-// Components
-import AppItem from './AppItem'
-// Redux
 import { useSelector } from 'react-redux'
-import { selectFavoriteAppsMemoized } from '../slices/favoriteApps'
-// Constants
-import { BACKGROUND_COLOR } from '../constants'
-import { singleRowAppsViewStyle, whiteTextColorStyle } from '../shared/styles'
-// Models
-import { RenderedIn } from '../models/rendered-in'
 import { FavoriteApp } from '../models/favorite-app'
+import { RenderedIn } from '../models/rendered-in'
+import {
+  noAppsViewStyle,
+  sectionHeaderLabelStyle,
+  sectionHeaderWrapperStyle,
+  sectionWrapper,
+  whiteTextColorStyle,
+} from '../shared/styles'
+import { selectFavoriteAppsMemoized } from '../slices/favoriteApps'
+import AppItem from './AppItem'
 
 const FavoriteApps = () => {
   const apps = useSelector(selectFavoriteAppsMemoized)
 
+  const noAppsFound = useMemo(() => apps.length === 0, [apps])
+
   const favoriteApps = useMemo(
     () =>
       apps.map((app: FavoriteApp) => (
-        <AppItem key={app.name} appDetails={app} appIcon={app.icon} renderedIn={RenderedIn.FAVORITE_APPS} />
+        <AppItem key={app.packageName} appDetails={app} renderedIn={RenderedIn.FAVORITE_APPS} />
       )),
     [apps]
   )
 
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.headerWrapper}>
-        <Text style={styles.headerLabel}>Favorite</Text>
+    <View style={sectionWrapper}>
+      <View style={sectionHeaderWrapperStyle}>
+        <Text style={sectionHeaderLabelStyle}>Favorite</Text>
       </View>
-      {apps.length > 0 ? (
-        <View style={styles.horizontalAppsWrapper}>{favoriteApps}</View>
-      ) : (
-        <View style={singleRowAppsViewStyle}>
+      <View style={[styles.appsViewWrapper, noAppsFound ? [noAppsViewStyle, { minHeight: 72 }] : undefined]}>
+        {noAppsFound ? (
           <Text style={whiteTextColorStyle}>No favorite apps yet</Text>
-        </View>
-      )}
+        ) : (
+          <View style={[styles.appsWrapper, apps.length === 5 ? { justifyContent: 'space-between' } : undefined]}>
+            {favoriteApps}
+          </View>
+        )}
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    borderRadius: 5,
-    backgroundColor: BACKGROUND_COLOR,
+  appsViewWrapper: {
+    padding: 5,
   },
-  headerLabel: {
-    color: 'rgba(255,255,255,0.75)',
-    fontSize: 12,
-  },
-  headerWrapper: {
-    paddingVertical: 2.5,
-    paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.5)',
-  },
-  horizontalAppsWrapper: {
+  appsWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    paddingVertical: 5,
   },
 })
 

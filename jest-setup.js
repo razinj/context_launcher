@@ -29,15 +29,3 @@ jest.mock('react-native', () => {
 
   return ReactNative
 })
-
-// src: https://github.com/gorhom/react-native-bottom-sheet/issues/326#issuecomment-1117504554
-jest.mock('@gorhom/bottom-sheet', () => {
-  const { View } = jest.requireActual('react-native')
-
-  return {
-    __esModule: true,
-    default: View,
-    BottomSheetModal: View,
-    BottomSheetModalProvider: View,
-  }
-})
