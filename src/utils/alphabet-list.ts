@@ -1,4 +1,3 @@
-// Models
 import { AppDetails } from '../models/app-details'
 import { AppLetterIndex } from '../models/list-letter-index'
 
@@ -63,8 +62,8 @@ export const getAppsLetterIndex = (apps: AppDetails[]): AppLetterIndex[] => {
   const appsLetterIndex: AppLetterIndex[] = []
   const treatedLetters: string[] = []
 
-  apps.forEach(({ label }: AppDetails, index: number) => {
-    const letter = getFirstLetter(label)
+  apps.forEach(({ name }: AppDetails, index: number) => {
+    const letter = getFirstLetter(name)
 
     if (treatedLetters.includes(letter)) return
 

@@ -1,4 +1,4 @@
-import { truncateString, createKeyForHighlightTextElement } from './string'
+import { createKeyForHighlightTextElement, truncateString } from './string'
 
 describe('String utils tests', () => {
   describe('truncateString Tests', () => {

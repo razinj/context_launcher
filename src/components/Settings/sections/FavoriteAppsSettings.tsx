@@ -1,40 +1,31 @@
-// React
-import React, { useContext, useMemo } from 'react'
-// React Native
+import React, { useMemo } from 'react'
 import { Pressable, Switch, View } from 'react-native'
-// Components
-import SettingsItemLabel from '../shared/SettingsItemLabel'
-// Redux
 import { useDispatch, useSelector } from 'react-redux'
+import { sortFavoriteApps } from '../../../slices/appState'
 import { clearFavoriteApps, selectFavoriteAppsCountMemoized } from '../../../slices/favoriteApps'
-import { selectDisplayFavoriteAppsMemoized, displayFavoriteApps } from '../../../slices/preferences'
-// Contexts
-import GlobalContext from '../../../contexts/GlobalContext'
-// Utils
+import { displayFavoriteApps, selectDisplayFavoriteAppsMemoized } from '../../../slices/preferences'
 import { displayToast } from '../../../utils/toast'
-// Constants
+import SettingsItemLabel from '../shared/SettingsItemLabel'
 import {
-  switchTrackColor,
   activeSwitch,
   inActiveSwitch,
   settingItemButtonRippleConfig,
-  settingsPressableItemStyle,
   settingItemWrapperStyle,
+  settingsPressableItemStyle,
+  switchTrackColor,
 } from '../shared/values'
 
 const FavoriteAppsSettings = () => {
   const dispatch = useDispatch()
   const favoriteAppsCount = useSelector(selectFavoriteAppsCountMemoized)
   const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
-  const { dismissKeyboard, toggleSortableFavoriteApps } = useContext(GlobalContext)
 
   const toggleDisplayFavoriteApps = () => {
     dispatch(displayFavoriteApps(!displayFavoriteAppsValue))
   }
 
   const onFavoriteAppsSortViewClick = () => {
-    dismissKeyboard()
-    toggleSortableFavoriteApps()
+    dispatch(sortFavoriteApps())
   }
 
   const onClearFavoriteApps = () => {
@@ -52,7 +43,7 @@ const FavoriteAppsSettings = () => {
       <View style={settingItemWrapperStyle}>
         <SettingsItemLabel title='Display' />
         <Switch
-          testID='settings-bottom-display-favorite-apps-switch'
+          testID='display-favorite-apps-switch'
           value={displayFavoriteAppsValue}
           onValueChange={toggleDisplayFavoriteApps}
           trackColor={switchTrackColor}
@@ -62,7 +53,7 @@ const FavoriteAppsSettings = () => {
 
       <View style={settingItemWrapperStyle}>
         <Pressable
-          testID='settings-bottom-sort-favorite-apps-button'
+          testID='sort-favorite-apps-button'
           disabled={favoriteAppsSortDisabled}
           onPress={onFavoriteAppsSortViewClick}
           android_disableSound={true}
@@ -83,7 +74,7 @@ const FavoriteAppsSettings = () => {
 
       <View style={settingItemWrapperStyle}>
         <Pressable
-          testID='advanced-settings-clear-favorite-apps-button'
+          testID='clear-favorite-apps-button'
           onPress={onClearFavoriteApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}

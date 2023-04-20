@@ -1,16 +1,20 @@
-import React from 'react'
 import { screen } from '@testing-library/react-native'
-import { renderWithProvider } from '../../utils/test/utils'
+import React from 'react'
 import { initialStoreState } from '../../utils/test/data'
+import { renderWithProvider } from '../../utils/test/utils'
+import { RootState } from '../store'
 import HighlightText from './HighlightText'
 
 describe('<HighlightText /> Tests', () => {
   it('should render correctly and match snapshot - without search query', () => {
-    const customInitialState = {
+    const customInitialState: RootState = {
       ...initialStoreState,
-      appsSearch: {
-        query: undefined,
-        result: [],
+      appState: {
+        ...initialStoreState.appState,
+        search: {
+          query: undefined,
+          result: [],
+        },
       },
     }
 
@@ -24,11 +28,14 @@ describe('<HighlightText /> Tests', () => {
   })
 
   it('should render correctly and match snapshot - with search query', () => {
-    const customInitialState = {
+    const customInitialState: RootState = {
       ...initialStoreState,
-      appsSearch: {
-        query: 'chro',
-        result: [], // left empty because result list doesn't matter in this component.
+      appState: {
+        ...initialStoreState.appState,
+        search: {
+          query: 'chro',
+          result: [], // left empty because result list doesn't matter in this component.
+        },
       },
     }
 
@@ -42,11 +49,14 @@ describe('<HighlightText /> Tests', () => {
   })
 
   it('should highlight query in text correctly', () => {
-    const customInitialState = {
+    const customInitialState: RootState = {
       ...initialStoreState,
-      appsSearch: {
-        query: 'o',
-        result: [], // left empty because result list doesn't matter in this component.
+      appState: {
+        ...initialStoreState.appState,
+        search: {
+          query: 'o',
+          result: [], // left empty because result list doesn't matter in this component.
+        },
       },
     }
 

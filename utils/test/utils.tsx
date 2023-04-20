@@ -1,25 +1,16 @@
-// React
-import React from 'react'
-import { ReactElement, ReactNode } from 'react'
-// Redux
-import { Provider } from 'react-redux'
 import { configureStore, PreloadedState, Store } from '@reduxjs/toolkit'
-// Testing Library
 import { render, RenderOptions } from '@testing-library/react-native'
-// Store
+import React, { ReactElement, ReactNode } from 'react'
+import { Provider as PaperProvider } from 'react-native-paper'
+import { Provider as StoreProvider } from 'react-redux'
+import SearchContext, { SearchContextType } from '../../src/contexts/SearchContext'
+
 import { rootReducer, RootState } from '../../src/store'
-// Models
-import { GlobalContextType, SearchContextType } from '../../src/models/context'
-// Contexts
-import GlobalContext from '../../src/contexts/GlobalContext'
-import SearchContext from '../../src/contexts/SearchContext'
-// Constants
-import { defaultGlobalContextValue, defaultSearchContextValue, initialStoreState } from './data'
+import { defaultSearchContextValue, initialStoreState } from './data'
 
 interface ExtendedRenderOptions extends RenderOptions {
   preloadedState?: PreloadedState<RootState>
   store?: Store
-  globalContextValue?: GlobalContextType
   searchContextValue?: SearchContextType
 }
 
@@ -32,7 +23,11 @@ export const renderWithProvider = (
   }: ExtendedRenderOptions = {}
 ) => {
   const wrapper = ({ children }: { children: ReactNode }): JSX.Element => {
-    return <Provider store={store}>{children}</Provider>
+    return (
+      <StoreProvider store={store}>
+        <PaperProvider>{children}</PaperProvider>
+      </StoreProvider>
+    )
   }
 
   // Return an object with the store and all of RTL's query functions
@@ -43,7 +38,6 @@ export const renderWithProviderAndContexts = (
   component: ReactElement,
   {
     preloadedState = initialStoreState,
-    globalContextValue = defaultGlobalContextValue,
     searchContextValue = defaultSearchContextValue,
     store = configureStore({ reducer: rootReducer, preloadedState }),
     ...renderOptions
@@ -51,11 +45,11 @@ export const renderWithProviderAndContexts = (
 ) => {
   const wrapper = ({ children }: { children: ReactNode }): JSX.Element => {
     return (
-      <Provider store={store}>
-        <GlobalContext.Provider value={globalContextValue}>
-          <SearchContext.Provider value={searchContextValue}>{children}</SearchContext.Provider>
-        </GlobalContext.Provider>
-      </Provider>
+      <StoreProvider store={store}>
+        <SearchContext.Provider value={searchContextValue}>
+          <PaperProvider>{children}</PaperProvider>
+        </SearchContext.Provider>
+      </StoreProvider>
     )
   }
 

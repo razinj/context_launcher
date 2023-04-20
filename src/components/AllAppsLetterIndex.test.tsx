@@ -1,8 +1,9 @@
-import React from 'react'
 import { fireEvent, screen } from '@testing-library/react-native'
-import { renderWithProvider } from '../../utils/test/utils'
-import AllAppsLetterIndex from './AllAppsLetterIndex'
+import React from 'react'
 import { initialStoreState } from '../../utils/test/data'
+import { renderWithProvider } from '../../utils/test/utils'
+import { RootState } from '../store'
+import AllAppsLetterIndex from './AllAppsLetterIndex'
 
 describe('<AllAppsLetterIndex /> Tests', () => {
   const onPressFn = jest.fn()
@@ -16,13 +17,14 @@ describe('<AllAppsLetterIndex /> Tests', () => {
   })
 
   it('should render correctly and match snapshot - populated list', () => {
-    const customInitialState = {
+    const customInitialState: RootState = {
       ...initialStoreState,
       appsList: {
         list: [
           {
-            name: 'com.google.chrome',
-            label: 'Chrome',
+            packageName: 'com.google.chrome',
+            name: 'Chrome',
+            icon: 'ICON',
           },
         ],
       },
@@ -44,17 +46,19 @@ describe('<AllAppsLetterIndex /> Tests', () => {
   })
 
   it('should call passed function when element is pressed', () => {
-    const customInitialState = {
+    const customInitialState: RootState = {
       ...initialStoreState,
       appsList: {
         list: [
           {
-            name: 'com.google.chrome',
-            label: 'Chrome',
+            packageName: 'com.google.chrome',
+            name: 'Chrome',
+            icon: 'ICON',
           },
           {
-            name: 'com.google.maps',
-            label: 'Maps',
+            packageName: 'com.google.maps',
+            name: 'Maps',
+            icon: 'ICON',
           },
         ],
       },

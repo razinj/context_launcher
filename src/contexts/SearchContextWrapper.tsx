@@ -1,39 +1,29 @@
-// React
-import React, { RefObject, useRef, useState } from 'react'
-// React Native
+import React, { ReactNode, RefObject, useMemo, useRef } from 'react'
 import { TextInput } from 'react-native'
-// Context
-import SearchContext from './SearchContext'
-// Utils
-import { dismissKeyboard } from '../utils/keyboard'
-// Custom Hooks
-import { useKeyboard } from '../hooks/useKeyboard'
-// Models
-import { SearchContextWrapperProps as Props } from '../models/props'
+import SearchContext, { SearchContextType } from './SearchContext'
+
+type Props = {
+  children: ReactNode
+}
 
 const SearchContextWrapper = ({ children }: Props) => {
-  const keyboard = useKeyboard()
   const searchInputRef: RefObject<TextInput> | null = useRef(null)
-  const [invalidCharacters, setInvalidCharacters] = useState(false)
 
-  const dismissKeyboardAndBlurSearchInput = () => {
-    // Dismiss keyboard
-    if (keyboard.isShown) dismissKeyboard()
-    // Remove search input focus
-    if (searchInputRef.current?.isFocused()) searchInputRef.current?.blur()
+  const clearSearchInput = () => {
+    searchInputRef.current?.clear()
   }
 
-  return (
-    <SearchContext.Provider
-      value={{
-        searchInputRef,
-        searchAppLaunchProcedure: dismissKeyboardAndBlurSearchInput,
-        invalidCharacters,
-        setInvalidCharacters: (isInvalid: boolean) => setInvalidCharacters(isInvalid),
-      }}>
-      {children}
-    </SearchContext.Provider>
+  const searchAppLaunchProcedure = () => {
+    clearSearchInput()
+    searchInputRef.current?.blur()
+  }
+
+  const value: SearchContextType = useMemo(
+    () => ({ searchInputRef, clearSearchInput, searchAppLaunchProcedure } as SearchContextType),
+    [searchInputRef]
   )
+
+  return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>
 }
 
 export default SearchContextWrapper

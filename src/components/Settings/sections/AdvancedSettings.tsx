@@ -1,32 +1,18 @@
-// React
 import React from 'react'
-// React Native
 import { Pressable, View } from 'react-native'
-// Components
-import SettingsItemLabel from '../shared/SettingsItemLabel'
-// Redux
 import { useDispatch } from 'react-redux'
-import { setAppsList } from '../../../slices/appsList'
+import { getAppsListAction } from '../../../slices/appsList'
 import { resetPreferences } from '../../../slices/preferences'
-// Native modules
-import AppsModule from '../../../native-modules/AppsModule'
-// Utils
 import { displayToast } from '../../../utils/toast'
-// Models
-import { AppDetails } from '../../../models/app-details'
-// Constants
+import SettingsItemLabel from '../shared/SettingsItemLabel'
 import { settingItemButtonRippleConfig, settingItemWrapperStyle, settingsPressableItemStyle } from '../shared/values'
 
 const AdvancedSettings = () => {
   const dispatch = useDispatch()
 
   const reloadAllApps = () => {
-    AppsModule.getApplications((applications: string) => {
-      const apps = JSON.parse(applications) as AppDetails[]
-
-      dispatch(setAppsList(apps))
-      displayToast('All apps reloaded successfully!')
-    })
+    dispatch(getAppsListAction())
+    displayToast('All apps reloaded successfully!')
   }
 
   const onResetPreferences = () => {
@@ -38,7 +24,7 @@ const AdvancedSettings = () => {
     <>
       <View style={settingItemWrapperStyle}>
         <Pressable
-          testID='advanced-settings-reload-all-apps-button'
+          testID='reload-all-apps-button'
           onPress={reloadAllApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
@@ -49,7 +35,7 @@ const AdvancedSettings = () => {
 
       <View style={settingItemWrapperStyle}>
         <Pressable
-          testID='advanced-settings-reset-preferences-button'
+          testID='reset-preferences-button'
           onPress={onResetPreferences}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}

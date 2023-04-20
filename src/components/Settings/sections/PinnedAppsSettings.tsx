@@ -1,26 +1,24 @@
-// React
-import React from 'react'
-// React Native
+import { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import React, { useMemo } from 'react'
 import { Pressable, StyleSheet, Switch, Text, View } from 'react-native'
-// Components
-import SettingsItemLabel from '../shared/SettingsItemLabel'
-// Redux
 import { useDispatch, useSelector } from 'react-redux'
+import { sortPinnedApps, sortTemporaryPinnedApps } from '../../../slices/appState'
 import {
   clearPinnedApps,
+  selectPinnedAppsCountMemoized,
   selectTemporaryPinnedAppsConfigMemoized,
+  selectTemporaryPinnedAppsCountMemoized,
   setTemporaryAppsConfig,
 } from '../../../slices/pinnedApps'
 import {
-  selectDisplayPinnedAppsMemoized,
-  selectDisplayTemporaryPinnedAppsMemoized,
   displayPinnedApps,
   displayTemporaryPinnedApps,
+  selectDisplayPinnedAppsMemoized,
+  selectDisplayTemporaryPinnedAppsMemoized,
 } from '../../../slices/preferences'
-// Utils
-import { displayToast } from '../../../utils/toast'
 import { getDateFromStringWithCurrentDateValue, getTimeFromDate, stripDateFromSeconds } from '../../../utils/date'
-// Contsants
+import { displayToast } from '../../../utils/toast'
+import SettingsItemLabel from '../shared/SettingsItemLabel'
 import {
   activeSwitch,
   inActiveSwitch,
@@ -29,13 +27,13 @@ import {
   settingsPressableItemStyle,
   switchTrackColor,
 } from '../shared/values'
-// TimePicker
-import { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker'
 
 const PinnedAppsSettings = () => {
   const dispatch = useDispatch()
   const displayPinnedAppsValue = useSelector(selectDisplayPinnedAppsMemoized)
+  const pinnedAppsCount = useSelector(selectPinnedAppsCountMemoized)
   const displayTemporaryPinnedAppsValue = useSelector(selectDisplayTemporaryPinnedAppsMemoized)
+  const temporaryPinnedAppsCount = useSelector(selectTemporaryPinnedAppsCountMemoized)
   const temporaryPinnedAppsConfig = useSelector(selectTemporaryPinnedAppsConfigMemoized)
 
   const toggleDisplayPinnedApps = () => {
@@ -47,8 +45,13 @@ const PinnedAppsSettings = () => {
   }
 
   const onClearPinnedApps = () => {
-    dispatch(clearPinnedApps())
-    displayToast('All pinned apps cleared successfully!')
+    dispatch(clearPinnedApps({ temporarily: false }))
+    displayToast('Pinned apps cleared successfully!')
+  }
+
+  const onClearTemporarilyPinnedApps = () => {
+    dispatch(clearPinnedApps({ temporarily: true }))
+    displayToast('Temporarily pinned apps cleared successfully!')
   }
 
   const showTimePicker = (forStartDate: boolean) => {
@@ -67,7 +70,7 @@ const PinnedAppsSettings = () => {
   }
 
   const setTemporaryPinnedAppsStartDate = (event: DateTimePickerEvent, date?: Date) => {
-    if (event.type != 'set' || !date) return
+    if (event.type !== 'set' || !date) return
 
     dispatch(
       setTemporaryAppsConfig({
@@ -78,7 +81,7 @@ const PinnedAppsSettings = () => {
   }
 
   const setTemporaryPinnedAppsEndDate = (event: DateTimePickerEvent, date?: Date) => {
-    if (event.type != 'set' || !date) return
+    if (event.type !== 'set' || !date) return
 
     dispatch(
       setTemporaryAppsConfig({
@@ -87,6 +90,24 @@ const PinnedAppsSettings = () => {
       })
     )
   }
+
+  const onPinnedAppsSortViewClick = () => {
+    dispatch(sortPinnedApps())
+  }
+
+  const onTemporaryPinnedAppsSortViewClick = () => {
+    dispatch(sortTemporaryPinnedApps())
+  }
+
+  const pinnedAppsSortDisabled = useMemo(
+    () => pinnedAppsCount <= 1 || !displayPinnedAppsValue,
+    [pinnedAppsCount, displayPinnedAppsValue]
+  )
+
+  const temporaryPinnedAppsSortDisabled = useMemo(
+    () => temporaryPinnedAppsCount <= 1 || !displayTemporaryPinnedAppsValue,
+    [temporaryPinnedAppsCount, displayTemporaryPinnedAppsValue]
+  )
 
   return (
     <>
@@ -101,6 +122,27 @@ const PinnedAppsSettings = () => {
       </View>
 
       <View style={settingItemWrapperStyle}>
+        <Pressable
+          testID='sort-pinned-apps-button'
+          disabled={pinnedAppsSortDisabled}
+          onPress={onPinnedAppsSortViewClick}
+          android_disableSound={true}
+          android_ripple={settingItemButtonRippleConfig}
+          style={[settingsPressableItemStyle, { opacity: pinnedAppsSortDisabled ? 0.5 : 1 }]}>
+          <SettingsItemLabel
+            title='Sort pinned apps'
+            description={
+              pinnedAppsSortDisabled
+                ? displayPinnedAppsValue
+                  ? 'Add more apps to be able to sort'
+                  : 'Display pinned apps to be able to sort'
+                : 'Click to start sorting'
+            }
+          />
+        </Pressable>
+      </View>
+
+      <View style={settingItemWrapperStyle}>
         <SettingsItemLabel title='Display temporary pinned apps' />
         <Switch
           value={displayTemporaryPinnedAppsValue}
@@ -108,6 +150,27 @@ const PinnedAppsSettings = () => {
           trackColor={switchTrackColor}
           thumbColor={displayTemporaryPinnedAppsValue ? activeSwitch : inActiveSwitch}
         />
+      </View>
+
+      <View style={settingItemWrapperStyle}>
+        <Pressable
+          testID='sort-temporarily-pinned-apps-button'
+          disabled={temporaryPinnedAppsSortDisabled}
+          onPress={onTemporaryPinnedAppsSortViewClick}
+          android_disableSound={true}
+          android_ripple={settingItemButtonRippleConfig}
+          style={[settingsPressableItemStyle, { opacity: temporaryPinnedAppsSortDisabled ? 0.5 : 1 }]}>
+          <SettingsItemLabel
+            title='Sort temporarily pinned apps'
+            description={
+              temporaryPinnedAppsSortDisabled
+                ? displayTemporaryPinnedAppsValue
+                  ? 'Add more apps to be able to sort'
+                  : 'Display temporarily pinned apps to be able to sort'
+                : 'Click to start sorting'
+            }
+          />
+        </Pressable>
       </View>
 
       <View style={styles.pinnedAppsItemContainer}>
@@ -143,7 +206,17 @@ const PinnedAppsSettings = () => {
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={settingsPressableItemStyle}>
-          <SettingsItemLabel title='Clear all' />
+          <SettingsItemLabel title='Clear pinned apps' />
+        </Pressable>
+      </View>
+
+      <View style={settingItemWrapperStyle}>
+        <Pressable
+          onPress={onClearTemporarilyPinnedApps}
+          android_disableSound={true}
+          android_ripple={settingItemButtonRippleConfig}
+          style={settingsPressableItemStyle}>
+          <SettingsItemLabel title='Clear temporarily pinned apps' />
         </Pressable>
       </View>
     </>

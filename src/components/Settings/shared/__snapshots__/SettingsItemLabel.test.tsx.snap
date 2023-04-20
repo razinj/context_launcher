@@ -1,62 +1,106 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot - required and optional props 1`] = `
-<View
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "padding": 10,
+        "flex": 1,
       },
       undefined,
     ]
   }
 >
-  <Text
-    style={
-      [
-        {
-          "color": "#808080",
-        },
-        undefined,
-      ]
-    }
-  >
-    An item label
-  </Text>
-  <Text
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
     style={
       {
-        "color": "#ccc",
+        "flex": 1,
       }
     }
   >
-    An item description
-  </Text>
-</View>
+    <View
+      style={
+        [
+          {
+            "padding": 10,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#808080",
+            },
+            undefined,
+          ]
+        }
+      >
+        An item label
+      </Text>
+      <Text
+        style={
+          {
+            "color": "#ccc",
+          }
+        }
+      >
+        An item description
+      </Text>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot - required props 1`] = `
-<View
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "padding": 10,
+        "flex": 1,
       },
       undefined,
     ]
   }
 >
-  <Text
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
     style={
-      [
-        {
-          "color": "#808080",
-        },
-        undefined,
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
-    An item label
-  </Text>
-</View>
+    <View
+      style={
+        [
+          {
+            "padding": 10,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#808080",
+            },
+            undefined,
+          ]
+        }
+      >
+        An item label
+      </Text>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
 `;

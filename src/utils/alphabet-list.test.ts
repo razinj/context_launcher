@@ -1,14 +1,14 @@
-import { getAppsLetterIndex, getFirstLetter, getLettersMap } from './alphabet-list'
-import { AppLetterIndex } from '../models/list-letter-index'
 import { AppDetails } from '../models/app-details'
+import { AppLetterIndex } from '../models/list-letter-index'
+import { getAppsLetterIndex, getFirstLetter, getLettersMap } from './alphabet-list'
 
 describe('AlphabetList Tests', () => {
   describe('getLettersMap Tests', () => {
     it('should map letters to indexes correctly', () => {
       const result = getLettersMap()
 
-      expect(result['A']).toEqual(1)
-      expect(result['Z']).toEqual(26)
+      expect(result.A).toEqual(1)
+      expect(result.Z).toEqual(26)
     })
   })
 
@@ -25,36 +25,44 @@ describe('AlphabetList Tests', () => {
   describe('getAppsLetterIndex Tests', () => {
     const apps: AppDetails[] = [
       {
-        label: 'App 1',
-        name: 'com.app_1',
+        name: 'App 1',
+        packageName: 'com.app_1',
+        icon: 'ICON',
       },
       {
-        label: 'App 2',
-        name: 'com.app_2',
+        name: 'App 2',
+        packageName: 'com.app_2',
+        icon: 'ICON',
       },
       {
-        label: 'Brave',
-        name: 'com.brave',
+        name: 'Brave',
+        packageName: 'com.brave',
+        icon: 'ICON',
       },
       {
-        label: 'Chrome',
-        name: 'com.chrome',
+        name: 'Chrome',
+        packageName: 'com.chrome',
+        icon: 'ICON',
       },
       {
-        label: 'Clock',
-        name: 'com.clock',
+        name: 'Clock',
+        packageName: 'com.clock',
+        icon: 'ICON',
       },
       {
-        label: 'Google',
-        name: 'com.google',
+        name: 'Google',
+        packageName: 'com.google',
+        icon: 'ICON',
       },
       {
-        label: 'Youtube',
-        name: 'com.youtube',
+        name: 'Youtube',
+        packageName: 'com.youtube',
+        icon: 'ICON',
       },
       {
-        label: '_App',
-        name: 'com._app',
+        name: '_App',
+        packageName: 'com._app',
+        icon: 'ICON',
       },
     ]
     const appLetterIndex: AppLetterIndex[] = [

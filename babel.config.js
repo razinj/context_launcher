@@ -7,7 +7,7 @@ module.exports = {
   ],
   env: {
     production: {
-      plugins: ['transform-remove-console'],
+      plugins: ['transform-remove-console', 'react-native-paper/babel'],
     },
   },
   plugins: ['react-native-reanimated/plugin'],

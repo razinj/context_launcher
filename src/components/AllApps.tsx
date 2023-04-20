@@ -1,61 +1,43 @@
-// React
-import React, { MutableRefObject, useRef } from 'react'
-// React Native
+import React, { MutableRefObject, useCallback, useRef } from 'react'
 import { FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet } from 'react-native'
-// Components
-import AppItem from './AppItem'
-import CustomView from './CustomView'
-import AllAppsLetterIndex from './AllAppsLetterIndex'
-// Redux
+import Animated, { SlideInDown } from 'react-native-reanimated'
 import { useSelector } from 'react-redux'
-import { selectAppsListMemoized } from '../slices/appsList'
-// Reanimated
-import { SlideInDown } from 'react-native-reanimated'
-// Constants
-import { APP_ITEM_HEIGHT_ICON_DISPLAYED, BACKGROUND_COLOR } from '../constants'
-// Models
-import { RenderedIn } from '../models/rendered-in'
+import { BACKGROUND_COLOR } from '../constants'
 import { AppDetails } from '../models/app-details'
-
-const keyExtractor = ({ name }: AppDetails) => name
-const getItemLayout = (_data: unknown, index: number) => ({
-  length: APP_ITEM_HEIGHT_ICON_DISPLAYED,
-  offset: APP_ITEM_HEIGHT_ICON_DISPLAYED * index,
-  index,
-})
+import { RenderedIn } from '../models/rendered-in'
+import { selectAppsListMemoized } from '../slices/appsList'
+import { getListItemLayout, getListKey } from '../utils/apps'
+import AllAppsLetterIndex from './AllAppsLetterIndex'
+import AppItem from './AppItem'
 
 const AllApps = () => {
   const apps = useSelector(selectAppsListMemoized)
   const listRef: MutableRefObject<FlatList<AppDetails> | null> = useRef(null)
 
-  const scrollToIndex = (index: number) => {
-    const currentListRef = listRef.current as FlatList
-    currentListRef.scrollToIndex({ index, animated: true })
-  }
+  const scrollToIndex = useCallback(
+    (index: number) => listRef.current?.scrollToIndex({ index, animated: true }),
+    [listRef]
+  )
 
   const renderItem: ListRenderItem<AppDetails> = ({ item }: ListRenderItemInfo<AppDetails>) => (
-    <AppItem
-      appDetails={item}
-      renderedIn={RenderedIn.ALL_APPS}
-      pressableStyle={{ borderRadius: 0, paddingHorizontal: 7.5 }}
-    />
+    <AppItem appDetails={item} renderedIn={RenderedIn.ALL_APPS} />
   )
 
   return (
-    <CustomView style={styles.wrapper} entryAnimation={SlideInDown}>
+    <Animated.View style={styles.wrapper} entering={SlideInDown}>
       <FlatList
         data={apps}
         ref={listRef}
         renderItem={renderItem}
-        initialNumToRender={15}
-        keyExtractor={keyExtractor}
-        getItemLayout={getItemLayout}
+        initialNumToRender={14}
+        keyExtractor={getListKey}
+        getItemLayout={getListItemLayout}
         showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
+        keyboardShouldPersistTaps={'handled'}
       />
 
       <AllAppsLetterIndex onPress={scrollToIndex} />
-    </CustomView>
+    </Animated.View>
   )
 }
 

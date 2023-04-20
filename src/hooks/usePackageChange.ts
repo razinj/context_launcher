@@ -1,10 +1,6 @@
-// React
 import { useEffect } from 'react'
-// React Native
 import { NativeEventEmitter, NativeModules } from 'react-native'
-// Constants
 import { PACKAGE_CHANGE_EVENT_NAME } from '../constants'
-// Models
 import { PackageChange } from '../models/event'
 
 export const usePackageChange = (callback: (packageChange: PackageChange) => void) => {

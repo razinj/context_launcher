@@ -1,23 +1,17 @@
-// React
 import React from 'react'
-// React Native
 import { Pressable, Switch, View } from 'react-native'
-// Components
-import SettingsItemLabel from '../shared/SettingsItemLabel'
-// Redux
 import { useDispatch, useSelector } from 'react-redux'
+import { displayRecentApps, selectDisplayRecentAppsMemoized } from '../../../slices/preferences'
 import { clearRecentApps } from '../../../slices/recentApps'
-import { selectDisplayRecentAppsMemoized, displayRecentApps } from '../../../slices/preferences'
-// Utils
 import { displayToast } from '../../../utils/toast'
-// Constants
+import SettingsItemLabel from '../shared/SettingsItemLabel'
 import {
-  switchTrackColor,
   activeSwitch,
   inActiveSwitch,
   settingItemButtonRippleConfig,
-  settingsPressableItemStyle,
   settingItemWrapperStyle,
+  settingsPressableItemStyle,
+  switchTrackColor,
 } from '../shared/values'
 
 const RecentAppsSettings = () => {
@@ -38,7 +32,7 @@ const RecentAppsSettings = () => {
       <View style={settingItemWrapperStyle}>
         <SettingsItemLabel title='Display' />
         <Switch
-          testID='settings-bottom-display-recent-apps-switch'
+          testID='display-recent-apps-switch'
           value={displayRecentAppsValue}
           onValueChange={toggleDisplayRecentApps}
           trackColor={switchTrackColor}
@@ -48,7 +42,7 @@ const RecentAppsSettings = () => {
 
       <View style={settingItemWrapperStyle}>
         <Pressable
-          testID='advanced-settings-clear-recent-apps-button'
+          testID='clear-recent-apps-button'
           onPress={onClearRecentApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}

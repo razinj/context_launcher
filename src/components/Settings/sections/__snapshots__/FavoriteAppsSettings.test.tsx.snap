@@ -1,215 +1,235 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapshot 1`] = `
-[
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
   <View
+    collapsable={false}
+    pointerEvents="box-none"
     style={
       {
-        "flexDirection": "row",
-        "justifyContent": "space-between",
+        "flex": 1,
       }
     }
   >
     <View
       style={
-        [
-          {
-            "padding": 10,
-          },
-          undefined,
-        ]
+        {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
       }
     >
-      <Text
+      <View
         style={
           [
             {
-              "color": "#808080",
+              "padding": 10,
             },
             undefined,
           ]
         }
       >
-        Display
-      </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#808080",
+              },
+              undefined,
+            ]
+          }
+        >
+          Display
+        </Text>
+      </View>
+      <RCTSwitch
+        accessibilityRole="switch"
+        onChange={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        onTintColor="#e5e5e5"
+        style={
+          {
+            "height": 31,
+            "width": 51,
+          }
+        }
+        testID="display-favorite-apps-switch"
+        thumbTintColor="#42855B"
+        tintColor="#e5e5e5"
+        value={true}
+      />
     </View>
-    <RCTSwitch
-      accessibilityRole="switch"
-      onChange={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      onTintColor="#e5e5e5"
-      style={
-        {
-          "height": 31,
-          "width": 51,
-        }
-      }
-      testID="settings-bottom-display-favorite-apps-switch"
-      thumbTintColor="#42855B"
-      tintColor="#e5e5e5"
-      value={true}
-    />
-  </View>,
-  <View
-    style={
-      {
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-      }
-    }
-  >
     <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": true,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
       style={
-        [
+        {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            },
+            {
+              "opacity": 0.5,
+            },
+          ]
+        }
+        testID="sort-favorite-apps-button"
+      >
+        <View
+          style={
+            [
+              {
+                "padding": 10,
+              },
+              undefined,
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#808080",
+                },
+                undefined,
+              ]
+            }
+          >
+            Sort
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#ccc",
+              }
+            }
+          >
+            Add more apps to be able to sort
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
           {
             "alignItems": "center",
             "flex": 1,
             "flexDirection": "row",
             "justifyContent": "space-between",
-          },
-          {
-            "opacity": 0.5,
-          },
-        ]
-      }
-      testID="settings-bottom-sort-favorite-apps-button"
-    >
-      <View
-        style={
-          [
-            {
-              "padding": 10,
-            },
-            undefined,
-          ]
+          }
         }
+        testID="clear-favorite-apps-button"
       >
-        <Text
+        <View
           style={
             [
               {
-                "color": "#808080",
+                "padding": 10,
               },
               undefined,
             ]
           }
         >
-          Sort
-        </Text>
-        <Text
-          style={
-            {
-              "color": "#ccc",
+          <Text
+            style={
+              [
+                {
+                  "color": "#808080",
+                },
+                undefined,
+              ]
             }
-          }
-        >
-          Add more apps to be able to sort
-        </Text>
+          >
+            Clear
+          </Text>
+        </View>
       </View>
     </View>
-  </View>,
-  <View
-    style={
-      {
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-      }
-    }
-  >
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-        }
-      }
-      testID="advanced-settings-clear-favorite-apps-button"
-    >
-      <View
-        style={
-          [
-            {
-              "padding": 10,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#808080",
-              },
-              undefined,
-            ]
-          }
-        >
-          Clear
-        </Text>
-      </View>
-    </View>
-  </View>,
-]
+  </View>
+</RNCSafeAreaProvider>
 `;

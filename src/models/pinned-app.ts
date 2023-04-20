@@ -1,10 +1,6 @@
-// Models
-import { AppDetailsWithIcon } from './app-details'
+import { AppDetails } from './app-details'
 
-export type PinnedApp = AppDetailsWithIcon & {
-  isPermanent: boolean
-  isTemporary: boolean
-}
+export type PinnedApp = AppDetails
 
 export type TemporaryPinnedAppsConfig = {
   startDate?: string
@@ -13,5 +9,6 @@ export type TemporaryPinnedAppsConfig = {
 
 export type PinnedAppsState = {
   list: PinnedApp[]
+  temporarily: PinnedApp[]
   temporaryAppsConfig: TemporaryPinnedAppsConfig
 }

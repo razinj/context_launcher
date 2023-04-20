@@ -1,52 +1,36 @@
-// React
 import React, { useContext, useEffect, useState } from 'react'
-// React Native
-import { View, StyleSheet, StatusBar } from 'react-native'
-// Redux
+import { StatusBar, StyleSheet, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { setAppsList } from './slices/appsList'
-import { removeRecentApp } from './slices/recentApps'
-import { removeFavoriteApp } from './slices/favoriteApps'
-// Components
-import TopContainer from './containers/TopContainer'
 import BottomContainer from './containers/BottomContainer'
-// Contexts
-import GlobalContext from './contexts/GlobalContext'
+import TopContainer from './containers/TopContainer'
 import SearchContext from './contexts/SearchContext'
-// Custom hooks
 import { useBackHandler } from './hooks/useBackHandler'
 import { usePackageChange } from './hooks/usePackageChange'
-// Native modules
-import AppsModule from './native-modules/AppsModule'
-// Models
-import { AppDetails } from './models/app-details'
 import { PackageChange } from './models/event'
+import { appRemovedAction, getAppsListAction } from './slices/appsList'
+import { setDisplayAllApps } from './slices/appState'
 
-const initialLoadValue = 'INITIAL_LOAD'
+const initialLoadPackageName = 'INITIAL_LOAD'
 const packageChangedInitialValue = {
-  packageName: initialLoadValue,
+  packageName: initialLoadPackageName,
   isRemoved: false,
 }
 
 const Home = () => {
   const dispatch = useDispatch()
   const [packageChanged, setPackageChanged] = useState<PackageChange>(packageChangedInitialValue)
-  const { hideAllApps } = useContext(GlobalContext)
   const { searchInputRef } = useContext(SearchContext)
 
   useEffect(() => {
-    if (packageChanged.isRemoved && packageChanged.packageName !== initialLoadValue) {
-      dispatch(removeRecentApp(packageChanged.packageName))
-      dispatch(removeFavoriteApp(packageChanged.packageName))
+    if (packageChanged.isRemoved && packageChanged.packageName !== initialLoadPackageName) {
+      dispatch(appRemovedAction(packageChanged.packageName))
     }
 
-    AppsModule.getApplications((applications: string) => {
-      dispatch(setAppsList(JSON.parse(applications) as AppDetails[]))
-    })
+    dispatch(getAppsListAction())
   }, [packageChanged])
 
   useBackHandler(() => {
-    hideAllApps()
+    dispatch(setDisplayAllApps(false))
     if (searchInputRef?.current?.isFocused()) searchInputRef?.current?.blur()
 
     // TODO: Read more about the return here: https://github.com/react-native-community/hooks#usebackhandler

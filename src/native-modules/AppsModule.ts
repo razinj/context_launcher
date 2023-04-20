@@ -1,7 +1,18 @@
-// React Native
 import { NativeModules } from 'react-native'
-// Models
-import { AppsModuleInterface } from '../models/native-module'
+
+export interface AppsModuleInterface {
+  getConstants(): AppsModuleConstants
+  launchApplication(packageName: string): void
+  showApplicationDetails(packageName: string): void
+  requestApplicationUninstall(packageName: string): void
+  getApplications(): Promise<string>
+}
+
+type AppsModuleConstants = {
+  appVersion: string
+  buildNumber: string
+  packageName: string
+}
 
 const { AppsModule } = NativeModules
 

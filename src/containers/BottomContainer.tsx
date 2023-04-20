@@ -1,18 +1,14 @@
-// React
-import React, { useContext, useMemo } from 'react'
-// React Native
+import React, { useMemo } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-// Components
-import Search from '../components/Search'
+import { useSelector } from 'react-redux'
 import AllAppsIcon from '../components/AllAppsIcon'
+import Search from '../components/Search'
 import SettingsIcon from '../components/Settings/SettingsIcon'
-// Contexts
-import GlobalContext from '../contexts/GlobalContext'
-// Constants
 import { SECONDARY_COLOR, WHITE_COLOR } from '../constants'
+import { selectDisplayAllApps } from '../slices/appState'
 
 const BottomContainer = () => {
-  const { displayAllApps } = useContext(GlobalContext)
+  const displayAllApps = useSelector(selectDisplayAllApps)
 
   const adaptiveStyle: StyleProp<ViewStyle> = useMemo(() => {
     return { backgroundColor: displayAllApps ? SECONDARY_COLOR : WHITE_COLOR }
@@ -31,6 +27,7 @@ const styles = StyleSheet.create({
   wrapper: {
     borderRadius: 5,
     flexDirection: 'row',
+    alignItems: 'center',
   },
 })
 

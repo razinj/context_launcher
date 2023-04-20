@@ -1,82 +1,44 @@
-// React
 import React from 'react'
-// React Native
 import { FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native'
-// Redux
 import { useSelector } from 'react-redux'
-import { selectRecentAppsMemoized } from '../slices/recentApps'
-// Components
-import AppItem from './AppItem'
-// Constants
-import { APP_ITEM_HEIGHT_ICON_DISPLAYED, BACKGROUND_COLOR } from '../constants'
-import { singleRowAppsViewStyle, whiteTextColorStyle } from '../shared/styles'
-// Models
+import { RecentApp } from '../models/recent-app'
 import { RenderedIn } from '../models/rendered-in'
-import { RecentAppDetails } from '../models/recent-app'
-
-const keyExtractor = ({ name }: RecentAppDetails) => name
-const getItemLayout = (_data: unknown, index: number) => ({
-  length: APP_ITEM_HEIGHT_ICON_DISPLAYED,
-  offset: APP_ITEM_HEIGHT_ICON_DISPLAYED * index,
-  index,
-})
+import { sectionHeaderLabelStyle, sectionHeaderWrapperStyle, sectionWrapper } from '../shared/styles'
+import { selectRecentAppsMemoized } from '../slices/recentApps'
+import { getListItemLayout, getListKey } from '../utils/apps'
+import AppItem from './AppItem'
+import EmptyListComponent from './shared/EmptyListComponent'
 
 const RecentApps = () => {
   const apps = useSelector(selectRecentAppsMemoized)
 
-  const renderItem: ListRenderItem<RecentAppDetails> = ({ item }: ListRenderItemInfo<RecentAppDetails>) => (
-    <AppItem
-      pressableStyle={{ borderRadius: 0, paddingHorizontal: 7.5 }}
-      appDetails={item}
-      appIcon={item.icon}
-      renderedIn={RenderedIn.RECENT_APPS}
-    />
+  const renderItem: ListRenderItem<RecentApp> = ({ item }: ListRenderItemInfo<RecentApp>) => (
+    <AppItem appDetails={item} renderedIn={RenderedIn.RECENT_APPS} />
   )
 
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.headerWrapper}>
-        <Text style={styles.headerLabel}>Recent</Text>
+    <View style={sectionWrapper}>
+      <View style={sectionHeaderWrapperStyle}>
+        <Text style={sectionHeaderLabelStyle}>Recent</Text>
       </View>
-      {apps.length > 0 ? (
-        <View style={styles.verticalAppsWrapper}>
-          <FlatList
-            inverted
-            data={apps}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-            getItemLayout={getItemLayout}
-            keyboardShouldPersistTaps={'handled'}
-          />
-        </View>
-      ) : (
-        <View style={singleRowAppsViewStyle}>
-          <Text style={whiteTextColorStyle}>No recent apps yet</Text>
-        </View>
-      )}
+      <View style={styles.appsWrapper}>
+        <FlatList
+          data={apps}
+          renderItem={renderItem}
+          initialNumToRender={5}
+          keyExtractor={getListKey}
+          inverted={apps.length !== 0}
+          getItemLayout={getListItemLayout}
+          keyboardShouldPersistTaps={'handled'}
+          ListEmptyComponent={<EmptyListComponent text={'No recent apps yet'} />}
+        />
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    borderRadius: 5,
-    backgroundColor: BACKGROUND_COLOR,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  headerLabel: {
-    color: 'rgba(255,255,255,0.75)',
-    fontSize: 12,
-  },
-  headerWrapper: {
-    paddingVertical: 2.5,
-    paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.5)',
-  },
-  verticalAppsWrapper: {
+  appsWrapper: {
     paddingVertical: 5,
   },
 })

@@ -1,6 +1,4 @@
-// Redux
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-// Models
 import { RootState } from '../store'
 
 export interface PreferencesState {
@@ -34,7 +32,10 @@ export const preferencesSlice = createSlice({
       state.displayTemporaryPinnedApps = payload
     },
     resetPreferences: (state: PreferencesState) => {
-      state = { ...initialState }
+      state.displayPinnedApps = initialState.displayPinnedApps
+      state.displayRecentApps = initialState.displayRecentApps
+      state.displayFavoriteApps = initialState.displayFavoriteApps
+      state.displayTemporaryPinnedApps = initialState.displayTemporaryPinnedApps
     },
   },
 })

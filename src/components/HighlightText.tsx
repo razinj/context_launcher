@@ -1,17 +1,13 @@
-// React
 import React from 'react'
-// React Native
 import { StyleSheet, Text } from 'react-native'
-// Redux
 import { useSelector } from 'react-redux'
-// Slices
-import { selectAppsSearchQuery } from '../slices/appsSearch'
-// Constants
-import { PRIMARY_COLOR } from '../constants'
-// Utils
+import { PRIMARY_COLOR, WHITE_COLOR } from '../constants'
+import { selectAppsSearchQuery } from '../slices/appState'
 import { createKeyForHighlightTextElement } from '../utils/string'
-// Models
-import { HighlightTextProps as Props } from '../models/props'
+
+type Props = {
+  text: string
+}
 
 const HighlightText = ({ text }: Props) => {
   const searchQuery = useSelector(selectAppsSearchQuery)
@@ -48,7 +44,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 2.5,
   },
   normalText: {
-    color: '#fff',
+    color: WHITE_COLOR,
     fontWeight: '600',
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowRadius: 2.5,

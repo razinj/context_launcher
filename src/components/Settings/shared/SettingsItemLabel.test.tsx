@@ -1,8 +1,7 @@
-import React from 'react'
 import { screen } from '@testing-library/react-native'
+import React from 'react'
 import { renderWithProvider } from '../../../../utils/test/utils'
-import { SettingsItemLabelProps } from '../../../models/props'
-import SettingsItemLabel from '../shared/SettingsItemLabel'
+import SettingsItemLabel, { SettingsItemLabelProps } from '../shared/SettingsItemLabel'
 
 describe('<SettingsItemLabel /> Tests', () => {
   const requiredProps: SettingsItemLabelProps = {

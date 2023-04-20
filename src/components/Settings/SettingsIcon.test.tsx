@@ -1,9 +1,15 @@
-import React from 'react'
 import { fireEvent, screen } from '@testing-library/react-native'
-import { defaultGlobalContextValue } from '../../../utils/test/data'
+import React from 'react'
 import { renderWithProvider, renderWithProviderAndContexts } from '../../../utils/test/utils'
-import { GlobalContextType } from '../../models/context'
+import { setDisplaySettings } from '../../slices/appState'
 import SettingsIcon from './SettingsIcon'
+
+const useDispatchMock = jest.fn()
+
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'),
+  useDispatch: () => useDispatchMock,
+}))
 
 describe('<SettingsIcon /> Tests', () => {
   it('should render correctly and match snapshot', () => {
@@ -14,16 +20,7 @@ describe('<SettingsIcon /> Tests', () => {
   })
 
   it('should call function to display settings bottom sheet when pressed', () => {
-    const displaySettingsBottomSheetFn = jest.fn()
-
-    const customGlobalContextValue: GlobalContextType = {
-      ...defaultGlobalContextValue,
-      displaySettingsBottomSheet: displaySettingsBottomSheetFn,
-    }
-
-    renderWithProviderAndContexts(<SettingsIcon />, {
-      globalContextValue: customGlobalContextValue,
-    })
+    renderWithProviderAndContexts(<SettingsIcon />)
 
     const settingsButton = screen.getByTestId('settings-button')
 
@@ -31,6 +28,6 @@ describe('<SettingsIcon /> Tests', () => {
 
     fireEvent.press(settingsButton)
 
-    expect(displaySettingsBottomSheetFn).toBeCalled()
+    expect(useDispatchMock).toBeCalledWith(setDisplaySettings(true))
   })
 })

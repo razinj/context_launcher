@@ -3,8 +3,8 @@ export const getTimeFromDate = (stringDate?: string): string => {
 
   const date = new Date(stringDate)
 
-  const singleDigitHours = `${date.getHours()}`.length == 1
-  const singleDigitMinutes = `${date.getMinutes()}`.length == 1
+  const singleDigitHours = `${date.getHours()}`.length === 1
+  const singleDigitMinutes = `${date.getMinutes()}`.length === 1
 
   const hours = singleDigitHours ? `0${date.getHours()}` : date.getHours()
   const minutes = singleDigitMinutes ? `0${date.getMinutes()}` : date.getMinutes()

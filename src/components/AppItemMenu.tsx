@@ -1,54 +1,36 @@
-// React
-import React, { useContext, useEffect, useState } from 'react'
-// React Native
-import { View, Text, Pressable, StyleSheet, PressableAndroidRippleConfig, Image } from 'react-native'
-// Components
-import SettingsItemLabel from './Settings/shared/SettingsItemLabel'
-import CustomIcon from './shared/CustomIcon'
-// Redux
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { IconButton, Modal, Portal, ToggleButton } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
-import { resetAppsSearchState } from '../slices/appsSearch'
+import {
+  BOTTOM_CONTAINER_HEIGHT_WITH_PADDINGS,
+  DISABLED_COLOR,
+  NEUTRAL_COLOR,
+  PRIMARY_COLOR,
+  WHITE_COLOR,
+} from '../constants'
+import { resetAppsSearchState, selectDisplayAppMenu, selectMenuAppDetails, setDisplayAppMenu } from '../slices/appState'
+import {
+  addFavoriteApp,
+  removeFavoriteApp,
+  selectFavoriteAppsCountMemoized,
+  selectFavoriteAppsMemoized,
+} from '../slices/favoriteApps'
+import {
+  addPinnedApp,
+  removePinnedApp,
+  selectPinnedAppsMemoized,
+  selectTemporaryPinnedAppsMemoized,
+} from '../slices/pinnedApps'
 import {
   selectDisplayFavoriteAppsMemoized,
   selectDisplayPinnedAppsMemoized,
   selectDisplayTemporaryPinnedAppsMemoized,
 } from '../slices/preferences'
-import {
-  selectFavoriteAppsMemoized,
-  addFavoriteApp,
-  removeFavoriteApp,
-  selectFavoriteAppsCountMemoized,
-} from '../slices/favoriteApps'
-import {
-  updateOrRemovePinnedApp,
-  selectTemporaryPinnedAppsMemoized,
-  selectAllPinnedAppsMemoized,
-  selectPinnedAppsMemoized,
-} from '../slices/pinnedApps'
-// Contexts
-import GlobalContext from '../contexts/GlobalContext'
-// Bottom sheet
-import { BottomSheetModalProvider, BottomSheetModal } from '@gorhom/bottom-sheet'
-// Utils
+import { getAppIndex } from '../utils/apps'
 import { requestAppUninstall, showAppDetails } from '../utils/apps-module'
-import { getPinnedAppByName } from '../utils/apps'
-// Model
-import { FavoriteApp } from '../models/favorite-app'
-import { PinnedApp } from '../models/pinned-app'
-import { AppDetailsWithIcon } from '../models/app-details'
-
-const appInfoIconRippleConfig: PressableAndroidRippleConfig = {
-  borderless: true,
-  foreground: true,
-  color: '#e5e5e5',
-  radius: 18,
-}
-
-const settingItemButtonRippleConfig: PressableAndroidRippleConfig = {
-  borderless: false,
-  foreground: true,
-  color: '#e5e5e5',
-}
+import AppIcon from './shared/AppIcon'
+import CustomIcon from './shared/CustomIcon'
 
 const AppItemMenu = () => {
   const dispatch = useDispatch()
@@ -56,221 +38,206 @@ const AppItemMenu = () => {
   const [isPinnedApp, setIsPinnedApp] = useState(false)
   const [isTemporarilyPinnedApp, setIsTemporarilyPinnedApp] = useState(false)
   const favoriteApps = useSelector(selectFavoriteAppsMemoized)
-  const allPinnedApps = useSelector(selectAllPinnedAppsMemoized)
   const pinnedApps = useSelector(selectPinnedAppsMemoized)
   const temporaryPinnedApps = useSelector(selectTemporaryPinnedAppsMemoized)
   const favoriteAppsCount = useSelector(selectFavoriteAppsCountMemoized)
   const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
   const displayPinnedAppsValue = useSelector(selectDisplayPinnedAppsMemoized)
   const displayTemporaryPinnedApps = useSelector(selectDisplayTemporaryPinnedAppsMemoized)
-  const { appItemMenuBottomSheetRef, appItemMenuDetails } = useContext(GlobalContext)
+
+  const appDetails = useSelector(selectMenuAppDetails)
+  const displayAppMenu = useSelector(selectDisplayAppMenu)
 
   useEffect(() => {
-    if (!appItemMenuDetails) return
+    if (!appDetails) return
 
-    const appIndex = favoriteApps.findIndex(({ name }: FavoriteApp) => name === appItemMenuDetails.name)
-    setIsFavoriteApp(appIndex !== -1)
-  }, [appItemMenuDetails, favoriteApps])
+    setIsPinnedApp(getAppIndex(pinnedApps, appDetails.packageName) !== -1)
+    setIsFavoriteApp(getAppIndex(favoriteApps, appDetails.packageName) !== -1)
+    setIsTemporarilyPinnedApp(getAppIndex(temporaryPinnedApps, appDetails.packageName) !== -1)
+  }, [appDetails, favoriteApps, pinnedApps, temporaryPinnedApps])
 
-  useEffect(() => {
-    if (!appItemMenuDetails) return
-
-    const appIndex = pinnedApps.findIndex(({ name }: PinnedApp) => name === appItemMenuDetails.name)
-    setIsPinnedApp(appIndex !== -1)
-  }, [appItemMenuDetails, pinnedApps])
-
-  useEffect(() => {
-    if (!appItemMenuDetails) return
-
-    const appIndex = temporaryPinnedApps.findIndex(({ name }: PinnedApp) => name === appItemMenuDetails.name)
-    setIsTemporarilyPinnedApp(appIndex !== -1)
-  }, [appItemMenuDetails, temporaryPinnedApps])
-
-  const addToFavoriteApps = () => {
-    if (!appItemMenuDetails || !appItemMenuDetails.icon) return
-
-    dispatch(addFavoriteApp({ ...appItemMenuDetails, icon: appItemMenuDetails.icon }))
-    closeMenu()
-  }
-
-  const removeFromFavoriteApps = () => {
-    if (!appItemMenuDetails?.icon) return
-
-    dispatch(removeFavoriteApp(appItemMenuDetails.name))
-    closeMenu()
-  }
-
-  const updatePinnedApp = (isPermanent: boolean) => {
-    if (!appItemMenuDetails || !appItemMenuDetails.icon) return
-
-    dispatch(
-      updateOrRemovePinnedApp({
-        ...getPinnedAppByName(allPinnedApps, appItemMenuDetails as AppDetailsWithIcon),
-        isPermanent,
-      })
-    )
-    closeMenu()
-  }
-
-  const updateTemporaryPinnedApp = (isTemporary: boolean) => {
-    if (!appItemMenuDetails || !appItemMenuDetails.icon) return
-
-    dispatch(
-      updateOrRemovePinnedApp({
-        ...getPinnedAppByName(allPinnedApps, appItemMenuDetails as AppDetailsWithIcon),
-        isTemporary,
-      })
-    )
-    closeMenu()
-  }
+  if (!appDetails) return null
 
   const openAppInfo = () => {
-    if (!appItemMenuDetails) return
-
     dispatch(resetAppsSearchState())
-    showAppDetails(appItemMenuDetails.name)
-    closeMenu()
+    showAppDetails(appDetails.packageName)
+    dismissMenu()
   }
 
   const uninstallApp = () => {
-    if (!appItemMenuDetails) return
-
     dispatch(resetAppsSearchState())
-    requestAppUninstall(appItemMenuDetails.name)
-    closeMenu()
+    requestAppUninstall(appDetails.packageName)
+    dismissMenu()
   }
 
-  const closeMenu = () => {
-    appItemMenuBottomSheetRef?.current?.dismiss()
+  const toggleFavoriteApp = () => {
+    if (isFavoriteApp) dispatch(removeFavoriteApp(appDetails.packageName))
+    else dispatch(addFavoriteApp(appDetails))
   }
 
-  const pressableStyles = ({ pressed }: { pressed: boolean }) => {
-    return {
-      flex: 1,
-      backgroundColor: pressed ? 'rgba(255, 255, 255, .25)' : 'transparent',
+  const togglePinnedApp = () => {
+    if (isPinnedApp) {
+      dispatch(removePinnedApp({ app: appDetails, isPermanent: true }))
+    } else {
+      dispatch(addPinnedApp({ app: appDetails, isPermanent: true }))
     }
   }
 
+  const toggleTemporarilyPinnedApp = () => {
+    if (isTemporarilyPinnedApp) {
+      dispatch(removePinnedApp({ app: appDetails, isPermanent: false }))
+    } else {
+      dispatch(addPinnedApp({ app: appDetails, isPermanent: false }))
+    }
+  }
+
+  const getToggleButtonIcon = (iconName: string, isActive: boolean, isDisabled: boolean) => {
+    if (isDisabled) return <CustomIcon name={iconName} color={DISABLED_COLOR} size={30} />
+    return <CustomIcon name={iconName} color={isActive ? PRIMARY_COLOR : NEUTRAL_COLOR} size={30} />
+  }
+
+  const getToggleButtonStatus = (isChecked: boolean) => (isChecked ? 'checked' : 'unchecked')
+
+  const getTextOpacityStyle = (isDisabled: boolean) => ({ opacity: isDisabled ? 0.5 : 1 })
+
+  const isPinButtonDisabled = !displayPinnedAppsValue
+  const isTemporaryPinButtonDisabled = !displayTemporaryPinnedApps
+  const isFavoriteButtonDisabled = !displayFavoriteAppsValue || (!isFavoriteApp && favoriteAppsCount === 5)
+
+  const dismissMenu = () => {
+    dispatch(setDisplayAppMenu(false))
+  }
+
   return (
-    <BottomSheetModalProvider>
-      <BottomSheetModal
-        ref={appItemMenuBottomSheetRef}
-        snapPoints={[300]}
-        style={styles.bottomSheetModal}
-        bottomInset={58}
-        detached={true}>
-        {/* Wrapper */}
-        <View style={styles.settingsWrapper}>
-          {/* Header wrapper */}
-          <View style={styles.headerWrapper}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image
-                resizeMode={'contain'}
-                style={styles.appIcon}
-                source={{ uri: `data:image/png;base64,${appItemMenuDetails?.icon}` }}
-              />
-              <Text style={styles.headerTitle}>{appItemMenuDetails?.label}</Text>
-            </View>
-            <Pressable onPress={closeMenu} android_disableSound={true} android_ripple={appInfoIconRippleConfig}>
-              <CustomIcon name='close' size={34} color='#808080' />
-            </Pressable>
+    <Portal>
+      <Modal contentContainerStyle={styles.contentContainerStyle} visible={displayAppMenu} onDismiss={dismissMenu}>
+        <View style={styles.headerWrapper}>
+          <View style={styles.headerIconAndTitleWrapper}>
+            <AppIcon style={styles.appIcon} icon={appDetails.icon} />
+            <Text style={styles.headerTitle}>{appDetails.name}</Text>
+          </View>
+          <IconButton
+            size={30}
+            icon='close'
+            iconColor={NEUTRAL_COLOR}
+            style={styles.dismissIcon}
+            onPress={dismissMenu}
+          />
+        </View>
+
+        <View style={styles.buttonsWrapper}>
+          <View style={styles.toggleButtonWrapper}>
+            <ToggleButton
+              style={styles.toggleButton}
+              onPress={toggleFavoriteApp}
+              icon={() => getToggleButtonIcon('star', isFavoriteApp, isFavoriteButtonDisabled)}
+              status={getToggleButtonStatus(isFavoriteApp)}
+              disabled={isFavoriteButtonDisabled}
+            />
+            <Text style={[styles.buttonText, getTextOpacityStyle(isFavoriteButtonDisabled)]}>Favorite</Text>
           </View>
 
-          <View style={styles.itemContainer}>
-            <Pressable
-              onPress={isFavoriteApp ? removeFromFavoriteApps : addToFavoriteApps}
-              style={({ pressed }: { pressed: boolean }) => [
-                pressableStyles({ pressed }),
-                { opacity: !displayFavoriteAppsValue || (!isFavoriteApp && favoriteAppsCount === 5) ? 0.5 : 1 },
-              ]}
-              disabled={!displayFavoriteAppsValue || (!isFavoriteApp && favoriteAppsCount === 5)}
-              android_disableSound={true}
-              android_ripple={settingItemButtonRippleConfig}>
-              <SettingsItemLabel title={isFavoriteApp ? 'Remove from favourite' : 'Add to favourite'} />
-            </Pressable>
+          <View style={styles.toggleButtonWrapper}>
+            <ToggleButton
+              style={styles.toggleButton}
+              onPress={togglePinnedApp}
+              icon={() => getToggleButtonIcon('pin', isPinnedApp, isPinButtonDisabled)}
+              status={getToggleButtonStatus(isPinnedApp)}
+              disabled={isPinButtonDisabled}
+            />
+            <Text style={[styles.buttonText, getTextOpacityStyle(isPinButtonDisabled)]}>Pin</Text>
           </View>
 
-          <View style={styles.itemContainer}>
-            <Pressable
-              onPress={isPinnedApp ? () => updatePinnedApp(false) : () => updatePinnedApp(true)}
-              style={({ pressed }: { pressed: boolean }) => [
-                pressableStyles({ pressed }),
-                { opacity: !displayPinnedAppsValue ? 0.5 : 1 },
-              ]}
-              disabled={!displayPinnedAppsValue}
-              android_disableSound={true}
-              android_ripple={settingItemButtonRippleConfig}>
-              <SettingsItemLabel title={isPinnedApp ? 'Unpin app' : 'Pin app'} />
-            </Pressable>
+          <View style={styles.toggleButtonWrapper}>
+            <ToggleButton
+              style={styles.toggleButton}
+              onPress={toggleTemporarilyPinnedApp}
+              icon={() => getToggleButtonIcon('timer', isTemporarilyPinnedApp, isTemporaryPinButtonDisabled)}
+              status={getToggleButtonStatus(isTemporarilyPinnedApp)}
+              disabled={isTemporaryPinButtonDisabled}
+            />
+            <Text style={[styles.buttonText, getTextOpacityStyle(isTemporaryPinButtonDisabled)]}>Temp. Pin</Text>
           </View>
 
-          <View style={styles.itemContainer}>
-            <Pressable
-              onPress={
-                isTemporarilyPinnedApp ? () => updateTemporaryPinnedApp(false) : () => updateTemporaryPinnedApp(true)
-              }
-              style={({ pressed }: { pressed: boolean }) => [
-                pressableStyles({ pressed }),
-                { opacity: !displayTemporaryPinnedApps ? 0.5 : 1 },
-              ]}
-              disabled={!displayTemporaryPinnedApps}
-              android_disableSound={true}
-              android_ripple={settingItemButtonRippleConfig}>
-              <SettingsItemLabel title={isTemporarilyPinnedApp ? 'Unpin temporarily app' : 'Pin temporarily app'} />
-            </Pressable>
-          </View>
-
-          <View style={styles.itemContainer}>
-            <Pressable
+          <View style={styles.iconButtonWrapper}>
+            <IconButton
+              icon='information-outline'
+              iconColor={NEUTRAL_COLOR}
+              size={30}
+              style={styles.iconButton}
               onPress={openAppInfo}
-              style={pressableStyles}
-              android_disableSound={true}
-              android_ripple={settingItemButtonRippleConfig}>
-              <SettingsItemLabel title='App Info' />
-            </Pressable>
+            />
+            <Text style={styles.buttonText}>Info</Text>
           </View>
 
-          <View style={styles.itemContainer}>
-            <Pressable
+          <View style={styles.iconButtonWrapper}>
+            <IconButton
+              icon='trash-can-outline'
+              iconColor={NEUTRAL_COLOR}
+              size={30}
+              style={styles.iconButton}
               onPress={uninstallApp}
-              style={pressableStyles}
-              android_disableSound={true}
-              android_ripple={settingItemButtonRippleConfig}>
-              <SettingsItemLabel title='Uninstall App' />
-            </Pressable>
+            />
+            <Text style={styles.buttonText}>Uninstall</Text>
           </View>
         </View>
-      </BottomSheetModal>
-    </BottomSheetModalProvider>
+      </Modal>
+    </Portal>
   )
 }
 
 const styles = StyleSheet.create({
-  settingsWrapper: {
-    paddingHorizontal: 10,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e5e5e5',
+  contentContainerStyle: {
+    position: 'absolute',
+    left: 5,
+    right: 5,
+    bottom: BOTTOM_CONTAINER_HEIGHT_WITH_PADDINGS,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
   },
   headerWrapper: {
-    paddingBottom: 10,
+    paddingBottom: 5,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  headerIconAndTitleWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   headerTitle: {
     fontSize: 20,
-    color: '#808080',
-  },
-  bottomSheetModal: {
-    marginHorizontal: 5,
+    color: NEUTRAL_COLOR,
   },
   appIcon: {
     width: 40,
     height: 40,
     marginRight: 10,
+  },
+  dismissIcon: {
+    margin: 0,
+  },
+  buttonsWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  toggleButtonWrapper: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  toggleButton: {
+    backgroundColor: WHITE_COLOR,
+  },
+  iconButtonWrapper: {
+    alignItems: 'center',
+  },
+  iconButton: {
+    margin: 0,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: NEUTRAL_COLOR,
   },
 })
 

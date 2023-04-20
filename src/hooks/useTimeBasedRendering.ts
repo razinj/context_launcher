@@ -1,6 +1,4 @@
-// React
 import { useEffect, useState } from 'react'
-// Redux
 import { useSelector } from 'react-redux'
 import { selectTemporaryPinnedAppsConfigMemoized } from '../slices/pinnedApps'
 
@@ -22,12 +20,15 @@ export const useTimeBasedRendering = () => {
   }, [temporaryPinnedAppsConfig.startDate, temporaryPinnedAppsConfig.endDate])
 
   useEffect(() => {
-    let startRenderingTimeOut: NodeJS.Timeout | undefined = undefined
-    let stopRenderingTimeOut: NodeJS.Timeout | undefined = undefined
+    let startRenderingTimeOut: NodeJS.Timeout | undefined
+    let stopRenderingTimeOut: NodeJS.Timeout | undefined
 
-    const { startRenderingTimeOutId, stopRenderingTimeOutId } = check()
-    startRenderingTimeOut = startRenderingTimeOutId
-    stopRenderingTimeOut = stopRenderingTimeOutId
+    const {
+      startRenderingTimeOutId: initialStartRenderingTimeOutId,
+      stopRenderingTimeOutId: initialStopRenderingTimeOutId,
+    } = check()
+    startRenderingTimeOut = initialStartRenderingTimeOutId
+    stopRenderingTimeOut = initialStopRenderingTimeOutId
 
     const intervalId = setInterval(() => {
       const { startRenderingTimeOutId, stopRenderingTimeOutId } = check()
@@ -43,8 +44,8 @@ export const useTimeBasedRendering = () => {
   }, [startDate, endDate])
 
   const check = (): CheckResult => {
-    let startRenderingTimeOut: NodeJS.Timeout | undefined = undefined
-    let stopRenderingTimeOut: NodeJS.Timeout | undefined = undefined
+    let startRenderingTimeOut: NodeJS.Timeout | undefined
+    let stopRenderingTimeOut: NodeJS.Timeout | undefined
 
     if (!startDate || !endDate) {
       setCanRender(false)
@@ -87,8 +88,8 @@ export const useTimeBasedRendering = () => {
         startRenderingTimeOut = setTimeout(() => setCanRender(true), timeToStartRendering)
         stopRenderingTimeOut = setTimeout(() => setCanRender(false), timeToStopRendering)
       } else if (timeToStartRendering < 0 && timeToStopRendering > 0) {
-        const timeToStopRendering = endDate.getTime() - currentDate.getTime()
-        stopRenderingTimeOut = setTimeout(() => setCanRender(false), timeToStopRendering)
+        const innerTimeToStopRendering = endDate.getTime() - currentDate.getTime()
+        stopRenderingTimeOut = setTimeout(() => setCanRender(false), innerTimeToStopRendering)
         setCanRender(true)
       } else {
         startRenderingTimeOut = undefined

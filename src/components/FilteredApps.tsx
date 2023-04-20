@@ -1,59 +1,35 @@
-// React
-import React, { useContext } from 'react'
-// React Native
-import { FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native'
-// Components
-import AppItem from './AppItem'
-// Redux
+import React from 'react'
+import { FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-import { selectAppsSearchQuery, selectAppsSearchResult } from '../slices/appsSearch'
-// Contexts
-import SearchContext from '../contexts/SearchContext'
-// Constants
-import { APP_ITEM_HEIGHT_ICON_DISPLAYED, BACKGROUND_COLOR } from '../constants'
-// Utils
-import { truncateString } from '../utils/string'
-// Models
-import { RenderedIn } from '../models/rendered-in'
 import { AppDetails } from '../models/app-details'
-
-const keyExtractor = ({ name }: AppDetails) => name
-const getItemLayout = (_data: unknown, index: number) => ({
-  length: APP_ITEM_HEIGHT_ICON_DISPLAYED,
-  offset: APP_ITEM_HEIGHT_ICON_DISPLAYED * index,
-  index,
-})
+import { RenderedIn } from '../models/rendered-in'
+import { sectionWrapper } from '../shared/styles'
+import { selectAppsSearchQuery, selectAppsSearchResult } from '../slices/appState'
+import { getListItemLayout, getListKey } from '../utils/apps'
+import { truncateString } from '../utils/string'
+import AppItem from './AppItem'
+import EmptyListComponent from './shared/EmptyListComponent'
 
 const FilteredApps = () => {
   const apps = useSelector(selectAppsSearchResult)
-  const { invalidCharacters } = useContext(SearchContext)
   const searchQuery = useSelector(selectAppsSearchQuery)
 
-  if (apps.length === 0 || invalidCharacters) {
-    return (
-      <View style={[styles.wrapper, styles.noAppsWrapper]}>
-        <Text style={styles.noAppsWrapperText}>No application found for "{truncateString(searchQuery, 20)}"</Text>
-      </View>
-    )
-  }
-
   const renderItem: ListRenderItem<AppDetails> = ({ item }: ListRenderItemInfo<AppDetails>) => (
-    <AppItem
-      pressableStyle={{ borderRadius: 0, paddingHorizontal: 7.5 }}
-      appDetails={item}
-      renderedIn={RenderedIn.FILTERED_APPS}
-    />
+    <AppItem appDetails={item} renderedIn={RenderedIn.FILTERED_APPS} />
   )
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[sectionWrapper, styles.wrapper]}>
       <FlatList
-        inverted
+        inverted={apps.length !== 0}
         data={apps}
         renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        getItemLayout={getItemLayout}
+        keyExtractor={getListKey}
+        getItemLayout={getListItemLayout}
         keyboardShouldPersistTaps={'handled'}
+        ListEmptyComponent={
+          <EmptyListComponent text={`No application found for "${truncateString(searchQuery, 20)}"`} />
+        }
       />
     </View>
   )
@@ -61,19 +37,7 @@ const FilteredApps = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderRadius: 5,
     paddingVertical: 5,
-    backgroundColor: BACKGROUND_COLOR,
-  },
-  noAppsWrapper: {
-    height: 70,
-    paddingVertical: 0,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  noAppsWrapperText: {
-    color: '#fff',
   },
 })
 
