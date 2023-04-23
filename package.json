@@ -1,6 +1,6 @@
 {
   "name": "context_launcher",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "private": false,
   "scripts": {
     "android": "react-native run-android",
