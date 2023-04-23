@@ -8,7 +8,7 @@ Become a [tester](https://play.google.com/apps/testing/com.razinj.context_launch
 
 ## Preview
 
-![Screenshots](https://public.razinj.com/context-launcher-screenshots.png)
+![Screenshots](https://public.razinj.com/context-launcher-screenshots.jpg)
 
 ## Commands
 
