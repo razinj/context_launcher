@@ -1,12 +1,8 @@
-import React, { ReactNode, RefObject, useMemo, useRef } from 'react'
+import React, { PropsWithChildren, RefObject, useMemo, useRef } from 'react'
 import { TextInput } from 'react-native'
 import SearchContext, { SearchContextType } from './SearchContext'
 
-type Props = {
-  children: ReactNode
-}
-
-const SearchContextWrapper = ({ children }: Props) => {
+const SearchContextWrapper = ({ children }: PropsWithChildren) => {
   const searchInputRef: RefObject<TextInput> | null = useRef(null)
 
   const clearSearchInput = () => {
