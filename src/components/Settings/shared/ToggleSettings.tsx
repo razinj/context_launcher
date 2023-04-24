@@ -1,12 +1,10 @@
-import React, { ReactNode, useState } from 'react'
+import React, { PropsWithChildren, useState } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import CustomIcon from '../../shared/CustomIcon'
 import SettingsItemLabel, { SettingsItemLabelProps } from './SettingsItemLabel'
 import { settingItemButtonRippleConfig } from './values'
 
-type Props = SettingsItemLabelProps & {
-  children: ReactNode
-}
+type Props = PropsWithChildren<SettingsItemLabelProps>
 
 const ToggleSettings = ({ title, description, children }: Props) => {
   const [renderSettings, setRenderSettings] = useState(false)

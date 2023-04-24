@@ -1,6 +1,6 @@
 import { configureStore, PreloadedState, Store } from '@reduxjs/toolkit'
 import { render, RenderOptions } from '@testing-library/react-native'
-import React, { ReactElement, ReactNode } from 'react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { Provider as StoreProvider } from 'react-redux'
 import SearchContext, { SearchContextType } from '../../src/contexts/SearchContext'
@@ -22,7 +22,7 @@ export const renderWithProvider = (
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) => {
-  const wrapper = ({ children }: { children: ReactNode }): JSX.Element => {
+  const wrapper = ({ children }: PropsWithChildren): JSX.Element => {
     return (
       <StoreProvider store={store}>
         <PaperProvider>{children}</PaperProvider>
@@ -43,7 +43,7 @@ export const renderWithProviderAndContexts = (
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) => {
-  const wrapper = ({ children }: { children: ReactNode }): JSX.Element => {
+  const wrapper = ({ children }: PropsWithChildren): JSX.Element => {
     return (
       <StoreProvider store={store}>
         <SearchContext.Provider value={searchContextValue}>
