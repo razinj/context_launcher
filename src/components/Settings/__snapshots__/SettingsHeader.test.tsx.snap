@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AdvancedSettings /> Tests should render correctly and match snapshot 1`] = `
+exports[`<SettingsHeader /> Tests should not render modal when display settings value is false (default) 1`] = `
 <RNCSafeAreaProvider
   onInsetsChange={[Function]}
   style={
@@ -24,11 +24,39 @@ exports[`<AdvancedSettings /> Tests should render correctly and match snapshot 1
     <View
       style={
         {
+          "alignItems": "center",
           "flexDirection": "row",
           "justifyContent": "space-between",
+          "paddingBottom": 20,
         }
       }
+      testID="wrapper"
     >
+      <Text
+        style={
+          {
+            "color": "#808080",
+            "fontSize": 20,
+            "fontWeight": "400",
+          }
+        }
+      >
+        Context Settings
+        <Text
+          style={
+            {
+              "color": "#ccc",
+              "fontSize": 12,
+            }
+          }
+        >
+            v
+          1.4.8
+           (
+          12
+          )
+        </Text>
+      </Text>
       <View
         accessibilityState={
           {
@@ -59,51 +87,92 @@ exports[`<AdvancedSettings /> Tests should render correctly and match snapshot 1
         onResponderTerminate={[Function]}
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "alignItems": "center",
-            "flex": 1,
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-          }
-        }
-        testID="reload-all-apps-button"
+        testID="settings-header-app-info-button"
       >
-        <View
+        <Text
+          allowFontScaling={false}
+          selectable={false}
           style={
             [
               {
-                "padding": 10,
+                "color": "#808080",
+                "fontSize": 34,
               },
               undefined,
+              {
+                "fontFamily": "Material Design Icons",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
             ]
           }
-          testID="wrapper"
         >
-          <Text
-            style={
-              [
-                {
-                  "color": "#808080",
-                },
-                undefined,
-              ]
-            }
-            testID="title"
-          >
-            Reload all apps
-          </Text>
-        </View>
+          󰋽
+        </Text>
       </View>
     </View>
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`<SettingsHeader /> Tests should render correctly and match snapshot 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
     <View
       style={
         {
+          "alignItems": "center",
           "flexDirection": "row",
           "justifyContent": "space-between",
+          "paddingBottom": 20,
         }
       }
+      testID="wrapper"
     >
+      <Text
+        style={
+          {
+            "color": "#808080",
+            "fontSize": 20,
+            "fontWeight": "400",
+          }
+        }
+      >
+        Context Settings
+        <Text
+          style={
+            {
+              "color": "#ccc",
+              "fontSize": 12,
+            }
+          }
+        >
+            v
+          1.4.8
+           (
+          12
+          )
+        </Text>
+      </Text>
       <View
         accessibilityState={
           {
@@ -134,41 +203,29 @@ exports[`<AdvancedSettings /> Tests should render correctly and match snapshot 1
         onResponderTerminate={[Function]}
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "alignItems": "center",
-            "flex": 1,
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-          }
-        }
-        testID="reset-preferences-button"
+        testID="app-info-button"
       >
-        <View
+        <Text
+          allowFontScaling={false}
+          selectable={false}
           style={
             [
               {
-                "padding": 10,
+                "color": "#808080",
+                "fontSize": 34,
               },
               undefined,
+              {
+                "fontFamily": "Material Design Icons",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
             ]
           }
-          testID="wrapper"
         >
-          <Text
-            style={
-              [
-                {
-                  "color": "#808080",
-                },
-                undefined,
-              ]
-            }
-            testID="title"
-          >
-            Reset settings
-          </Text>
-        </View>
+          󰋽
+        </Text>
       </View>
     </View>
   </View>

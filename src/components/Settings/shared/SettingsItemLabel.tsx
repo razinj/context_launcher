@@ -10,8 +10,10 @@ export type SettingsItemLabelProps = {
 
 const SettingsItemLabel = ({ title, description, wrapperStyle, titleStyle }: SettingsItemLabelProps) => {
   return (
-    <View style={[styles.wrapper, wrapperStyle]}>
-      <Text style={[styles.label, titleStyle]}>{title}</Text>
+    <View style={[styles.wrapper, wrapperStyle]} testID='wrapper'>
+      <Text style={[styles.label, titleStyle]} testID='title'>
+        {title}
+      </Text>
       {description && <Text style={styles.description}>{description}</Text>}
     </View>
   )

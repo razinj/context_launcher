@@ -7,7 +7,7 @@
     "start": "react-native start",
     "info": "react-native info",
     "upgrade": "react-native upgrade",
-    "test": "jest",
+    "test": "jest --verbose",
     "test:update-snapshots": "jest -u",
     "test:ci": "jest --ci --no-cache --silent",
     "test:coverage": "jest --collect-coverage",

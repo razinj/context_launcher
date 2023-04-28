@@ -1,11 +1,11 @@
 import { fireEvent, screen } from '@testing-library/react-native'
 import React from 'react'
-import { ToastAndroid } from 'react-native'
-import { initialStoreState } from '../../../../utils/test/data'
+import { getAppsForTests, initialStoreState } from '../../../../utils/test/data'
 import { renderWithProvider } from '../../../../utils/test/utils'
 import { displayRecentApps } from '../../../slices/preferences'
 import { clearRecentApps } from '../../../slices/recentApps'
 import { RootState } from '../../../store'
+import * as ToastModule from '../../../utils/toast'
 import RecentAppsSettings from './RecentAppsSettings'
 
 const useDispatchMock = jest.fn()
@@ -16,50 +16,39 @@ jest.mock('react-redux', () => ({
 }))
 
 describe('<RecentAppsSettings /> Tests', () => {
-  beforeEach(() => {
-    jest.spyOn(ToastAndroid, 'show')
+  beforeAll(() => {
+    jest.spyOn(ToastModule, 'displayToast')
   })
 
   it('should render correctly and match snapshot', () => {
     renderWithProvider(<RecentAppsSettings />)
 
     expect(screen.toJSON()).toMatchSnapshot()
-    expect(screen.getByTestId('display-recent-apps-switch')).toBeOnTheScreen()
-    expect(screen.getByTestId('clear-recent-apps-button')).toBeOnTheScreen()
+    expect(screen.getByTestId('display-switch')).toBeOnTheScreen()
+    expect(screen.getByTestId('clear-button')).toBeOnTheScreen()
   })
 
-  it('should clear recent apps when button is pressed', () => {
+  it('should dispatch action to clear recent apps when button is pressed', () => {
     const customInitialState: RootState = {
       ...initialStoreState,
       recentApps: {
-        list: [
-          {
-            packageName: 'com.google.chrome',
-            name: 'Chrome',
-            icon: 'ICON',
-          },
-          {
-            packageName: 'com.google.maps',
-            name: 'Maps',
-            icon: 'ICON',
-          },
-        ],
+        list: getAppsForTests(2),
       },
     }
 
     renderWithProvider(<RecentAppsSettings />, { preloadedState: customInitialState })
 
-    const clearRecentAppsButton = screen.getByTestId('clear-recent-apps-button')
+    const clearRecentAppsButton = screen.getByTestId('clear-button')
 
     expect(clearRecentAppsButton).toBeOnTheScreen()
 
     fireEvent.press(clearRecentAppsButton)
 
     expect(useDispatchMock).toBeCalledWith(clearRecentApps())
-    expect(ToastAndroid.show).toBeCalledWith('Recent apps cleared successfully!', ToastAndroid.LONG)
+    expect(ToastModule.displayToast).toBeCalledWith('Recent apps cleared successfully!')
   })
 
-  it('should dispatch action to toggle display recent apps when pressed', () => {
+  it('should dispatch action to toggle recent apps when button is pressed', () => {
     const customInitialStoreState: RootState = {
       ...initialStoreState,
       preferences: {
@@ -70,10 +59,9 @@ describe('<RecentAppsSettings /> Tests', () => {
 
     renderWithProvider(<RecentAppsSettings />, { preloadedState: customInitialStoreState })
 
-    const toggleRecentAppsSwitch = screen.getByTestId('display-recent-apps-switch')
+    const toggleRecentAppsSwitch = screen.getByTestId('display-switch')
 
     expect(toggleRecentAppsSwitch).toBeOnTheScreen()
-    expect(toggleRecentAppsSwitch).not.toBeDisabled()
 
     fireEvent(toggleRecentAppsSwitch, 'valueChange')
 

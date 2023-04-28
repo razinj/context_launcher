@@ -1,19 +1,19 @@
 import React, { PropsWithChildren, useState } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import CustomIcon from '../../shared/CustomIcon'
-import SettingsItemLabel, { SettingsItemLabelProps } from './SettingsItemLabel'
+import SettingsItemLabel from './SettingsItemLabel'
 import { settingItemButtonRippleConfig } from './values'
 
-type Props = PropsWithChildren<SettingsItemLabelProps>
+export type ToggleSettingsProps = PropsWithChildren<{ title: string; description?: string }>
 
-const ToggleSettings = ({ title, description, children }: Props) => {
+const ToggleSettings = ({ title, description, children }: ToggleSettingsProps) => {
   const [renderSettings, setRenderSettings] = useState(false)
 
   return (
     <>
       <View style={renderSettings ? [styles.wrapper, styles.activeWrapper] : styles.wrapper}>
         <Pressable
-          testID='settings-bottom-toggle-advanced-settings-button'
+          testID='toggle-settings-button'
           onPress={() => setRenderSettings(!renderSettings)}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}

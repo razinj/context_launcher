@@ -32,7 +32,7 @@ const RecentAppsSettings = () => {
       <View style={settingItemWrapperStyle}>
         <SettingsItemLabel title='Display' />
         <Switch
-          testID='display-recent-apps-switch'
+          testID='display-switch'
           value={displayRecentAppsValue}
           onValueChange={toggleDisplayRecentApps}
           trackColor={switchTrackColor}
@@ -42,7 +42,7 @@ const RecentAppsSettings = () => {
 
       <View style={settingItemWrapperStyle}>
         <Pressable
-          testID='clear-recent-apps-button'
+          testID='clear-button'
           onPress={onClearRecentApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}

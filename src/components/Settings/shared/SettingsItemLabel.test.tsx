@@ -12,16 +12,23 @@ describe('<SettingsItemLabel /> Tests', () => {
     renderWithProvider(<SettingsItemLabel {...requiredProps} />)
 
     expect(screen.toJSON()).toMatchSnapshot()
+    expect(screen.getByText(requiredProps.title)).toBeOnTheScreen()
   })
 
   it('should render correctly and match snapshot - required and optional props', () => {
     const allProps: SettingsItemLabelProps = {
       ...requiredProps,
       description: 'An item description',
+      titleStyle: { color: '#000' },
+      wrapperStyle: { flex: 1 },
     }
 
     renderWithProvider(<SettingsItemLabel {...allProps} />)
 
     expect(screen.toJSON()).toMatchSnapshot()
+    expect(screen.getByText(allProps.title)).toBeOnTheScreen()
+    expect(screen.getByText(allProps.description!)).toBeOnTheScreen()
+    expect(screen.getByTestId('wrapper')).toHaveStyle(allProps.wrapperStyle)
+    expect(screen.getByTestId('title')).toHaveStyle(allProps.titleStyle)
   })
 })

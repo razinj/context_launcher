@@ -38,6 +38,7 @@ exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapsh
             undefined,
           ]
         }
+        testID="wrapper"
       >
         <Text
           style={
@@ -48,6 +49,7 @@ exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapsh
               undefined,
             ]
           }
+          testID="title"
         >
           Display
         </Text>
@@ -64,7 +66,7 @@ exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapsh
             "width": 51,
           }
         }
-        testID="display-favorite-apps-switch"
+        testID="display-switch"
         thumbTintColor="#42855B"
         tintColor="#e5e5e5"
         value={true}
@@ -121,7 +123,7 @@ exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapsh
             },
           ]
         }
-        testID="sort-favorite-apps-button"
+        testID="sort-button"
       >
         <View
           style={
@@ -132,6 +134,7 @@ exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapsh
               undefined,
             ]
           }
+          testID="wrapper"
         >
           <Text
             style={
@@ -142,6 +145,7 @@ exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapsh
                 undefined,
               ]
             }
+            testID="title"
           >
             Sort
           </Text>
@@ -203,7 +207,7 @@ exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapsh
             "justifyContent": "space-between",
           }
         }
-        testID="clear-favorite-apps-button"
+        testID="clear-button"
       >
         <View
           style={
@@ -214,6 +218,7 @@ exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapsh
               undefined,
             ]
           }
+          testID="wrapper"
         >
           <Text
             style={
@@ -224,6 +229,7 @@ exports[`<FavoriteAppsSettings /> Tests should render correctly and match snapsh
                 undefined,
               ]
             }
+            testID="title"
           >
             Clear
           </Text>

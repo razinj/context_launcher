@@ -38,6 +38,7 @@ exports[`<RecentAppsSettings /> Tests should render correctly and match snapshot
             undefined,
           ]
         }
+        testID="wrapper"
       >
         <Text
           style={
@@ -48,6 +49,7 @@ exports[`<RecentAppsSettings /> Tests should render correctly and match snapshot
               undefined,
             ]
           }
+          testID="title"
         >
           Display
         </Text>
@@ -64,7 +66,7 @@ exports[`<RecentAppsSettings /> Tests should render correctly and match snapshot
             "width": 51,
           }
         }
-        testID="display-recent-apps-switch"
+        testID="display-switch"
         thumbTintColor="#42855B"
         tintColor="#e5e5e5"
         value={true}
@@ -116,7 +118,7 @@ exports[`<RecentAppsSettings /> Tests should render correctly and match snapshot
             "justifyContent": "space-between",
           }
         }
-        testID="clear-recent-apps-button"
+        testID="clear-button"
       >
         <View
           style={
@@ -127,6 +129,7 @@ exports[`<RecentAppsSettings /> Tests should render correctly and match snapshot
               undefined,
             ]
           }
+          testID="wrapper"
         >
           <Text
             style={
@@ -137,6 +140,7 @@ exports[`<RecentAppsSettings /> Tests should render correctly and match snapshot
                 undefined,
               ]
             }
+            testID="title"
           >
             Clear
           </Text>

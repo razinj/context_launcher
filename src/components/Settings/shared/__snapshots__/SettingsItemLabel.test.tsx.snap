@@ -27,9 +27,12 @@ exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot 
           {
             "padding": 10,
           },
-          undefined,
+          {
+            "flex": 1,
+          },
         ]
       }
+      testID="wrapper"
     >
       <Text
         style={
@@ -37,9 +40,12 @@ exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot 
             {
               "color": "#808080",
             },
-            undefined,
+            {
+              "color": "#000",
+            },
           ]
         }
+        testID="title"
       >
         An item label
       </Text>
@@ -87,6 +93,7 @@ exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot 
           undefined,
         ]
       }
+      testID="wrapper"
     >
       <Text
         style={
@@ -97,6 +104,7 @@ exports[`<SettingsItemLabel /> Tests should render correctly and match snapshot 
             undefined,
           ]
         }
+        testID="title"
       >
         An item label
       </Text>

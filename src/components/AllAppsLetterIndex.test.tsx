@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react-native'
 import React from 'react'
-import { initialStoreState } from '../../utils/test/data'
+import { getAppForTestsByName, initialStoreState } from '../../utils/test/data'
 import { renderWithProvider } from '../../utils/test/utils'
 import { RootState } from '../store'
 import AllAppsLetterIndex from './AllAppsLetterIndex'
@@ -20,13 +20,7 @@ describe('<AllAppsLetterIndex /> Tests', () => {
     const customInitialState: RootState = {
       ...initialStoreState,
       appsList: {
-        list: [
-          {
-            packageName: 'com.google.chrome',
-            name: 'Chrome',
-            icon: 'ICON',
-          },
-        ],
+        list: [getAppForTestsByName('Chrome')!],
       },
     }
 
@@ -49,18 +43,7 @@ describe('<AllAppsLetterIndex /> Tests', () => {
     const customInitialState: RootState = {
       ...initialStoreState,
       appsList: {
-        list: [
-          {
-            packageName: 'com.google.chrome',
-            name: 'Chrome',
-            icon: 'ICON',
-          },
-          {
-            packageName: 'com.google.maps',
-            name: 'Maps',
-            icon: 'ICON',
-          },
-        ],
+        list: [getAppForTestsByName('Chrome')!, getAppForTestsByName('Maps')!],
       },
     }
 

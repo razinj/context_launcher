@@ -22,7 +22,7 @@ const SettingsHeader = () => {
   }
 
   return (
-    <View style={styles.wrapper} testID='settings-header-wrapper'>
+    <View style={styles.wrapper} testID='wrapper'>
       <Text style={styles.title}>
         Context Settings
         <Text style={styles.appInfoText}>
@@ -33,7 +33,7 @@ const SettingsHeader = () => {
         onPress={onAppInfoClick}
         android_disableSound={true}
         android_ripple={appInfoIconRippleConfig}
-        testID='settings-header-app-info-button'>
+        testID='app-info-button'>
         <CustomIcon name='information-outline' size={34} color='#808080' />
       </Pressable>
     </View>
