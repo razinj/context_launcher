@@ -1,0 +1,605 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PinnedAppsSettings /> Tests should render correctly and match snapshot 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    collapsable={false}
+    pointerEvents="box-none"
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "padding": 10,
+            },
+            undefined,
+          ]
+        }
+        testID="wrapper"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#808080",
+              },
+              undefined,
+            ]
+          }
+          testID="title"
+        >
+          Display pinned apps
+        </Text>
+      </View>
+      <RCTSwitch
+        accessibilityRole="switch"
+        onChange={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        onTintColor="#e5e5e5"
+        style={
+          {
+            "height": 31,
+            "width": 51,
+          }
+        }
+        testID="display-pinned-apps-button"
+        thumbTintColor="#f4f3f4"
+        tintColor="#e5e5e5"
+        value={false}
+      />
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            },
+            {
+              "opacity": 0.5,
+            },
+          ]
+        }
+        testID="sort-pinned-apps-button"
+      >
+        <View
+          style={
+            [
+              {
+                "padding": 10,
+              },
+              undefined,
+            ]
+          }
+          testID="wrapper"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#808080",
+                },
+                undefined,
+              ]
+            }
+            testID="title"
+          >
+            Sort pinned apps
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#ccc",
+              }
+            }
+          >
+            Display pinned apps to be able to sort
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "padding": 10,
+            },
+            undefined,
+          ]
+        }
+        testID="wrapper"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#808080",
+              },
+              undefined,
+            ]
+          }
+          testID="title"
+        >
+          Display temporary pinned apps
+        </Text>
+      </View>
+      <RCTSwitch
+        accessibilityRole="switch"
+        onChange={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        onTintColor="#e5e5e5"
+        style={
+          {
+            "height": 31,
+            "width": 51,
+          }
+        }
+        testID="display-temporarily-pinned-apps-button"
+        thumbTintColor="#f4f3f4"
+        tintColor="#e5e5e5"
+        value={false}
+      />
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            },
+            {
+              "opacity": 0.5,
+            },
+          ]
+        }
+        testID="sort-temporarily-pinned-apps-button"
+      >
+        <View
+          style={
+            [
+              {
+                "padding": 10,
+              },
+              undefined,
+            ]
+          }
+          testID="wrapper"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#808080",
+                },
+                undefined,
+              ]
+            }
+            testID="title"
+          >
+            Sort temporarily pinned apps
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#ccc",
+              }
+            }
+          >
+            Display temporarily pinned apps to be able to sort
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "column",
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "padding": 10,
+            },
+            undefined,
+          ]
+        }
+        testID="wrapper"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#808080",
+              },
+              undefined,
+            ]
+          }
+          testID="title"
+        >
+          Set start and end time of temporarliy pinned apps
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#ccc",
+            }
+          }
+        >
+          Click below to set times
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+          }
+        }
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "justifyContent": "center",
+              "padding": 5,
+            }
+          }
+          testID="set-start-time-button"
+        >
+          <Text
+            style={
+              {
+                "color": "#808080",
+              }
+            }
+          >
+            Start time is 
+            unset
+          </Text>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "justifyContent": "center",
+              "padding": 5,
+            }
+          }
+          testID="set-end-time-button"
+        >
+          <Text
+            style={
+              {
+                "color": "#808080",
+              }
+            }
+          >
+            End time is 
+            unset
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+          }
+        }
+        testID="clear-pinned-apps-button"
+      >
+        <View
+          style={
+            [
+              {
+                "padding": 10,
+              },
+              undefined,
+            ]
+          }
+          testID="wrapper"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#808080",
+                },
+                undefined,
+              ]
+            }
+            testID="title"
+          >
+            Clear pinned apps
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+          }
+        }
+        testID="clear-temporarily-pinned-apps-button"
+      >
+        <View
+          style={
+            [
+              {
+                "padding": 10,
+              },
+              undefined,
+            ]
+          }
+          testID="wrapper"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#808080",
+                },
+                undefined,
+              ]
+            }
+            testID="title"
+          >
+            Clear temporarily pinned apps
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
+`;

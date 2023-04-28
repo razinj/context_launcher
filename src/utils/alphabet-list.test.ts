@@ -1,4 +1,4 @@
-import { AppDetails } from '../models/app-details'
+import { apps } from '../../utils/test/data'
 import { AppLetterIndex } from '../models/list-letter-index'
 import { getAppsLetterIndex, getFirstLetter, getLettersMap } from './alphabet-list'
 
@@ -23,48 +23,6 @@ describe('AlphabetList Tests', () => {
   })
 
   describe('getAppsLetterIndex Tests', () => {
-    const apps: AppDetails[] = [
-      {
-        name: 'App 1',
-        packageName: 'com.app_1',
-        icon: 'ICON',
-      },
-      {
-        name: 'App 2',
-        packageName: 'com.app_2',
-        icon: 'ICON',
-      },
-      {
-        name: 'Brave',
-        packageName: 'com.brave',
-        icon: 'ICON',
-      },
-      {
-        name: 'Chrome',
-        packageName: 'com.chrome',
-        icon: 'ICON',
-      },
-      {
-        name: 'Clock',
-        packageName: 'com.clock',
-        icon: 'ICON',
-      },
-      {
-        name: 'Google',
-        packageName: 'com.google',
-        icon: 'ICON',
-      },
-      {
-        name: 'Youtube',
-        packageName: 'com.youtube',
-        icon: 'ICON',
-      },
-      {
-        name: '_App',
-        packageName: 'com._app',
-        icon: 'ICON',
-      },
-    ]
     const appLetterIndex: AppLetterIndex[] = [
       {
         letter: 'A',
@@ -83,12 +41,16 @@ describe('AlphabetList Tests', () => {
         index: 5,
       },
       {
-        letter: 'Y',
+        letter: 'M',
         index: 6,
       },
       {
-        letter: '#',
+        letter: 'Y',
         index: 7,
+      },
+      {
+        letter: '#',
+        index: 8,
       },
     ]
 

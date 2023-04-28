@@ -1,9 +1,9 @@
 import { fireEvent, screen } from '@testing-library/react-native'
 import React from 'react'
-import { ToastAndroid } from 'react-native'
 import { renderWithProvider } from '../../../../utils/test/utils'
 import { getAppsListAction } from '../../../slices/appsList'
 import { resetPreferences } from '../../../slices/preferences'
+import * as ToastModule from '../../../utils/toast'
 import AdvancedSettings from './AdvancedSettings'
 
 const useDispatchMock = jest.fn()
@@ -14,8 +14,8 @@ jest.mock('react-redux', () => ({
 }))
 
 describe('<AdvancedSettings /> Tests', () => {
-  beforeEach(() => {
-    jest.spyOn(ToastAndroid, 'show')
+  beforeAll(() => {
+    jest.spyOn(ToastModule, 'displayToast')
   })
 
   it('should render correctly and match snapshot', () => {
@@ -26,7 +26,7 @@ describe('<AdvancedSettings /> Tests', () => {
     expect(screen.getByTestId('reset-preferences-button')).toBeOnTheScreen()
   })
 
-  it('should dispatch action to get all applications', () => {
+  it('should dispatch action to reload all applications when button is pressed', () => {
     renderWithProvider(<AdvancedSettings />)
 
     const reloadAllAppsButton = screen.getByTestId('reload-all-apps-button')
@@ -36,7 +36,7 @@ describe('<AdvancedSettings /> Tests', () => {
     fireEvent.press(reloadAllAppsButton)
 
     expect(useDispatchMock).toBeCalledWith(getAppsListAction())
-    expect(ToastAndroid.show).toBeCalledWith('All apps reloaded successfully!', ToastAndroid.LONG)
+    expect(ToastModule.displayToast).toBeCalledWith('All apps reloaded successfully!')
   })
 
   it('should reset preferences apps when button is pressed', () => {
@@ -49,6 +49,6 @@ describe('<AdvancedSettings /> Tests', () => {
     fireEvent.press(resetPreferencesButton)
 
     expect(useDispatchMock).toBeCalledWith(resetPreferences())
-    expect(ToastAndroid.show).toBeCalledWith('Settings reset successfully!', ToastAndroid.LONG)
+    expect(ToastModule.displayToast).toBeCalledWith('Settings reset successfully!')
   })
 })

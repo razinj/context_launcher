@@ -43,7 +43,7 @@ const FavoriteAppsSettings = () => {
       <View style={settingItemWrapperStyle}>
         <SettingsItemLabel title='Display' />
         <Switch
-          testID='display-favorite-apps-switch'
+          testID='display-switch'
           value={displayFavoriteAppsValue}
           onValueChange={toggleDisplayFavoriteApps}
           trackColor={switchTrackColor}
@@ -53,7 +53,7 @@ const FavoriteAppsSettings = () => {
 
       <View style={settingItemWrapperStyle}>
         <Pressable
-          testID='sort-favorite-apps-button'
+          testID='sort-button'
           disabled={favoriteAppsSortDisabled}
           onPress={onFavoriteAppsSortViewClick}
           android_disableSound={true}
@@ -74,7 +74,7 @@ const FavoriteAppsSettings = () => {
 
       <View style={settingItemWrapperStyle}>
         <Pressable
-          testID='clear-favorite-apps-button'
+          testID='clear-button'
           onPress={onClearFavoriteApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}

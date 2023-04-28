@@ -28,6 +28,8 @@ import {
   switchTrackColor,
 } from '../shared/values'
 
+// TODO: For tests of this component: https://github.com/react-native-datetimepicker/datetimepicker#testing-with-jest
+
 const PinnedAppsSettings = () => {
   const dispatch = useDispatch()
   const displayPinnedAppsValue = useSelector(selectDisplayPinnedAppsMemoized)
@@ -114,6 +116,7 @@ const PinnedAppsSettings = () => {
       <View style={settingItemWrapperStyle}>
         <SettingsItemLabel title='Display pinned apps' />
         <Switch
+          testID='display-pinned-apps-button'
           value={displayPinnedAppsValue}
           onValueChange={toggleDisplayPinnedApps}
           trackColor={switchTrackColor}
@@ -145,6 +148,7 @@ const PinnedAppsSettings = () => {
       <View style={settingItemWrapperStyle}>
         <SettingsItemLabel title='Display temporary pinned apps' />
         <Switch
+          testID='display-temporarily-pinned-apps-button'
           value={displayTemporaryPinnedAppsValue}
           onValueChange={toggleDisplayTemporaryPinnedApps}
           trackColor={switchTrackColor}
@@ -180,6 +184,7 @@ const PinnedAppsSettings = () => {
         />
         <View style={styles.pinnedAppsTimePickersWrapper}>
           <Pressable
+            testID='set-start-time-button'
             onPress={() => showTimePicker(true)}
             android_disableSound={true}
             android_ripple={settingItemButtonRippleConfig}
@@ -189,6 +194,7 @@ const PinnedAppsSettings = () => {
             </Text>
           </Pressable>
           <Pressable
+            testID='set-end-time-button'
             onPress={() => showTimePicker(false)}
             android_disableSound={true}
             android_ripple={settingItemButtonRippleConfig}
@@ -202,6 +208,7 @@ const PinnedAppsSettings = () => {
 
       <View style={settingItemWrapperStyle}>
         <Pressable
+          testID='clear-pinned-apps-button'
           onPress={onClearPinnedApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
@@ -212,6 +219,7 @@ const PinnedAppsSettings = () => {
 
       <View style={settingItemWrapperStyle}>
         <Pressable
+          testID='clear-temporarily-pinned-apps-button'
           onPress={onClearTemporarilyPinnedApps}
           android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}

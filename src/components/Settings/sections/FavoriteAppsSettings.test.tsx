@@ -1,12 +1,12 @@
 import { fireEvent, screen } from '@testing-library/react-native'
 import React from 'react'
-import { ToastAndroid } from 'react-native'
-import { initialStoreState } from '../../../../utils/test/data'
+import { getAppsForTests, initialStoreState } from '../../../../utils/test/data'
 import { renderWithProvider } from '../../../../utils/test/utils'
 import { sortFavoriteApps } from '../../../slices/appState'
 import { clearFavoriteApps } from '../../../slices/favoriteApps'
 import { displayFavoriteApps } from '../../../slices/preferences'
 import { RootState } from '../../../store'
+import * as ToastModule from '../../../utils/toast'
 import FavoriteAppsSettings from './FavoriteAppsSettings'
 
 const useDispatchMock = jest.fn()
@@ -17,48 +17,30 @@ jest.mock('react-redux', () => ({
 }))
 
 describe('<FavoriteAppsSettings /> Tests', () => {
-  beforeEach(() => {
-    jest.spyOn(ToastAndroid, 'show')
+  beforeAll(() => {
+    jest.spyOn(ToastModule, 'displayToast')
   })
 
   it('should render correctly and match snapshot', () => {
     renderWithProvider(<FavoriteAppsSettings />)
 
     expect(screen.toJSON()).toMatchSnapshot()
-    expect(screen.getByTestId('display-favorite-apps-switch')).toBeOnTheScreen()
-    expect(screen.getByTestId('sort-favorite-apps-button')).toBeOnTheScreen()
-    expect(screen.getByTestId('clear-favorite-apps-button')).toBeOnTheScreen()
+    expect(screen.getByTestId('display-switch')).toBeOnTheScreen()
+    expect(screen.getByTestId('sort-button')).toBeOnTheScreen()
+    expect(screen.getByTestId('clear-button')).toBeOnTheScreen()
   })
 
   it('should dispatch action to clear favorite apps when button is pressed', () => {
-    const customInitialState: RootState = {
-      ...initialStoreState,
-      favoriteApps: {
-        list: [
-          {
-            packageName: 'com.google.chrome',
-            name: 'Chrome',
-            icon: 'ICON',
-          },
-          {
-            packageName: 'com.google.maps',
-            name: 'Maps',
-            icon: 'ICON',
-          },
-        ],
-      },
-    }
+    renderWithProvider(<FavoriteAppsSettings />)
 
-    renderWithProvider(<FavoriteAppsSettings />, { preloadedState: customInitialState })
-
-    const clearFavoriteAppsButton = screen.getByTestId('clear-favorite-apps-button')
+    const clearFavoriteAppsButton = screen.getByTestId('clear-button')
 
     expect(clearFavoriteAppsButton).toBeOnTheScreen()
 
     fireEvent.press(clearFavoriteAppsButton)
 
     expect(useDispatchMock).toBeCalledWith(clearFavoriteApps())
-    expect(ToastAndroid.show).toBeCalledWith('Favorite apps cleared successfully!', ToastAndroid.LONG)
+    expect(ToastModule.displayToast).toBeCalledWith('Favorite apps cleared successfully!')
   })
 
   describe('Sort favorite apps button tests', () => {
@@ -66,13 +48,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
       const customInitialStoreState: RootState = {
         ...initialStoreState,
         favoriteApps: {
-          list: [
-            {
-              packageName: 'com.google.chrome',
-              name: 'Chrome',
-              icon: 'ICON',
-            },
-          ],
+          list: getAppsForTests(1),
         },
         preferences: {
           ...initialStoreState.preferences,
@@ -82,7 +58,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
 
       renderWithProvider(<FavoriteAppsSettings />, { preloadedState: customInitialStoreState })
 
-      expect(screen.getByTestId('sort-favorite-apps-button')).toBeDisabled()
+      expect(screen.getByTestId('sort-button')).toBeDisabled()
       expect(screen.getByText(/Add more apps to be able to sort/)).toBeOnTheScreen()
     })
 
@@ -90,18 +66,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
       const customInitialStoreState: RootState = {
         ...initialStoreState,
         favoriteApps: {
-          list: [
-            {
-              packageName: 'com.google.chrome',
-              name: 'Chrome',
-              icon: 'ICON',
-            },
-            {
-              packageName: 'com.google.maps',
-              name: 'Maps',
-              icon: 'ICON',
-            },
-          ],
+          list: getAppsForTests(2),
         },
         preferences: {
           ...initialStoreState.preferences,
@@ -111,7 +76,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
 
       renderWithProvider(<FavoriteAppsSettings />, { preloadedState: customInitialStoreState })
 
-      expect(screen.getByTestId('sort-favorite-apps-button')).toBeDisabled()
+      expect(screen.getByTestId('sort-button')).toBeDisabled()
       expect(screen.getByText(/Display favorite apps to be able to sort/)).toBeOnTheScreen()
     })
 
@@ -119,18 +84,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
       const customInitialStoreState: RootState = {
         ...initialStoreState,
         favoriteApps: {
-          list: [
-            {
-              packageName: 'com.google.chrome',
-              name: 'Chrome',
-              icon: 'ICON',
-            },
-            {
-              packageName: 'com.google.maps',
-              name: 'Maps',
-              icon: 'ICON',
-            },
-          ],
+          list: getAppsForTests(2),
         },
         preferences: {
           ...initialStoreState.preferences,
@@ -140,7 +94,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
 
       renderWithProvider(<FavoriteAppsSettings />, { preloadedState: customInitialStoreState })
 
-      expect(screen.getByTestId('sort-favorite-apps-button')).not.toBeDisabled()
+      expect(screen.getByTestId('sort-button')).not.toBeDisabled()
       expect(screen.getByText(/Click to start sorting/)).toBeOnTheScreen()
     })
 
@@ -148,18 +102,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
       const customInitialStoreState: RootState = {
         ...initialStoreState,
         favoriteApps: {
-          list: [
-            {
-              packageName: 'com.google.chrome',
-              name: 'Chrome',
-              icon: 'ICON',
-            },
-            {
-              packageName: 'com.google.maps',
-              name: 'Maps',
-              icon: 'ICON',
-            },
-          ],
+          list: getAppsForTests(2),
         },
         preferences: {
           ...initialStoreState.preferences,
@@ -169,7 +112,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
 
       renderWithProvider(<FavoriteAppsSettings />, { preloadedState: customInitialStoreState })
 
-      const sortFavoriteAppsButton = screen.getByTestId('sort-favorite-apps-button')
+      const sortFavoriteAppsButton = screen.getByTestId('sort-button')
 
       expect(sortFavoriteAppsButton).toBeOnTheScreen()
       expect(sortFavoriteAppsButton).not.toBeDisabled()
@@ -180,7 +123,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
     })
   })
 
-  it('should dispatch action to toggle display favorite apps when pressed', () => {
+  it('should dispatch action to toggle favorite apps view when button is pressed', () => {
     const customInitialStoreState: RootState = {
       ...initialStoreState,
       preferences: {
@@ -191,7 +134,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
 
     renderWithProvider(<FavoriteAppsSettings />, { preloadedState: customInitialStoreState })
 
-    const toggleFavoriteAppsSwitch = screen.getByTestId('display-favorite-apps-switch')
+    const toggleFavoriteAppsSwitch = screen.getByTestId('display-switch')
 
     expect(toggleFavoriteAppsSwitch).toBeOnTheScreen()
     expect(toggleFavoriteAppsSwitch).not.toBeDisabled()

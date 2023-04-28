@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<RecentAppsSettings /> Tests should render correctly and match snapshot 1`] = `
+exports[`<SettingsHeader /> Tests should render correctly and match snapshot 1`] = `
 <RNCSafeAreaProvider
   onInsetsChange={[Function]}
   style={
@@ -24,62 +24,39 @@ exports[`<RecentAppsSettings /> Tests should render correctly and match snapshot
     <View
       style={
         {
+          "alignItems": "center",
           "flexDirection": "row",
           "justifyContent": "space-between",
+          "paddingBottom": 20,
         }
       }
+      testID="wrapper"
     >
-      <View
-        style={
-          [
-            {
-              "padding": 10,
-            },
-            undefined,
-          ]
-        }
-        testID="wrapper"
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#808080",
-              },
-              undefined,
-            ]
-          }
-          testID="title"
-        >
-          Display
-        </Text>
-      </View>
-      <RCTSwitch
-        accessibilityRole="switch"
-        onChange={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        onTintColor="#e5e5e5"
+      <Text
         style={
           {
-            "height": 31,
-            "width": 51,
+            "color": "#808080",
+            "fontSize": 20,
+            "fontWeight": "400",
           }
         }
-        testID="display-switch"
-        thumbTintColor="#42855B"
-        tintColor="#e5e5e5"
-        value={true}
-      />
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-        }
-      }
-    >
+      >
+        Context Settings
+        <Text
+          style={
+            {
+              "color": "#ccc",
+              "fontSize": 12,
+            }
+          }
+        >
+            v
+          1.4.8
+           (
+          12
+          )
+        </Text>
+      </Text>
       <View
         accessibilityState={
           {
@@ -110,41 +87,29 @@ exports[`<RecentAppsSettings /> Tests should render correctly and match snapshot
         onResponderTerminate={[Function]}
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "alignItems": "center",
-            "flex": 1,
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-          }
-        }
-        testID="clear-button"
+        testID="app-info-button"
       >
-        <View
+        <Text
+          allowFontScaling={false}
+          selectable={false}
           style={
             [
               {
-                "padding": 10,
+                "color": "#808080",
+                "fontSize": 34,
               },
               undefined,
+              {
+                "fontFamily": "Material Design Icons",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
             ]
           }
-          testID="wrapper"
         >
-          <Text
-            style={
-              [
-                {
-                  "color": "#808080",
-                },
-                undefined,
-              ]
-            }
-            testID="title"
-          >
-            Clear
-          </Text>
-        </View>
+          󰋽
+        </Text>
       </View>
     </View>
   </View>

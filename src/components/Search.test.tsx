@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react-native'
 import React from 'react'
-import { initialStoreState } from '../../utils/test/data'
+import { getAppForTestsByName, initialStoreState } from '../../utils/test/data'
 import { renderWithProvider, renderWithProviderAndContexts } from '../../utils/test/utils'
 import { RootState } from '../store'
 import Search from './Search'
@@ -65,21 +65,11 @@ describe('<Search /> Tests', () => {
   })
 
   it('should set correct result list when using correct query and reset search values when clear button is pressed', () => {
+    const chromeAppDetails = getAppForTestsByName('Chrome')!
     const customInitialState: RootState = {
       ...initialStoreState,
       appsList: {
-        list: [
-          {
-            packageName: 'com.google.chrome',
-            name: 'Chrome',
-            icon: 'ICON',
-          },
-          {
-            packageName: 'com.google.maps',
-            name: 'Maps',
-            icon: 'ICON',
-          },
-        ],
+        list: [chromeAppDetails, getAppForTestsByName('Maps')!],
       },
       appState: {
         ...initialStoreState.appState,
@@ -101,13 +91,7 @@ describe('<Search /> Tests', () => {
     let currentState = store.getState()
 
     expect(currentState.appState.search.query).toBe('chr')
-    expect(currentState.appState.search.result).toEqual([
-      {
-        packageName: 'com.google.chrome',
-        name: 'Chrome',
-        icon: 'ICON',
-      },
-    ])
+    expect(currentState.appState.search.result).toEqual([chromeAppDetails])
 
     const searchInputClearButton = screen.getByTestId('search-input-clear-button')
 
@@ -125,13 +109,7 @@ describe('<Search /> Tests', () => {
     const customInitialState: RootState = {
       ...initialStoreState,
       appsList: {
-        list: [
-          {
-            packageName: 'com.google.chrome',
-            name: 'Chrome',
-            icon: 'ICON',
-          },
-        ],
+        list: [getAppForTestsByName('Chrome')!],
       },
       appState: {
         ...initialStoreState.appState,
