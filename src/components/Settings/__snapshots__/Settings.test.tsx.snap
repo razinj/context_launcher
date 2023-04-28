@@ -223,7 +223,7 @@ exports[`<Settings /> Tests should render modal correctly and match snapshot whe
                   onResponderTerminate={[Function]}
                   onResponderTerminationRequest={[Function]}
                   onStartShouldSetResponder={[Function]}
-                  testID="settings-header-app-info-button"
+                  testID="app-info-button"
                 >
                   <Text
                     allowFontScaling={false}
