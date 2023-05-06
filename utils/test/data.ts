@@ -46,7 +46,7 @@ export const initialStoreState: RootState = {
 export const defaultSearchContextValue: SearchContextType = {
   searchInputRef: null,
   clearSearchInput: jest.fn(),
-  searchAppLaunchProcedure: jest.fn(),
+  clearAndBlurSearchInput: jest.fn(),
 }
 
 export const apps: AppDetails[] = [

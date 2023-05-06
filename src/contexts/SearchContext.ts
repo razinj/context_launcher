@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-gesture-handler'
 export type SearchContextType = {
   searchInputRef: RefObject<TextInput> | null
   clearSearchInput: () => void
-  searchAppLaunchProcedure: () => void
+  clearAndBlurSearchInput: () => void
 }
 
 const SearchContext = createContext<SearchContextType>({} as SearchContextType)

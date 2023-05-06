@@ -9,13 +9,13 @@ const SearchContextWrapper = ({ children }: PropsWithChildren) => {
     searchInputRef.current?.clear()
   }
 
-  const searchAppLaunchProcedure = () => {
+  const clearAndBlurSearchInput = () => {
     clearSearchInput()
     searchInputRef.current?.blur()
   }
 
   const value: SearchContextType = useMemo(
-    () => ({ searchInputRef, clearSearchInput, searchAppLaunchProcedure } as SearchContextType),
+    () => ({ searchInputRef, clearSearchInput, clearAndBlurSearchInput } as SearchContextType),
     [searchInputRef]
   )
 
