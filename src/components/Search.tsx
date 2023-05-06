@@ -22,7 +22,7 @@ const Search = () => {
   const apps = useSelector(selectAppsListMemoized)
   const searchQuery = useSelector(selectAppsSearchQuery)
   const displayAllApps = useSelector(selectDisplayAllApps)
-  const { searchInputRef, clearSearchInput, searchAppLaunchProcedure } = useContext(SearchContext)
+  const { searchInputRef, clearSearchInput, clearAndBlurSearchInput } = useContext(SearchContext)
 
   const onQueryChange = (query: string) => {
     dispatch(setDisplayAllApps(false))
@@ -72,7 +72,7 @@ const Search = () => {
 
   const onSubmit = () => {
     // Reset app state
-    searchAppLaunchProcedure()
+    clearAndBlurSearchInput()
     // Clean up state and launch app
     dispatch(appLaunchFromSearch())
   }

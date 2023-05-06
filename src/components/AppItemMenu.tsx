@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { IconButton, Modal, Portal, ToggleButton } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +9,7 @@ import {
   PRIMARY_COLOR,
   WHITE_COLOR,
 } from '../constants'
+import SearchContext from '../contexts/SearchContext'
 import { resetAppsSearchState, selectDisplayAppMenu, selectMenuAppDetails, setDisplayAppMenu } from '../slices/appState'
 import {
   addFavoriteApp,
@@ -44,6 +45,7 @@ const AppItemMenu = () => {
   const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
   const displayPinnedAppsValue = useSelector(selectDisplayPinnedAppsMemoized)
   const displayTemporaryPinnedApps = useSelector(selectDisplayTemporaryPinnedAppsMemoized)
+  const { clearAndBlurSearchInput } = useContext(SearchContext)
 
   const appDetails = useSelector(selectMenuAppDetails)
   const displayAppMenu = useSelector(selectDisplayAppMenu)
@@ -59,15 +61,19 @@ const AppItemMenu = () => {
   if (!appDetails) return null
 
   const openAppInfo = () => {
-    dispatch(resetAppsSearchState())
     showAppDetails(appDetails.packageName)
+
     dismissMenu()
+    clearAndBlurSearchInput()
+    dispatch(resetAppsSearchState())
   }
 
   const uninstallApp = () => {
-    dispatch(resetAppsSearchState())
     requestAppUninstall(appDetails.packageName)
+
     dismissMenu()
+    clearAndBlurSearchInput()
+    dispatch(resetAppsSearchState())
   }
 
   const toggleFavoriteApp = () => {

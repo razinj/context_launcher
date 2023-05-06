@@ -19,7 +19,7 @@ type Props = {
 
 const AppItem = ({ appDetails, renderedIn }: Props) => {
   const dispatch = useDispatch()
-  const { searchAppLaunchProcedure } = useContext(SearchContext)
+  const { clearAndBlurSearchInput } = useContext(SearchContext)
 
   const displayLabel = ![RenderedIn.PINNED_APPS, RenderedIn.FAVORITE_APPS].includes(renderedIn)
 
@@ -27,7 +27,7 @@ const AppItem = ({ appDetails, renderedIn }: Props) => {
     launchApp(appDetails.packageName)
 
     // Reset app state
-    searchAppLaunchProcedure()
+    clearAndBlurSearchInput()
     // Clean up state and launch app
     dispatch(appLaunch({ renderedIn, appDetails }))
   }
