@@ -5,10 +5,14 @@ import BottomContainer from './containers/BottomContainer'
 import TopContainer from './containers/TopContainer'
 import SearchContext from './contexts/SearchContext'
 import { useBackHandler } from './hooks/useBackHandler'
+import { useNotifyOnForeground } from './hooks/useNotifyOnForeground'
 import { usePackageChange } from './hooks/usePackageChange'
+import { AppDetails } from './models/app-details'
 import { PackageChange } from './models/event'
-import { appRemovedAction, getAppsListAction } from './slices/appsList'
+import LauncherAppsModule from './native-modules/LauncherAppsModule'
+import { appRemovedAction, setAppsList } from './slices/appsList'
 import { setDisplayAllApps } from './slices/appState'
+import { displayToast } from './utils/toast'
 
 const initialLoadPackageName = 'INITIAL_LOAD'
 const packageChangedInitialValue = {
@@ -18,15 +22,22 @@ const packageChangedInitialValue = {
 
 const Home = () => {
   const dispatch = useDispatch()
-  const [packageChanged, setPackageChanged] = useState<PackageChange>(packageChangedInitialValue)
+  const [packageChanged, setPackageChanged] = useState<PackageChange>(packageChangedInitialValue) // after handling a change, the value needs to be reset to default value
   const { searchInputRef } = useContext(SearchContext)
 
   useEffect(() => {
+    console.log('packageChanged changed, packageChanged: ', packageChanged)
+
+    // TODO: Move all this to a saga?
+
     if (packageChanged.isRemoved && packageChanged.packageName !== initialLoadPackageName) {
       dispatch(appRemovedAction(packageChanged.packageName))
+      // displayToast(`removed: ${packageChanged.packageName}`)
+    } else {
+      // displayToast(`added: ${packageChanged.packageName}`)
     }
 
-    dispatch(getAppsListAction())
+    // dispatch(getAppsListAction())
   }, [packageChanged])
 
   useBackHandler(() => {
@@ -38,6 +49,23 @@ const Home = () => {
   })
 
   usePackageChange((packageChange: PackageChange) => setPackageChanged(packageChange))
+  // usePackageChange((packageChange: PackageChange) => {
+  //   // console.log('usePackageChange: ', packageChange);
+
+  //   setPackageChanged(packageChange)
+  // })
+
+  // useNotifyOnForeground(() => dispatch(revalidateAppsLists()))
+  useNotifyOnForeground(() => {
+    displayToast('On foreground')
+    LauncherAppsModule.getApplicationsV3()
+    // LauncherAppsModule.getApplications()
+    //   .then((applications: string) => {
+    //     const apps = JSON.parse(applications) as AppDetails[]
+    //     dispatch(setAppsList(apps))
+    //   })
+    //   .catch(e => console.error('e: ', e))
+  })
 
   return (
     <View style={styles.wrapper}>

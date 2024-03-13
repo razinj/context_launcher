@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FavoriteApp } from '../models/favorite-app'
 import { RootState } from '../store'
-import { getApp, getAppIndex } from '../utils/apps'
+import { getAppByPackageNameAndName, getAppIndexByPackageName } from '../utils/apps'
 
 export interface FavoriteAppsState {
   list: FavoriteApp[]
@@ -19,14 +19,27 @@ export const favoriteAppsSlice = createSlice({
       if (state.list.length === 5) return
 
       // Add to list only if it doesn't exists
-      if (!getApp(state.list, payload.packageName)) state.list.push({ ...payload })
+      if (!getAppByPackageNameAndName(state.list, payload.packageName, payload.name)) {
+        state.list.push({ ...payload })
+      }
     },
-    removeFavoriteApp: (state: FavoriteAppsState, { payload }: PayloadAction<string>) => {
-      const foundAppIndex = getAppIndex(state.list, payload)
+    removeFavoriteApp: (state: FavoriteAppsState, { payload: packageName }: PayloadAction<string>) => {
+      let foundAppIndex = getAppIndexByPackageName(state.list, packageName)
 
-      if (foundAppIndex === -1) return
+      while (foundAppIndex !== -1) {
+        state.list.splice(foundAppIndex, 1)
+        foundAppIndex = getAppIndexByPackageName(state.list, packageName)
+      }
+    },
+    removeFavoriteApps: (state: FavoriteAppsState, { payload: packageNames }: PayloadAction<string[]>) => {
+      for (const packageName of packageNames) {
+        let foundAppIndex = getAppIndexByPackageName(state.list, packageName)
 
-      state.list.splice(foundAppIndex, 1)
+        while (foundAppIndex !== -1) {
+          state.list.splice(foundAppIndex, 1)
+          foundAppIndex = getAppIndexByPackageName(state.list, packageName)
+        }
+      }
     },
     setFavoriteApps: (state: FavoriteAppsState, { payload }: PayloadAction<FavoriteApp[]>) => {
       state.list = payload
@@ -37,7 +50,8 @@ export const favoriteAppsSlice = createSlice({
   },
 })
 
-export const { addFavoriteApp, removeFavoriteApp, setFavoriteApps, clearFavoriteApps } = favoriteAppsSlice.actions
+export const { addFavoriteApp, removeFavoriteApp, removeFavoriteApps, setFavoriteApps, clearFavoriteApps } =
+  favoriteAppsSlice.actions
 
 const selectFavoriteApps = (state: RootState) => state.favoriteApps.list
 

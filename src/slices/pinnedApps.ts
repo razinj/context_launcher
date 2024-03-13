@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PinnedApp, PinnedAppsState, TemporaryPinnedAppsConfig } from '../models/pinned-app'
 import { RootState } from '../store'
-import { getAppIndex } from '../utils/apps'
+import { getAppIndexByPackageName, getAppIndexByPackageNameAndName } from '../utils/apps'
 
 const initialState: PinnedAppsState = {
   list: [],
@@ -17,33 +17,61 @@ export const pinnedAppsSlice = createSlice({
   initialState,
   reducers: {
     addPinnedApp: (state: PinnedAppsState, { payload }: PayloadAction<{ app: PinnedApp; isPermanent: boolean }>) => {
-      if (payload.isPermanent) {
-        const foundAppIndex = getAppIndex(state.list, payload.app.packageName)
+      const { app, isPermanent } = payload
+
+      if (isPermanent) {
+        const foundAppIndex = getAppIndexByPackageNameAndName(state.list, app.packageName, app.name)
 
         if (foundAppIndex !== -1) return
 
-        state.list.push({ ...payload.app })
+        state.list.push({ ...app })
       } else {
-        const foundAppIndex = getAppIndex(state.temporarily, payload.app.packageName)
+        const foundAppIndex = getAppIndexByPackageNameAndName(state.temporarily, app.packageName, app.name)
 
         if (foundAppIndex !== -1) return
 
-        state.temporarily.push({ ...payload.app })
+        state.temporarily.push({ ...app })
       }
     },
     removePinnedApp: (state: PinnedAppsState, { payload }: PayloadAction<{ app: PinnedApp; isPermanent: boolean }>) => {
       if (payload.isPermanent) {
-        const foundAppIndex = getAppIndex(state.list, payload.app.packageName)
+        let foundAppIndex = getAppIndexByPackageName(state.list, payload.app.packageName)
 
-        if (foundAppIndex === -1) return
-
-        state.list.splice(foundAppIndex, 1)
+        while (foundAppIndex !== -1) {
+          state.list.splice(foundAppIndex, 1)
+          foundAppIndex = getAppIndexByPackageName(state.list, payload.app.packageName)
+        }
       } else {
-        const foundAppIndex = getAppIndex(state.temporarily, payload.app.packageName)
+        let foundAppIndex = getAppIndexByPackageName(state.temporarily, payload.app.packageName)
 
-        if (foundAppIndex === -1) return
+        while (foundAppIndex !== -1) {
+          state.temporarily.splice(foundAppIndex, 1)
+          foundAppIndex = getAppIndexByPackageName(state.temporarily, payload.app.packageName)
+        }
+      }
+    },
+    removePinnedApps: (
+      state: PinnedAppsState,
+      { payload: { packageNames, isPermanent } }: PayloadAction<{ packageNames: string[]; isPermanent: boolean }>
+    ) => {
+      if (isPermanent) {
+        for (const packageName of packageNames) {
+          let foundAppIndex = getAppIndexByPackageName(state.list, packageName)
 
-        state.temporarily.splice(foundAppIndex, 1)
+          while (foundAppIndex !== -1) {
+            state.list.splice(foundAppIndex, 1)
+            foundAppIndex = getAppIndexByPackageName(state.list, packageName)
+          }
+        }
+      } else {
+        for (const packageName of packageNames) {
+          let foundAppIndex = getAppIndexByPackageName(state.temporarily, packageName)
+
+          while (foundAppIndex !== -1) {
+            state.temporarily.splice(foundAppIndex, 1)
+            foundAppIndex = getAppIndexByPackageName(state.temporarily, packageName)
+          }
+        }
       }
     },
     clearPinnedApps: (state: PinnedAppsState, { payload }: PayloadAction<{ temporarily: boolean }>) => {
@@ -63,8 +91,14 @@ export const pinnedAppsSlice = createSlice({
   },
 })
 
-export const { addPinnedApp, removePinnedApp, setTemporaryAppsConfig, clearPinnedApps, setPinnedApps } =
-  pinnedAppsSlice.actions
+export const {
+  addPinnedApp,
+  removePinnedApp,
+  removePinnedApps,
+  setTemporaryAppsConfig,
+  clearPinnedApps,
+  setPinnedApps,
+} = pinnedAppsSlice.actions
 
 const selectPinnedApps = (state: RootState) => state.pinnedApps.list
 const selecttTemporaryPinnedApps = (state: RootState) => state.pinnedApps.temporarily

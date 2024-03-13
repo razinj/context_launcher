@@ -1,10 +1,13 @@
 package com.razinj.context_launcher;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.LauncherApps;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -30,7 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected List<ReactPackage> getPackages() {
             List<ReactPackage> packages = new PackageList(this).getPackages();
-            packages.add(new CustomAppPackage());
+            packages.add(new LauncherAppsPackage());
             return packages;
         }
 
@@ -67,10 +70,11 @@ public class MainApplication extends Application implements ReactApplication {
         }
         ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(this, AppProvider.class));
-        } else {
-            startService(new Intent(this, AppProvider.class));
-        }
+//        getSystemService(LauncherApps.class).registerCallback(new LauncherAppsCallback(this));
+
+//        startService(new Intent(this, BGService.class));
+
+        Intent serviceIntent = new Intent(this, PackageMonitorService.class);
+        ContextCompat.startForegroundService(this, serviceIntent);
     }
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CustomAppPackage implements ReactPackage {
+public class LauncherAppsPackage implements ReactPackage {
 
     @NonNull
     @Override
@@ -23,7 +23,7 @@ public class CustomAppPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new AppsModule(reactContext));
+        modules.add(new LauncherAppsModule(reactContext));
         return modules;
     }
 

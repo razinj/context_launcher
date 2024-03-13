@@ -100,7 +100,8 @@ export const selectMenuAppDetails = (state: RootState) => state.appState.menuApp
 export const selectDisplayAppMenu = (state: RootState) => state.appState.displayAppMenu
 export const selectDisplaySortableFavoriteApps = (state: RootState) => state.appState.displaySortableFavoriteApps
 export const selectDisplaySortablePinnedApps = (state: RootState) => state.appState.displaySortablePinnedApps
-export const selectDisplaySortableTemporaryPinnedApps = (state: RootState) => state.appState.displaySortableTemporaryPinnedApps
+export const selectDisplaySortableTemporaryPinnedApps = (state: RootState) =>
+  state.appState.displaySortableTemporaryPinnedApps
 export const selectAppsSearchQuery = (state: RootState) => state.appState.search.query
 export const selectAppsSearchResult = (state: RootState) => state.appState.search.result
 

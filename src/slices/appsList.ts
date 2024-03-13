@@ -1,8 +1,8 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { APP_ID } from '../constants'
 import { AppDetails } from '../models/app-details'
 import { RootState } from '../store'
 import { getAppsLetterIndex } from '../utils/alphabet-list'
+import { displayToast } from '../utils/toast'
 
 export interface AppsListState {
   list: AppDetails[]
@@ -17,10 +17,10 @@ export const appsListSlice = createSlice({
   initialState,
   reducers: {
     setAppsList: (state: AppsListState, { payload }: PayloadAction<AppDetails[]>) => {
-      // Filter out Context Launcher from the app's list and sort it
-      state.list = payload
-        .filter(({ packageName }: AppDetails) => packageName !== APP_ID)
-        .sort((appOne: AppDetails, appTwo: AppDetails) => appOne.name.localeCompare(appTwo.name))
+      // console.log('setAppsList called');
+      displayToast(`apps found : ${payload.length}`)
+
+      state.list = payload.sort((appOne: AppDetails, appTwo: AppDetails) => appOne.name.localeCompare(appTwo.name))
     },
   },
 })
@@ -29,6 +29,7 @@ export const { setAppsList } = appsListSlice.actions
 
 export const getAppsListAction = createAction('appsList/getAppsListAction')
 export const appRemovedAction = createAction<string>('appsList/appRemovedAction')
+export const revalidateAppsLists = createAction('appsList/revalidateAppsLists')
 
 const selectAppsList = (state: RootState) => state.appsList.list
 

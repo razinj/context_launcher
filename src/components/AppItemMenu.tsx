@@ -28,7 +28,7 @@ import {
   selectDisplayPinnedAppsMemoized,
   selectDisplayTemporaryPinnedAppsMemoized,
 } from '../slices/preferences'
-import { getAppIndex } from '../utils/apps'
+import { getAppIndexByPackageNameAndName } from '../utils/apps'
 import { requestAppUninstall, showAppDetails } from '../utils/apps-module'
 import AppIcon from './shared/AppIcon'
 import CustomIcon from './shared/CustomIcon'
@@ -46,16 +46,17 @@ const AppItemMenu = () => {
   const displayPinnedAppsValue = useSelector(selectDisplayPinnedAppsMemoized)
   const displayTemporaryPinnedApps = useSelector(selectDisplayTemporaryPinnedAppsMemoized)
   const { clearAndBlurSearchInput } = useContext(SearchContext)
-
   const appDetails = useSelector(selectMenuAppDetails)
   const displayAppMenu = useSelector(selectDisplayAppMenu)
 
   useEffect(() => {
     if (!appDetails) return
 
-    setIsPinnedApp(getAppIndex(pinnedApps, appDetails.packageName) !== -1)
-    setIsFavoriteApp(getAppIndex(favoriteApps, appDetails.packageName) !== -1)
-    setIsTemporarilyPinnedApp(getAppIndex(temporaryPinnedApps, appDetails.packageName) !== -1)
+    const { packageName, name } = appDetails
+
+    setIsPinnedApp(getAppIndexByPackageNameAndName(pinnedApps, packageName, name) !== -1)
+    setIsFavoriteApp(getAppIndexByPackageNameAndName(favoriteApps, packageName, name) !== -1)
+    setIsTemporarilyPinnedApp(getAppIndexByPackageNameAndName(temporaryPinnedApps, packageName, name) !== -1)
   }, [appDetails, favoriteApps, pinnedApps, temporaryPinnedApps])
 
   if (!appDetails) return null

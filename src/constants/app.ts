@@ -1,7 +1,12 @@
-import AppsModule from '../native-modules/AppsModule'
+import LauncherAppsModule from '../native-modules/LauncherAppsModule'
 
 // Constant values
-export const { packageName: APP_ID, appVersion: APP_VERSION, buildNumber: APP_BUILD_NUMBER } = AppsModule.getConstants()
+export const {
+  appId: APP_ID,
+  appVersion: APP_VERSION,
+  buildNumber: APP_BUILD_NUMBER,
+  isDebugBuild: IS_DEBUG_BUILD,
+} = LauncherAppsModule.getConstants()
 export const APP_ITEM_HEIGHT = 60
 export const BOTTOM_CONTAINER_HEIGHT = 48.8
 export const BOTTOM_CONTAINER_HEIGHT_WITH_PADDINGS = BOTTOM_CONTAINER_HEIGHT + 10

@@ -61,11 +61,11 @@ const PinnedAppsSettings = () => {
       mode: 'time',
       is24Hour: true,
       value: forStartDate
-        ? temporaryPinnedAppsConfig.startDate
-          ? getDateFromStringWithCurrentDateValue(temporaryPinnedAppsConfig.startDate)!
+        ? temporaryPinnedAppsConfig?.startDate
+          ? getDateFromStringWithCurrentDateValue(temporaryPinnedAppsConfig?.startDate)!
           : new Date()
-        : temporaryPinnedAppsConfig.endDate
-        ? getDateFromStringWithCurrentDateValue(temporaryPinnedAppsConfig.endDate)!
+        : temporaryPinnedAppsConfig?.endDate
+        ? getDateFromStringWithCurrentDateValue(temporaryPinnedAppsConfig?.endDate)!
         : new Date(),
       onChange: forStartDate ? setTemporaryPinnedAppsStartDate : setTemporaryPinnedAppsEndDate,
     })
