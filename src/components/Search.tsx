@@ -15,7 +15,7 @@ import {
   setAppsSearchResult,
   setDisplayAllApps,
 } from '../slices/appState'
-import { getAppsByLabel } from '../utils/apps'
+import { getAppsByName } from '../utils/apps'
 
 const Search = () => {
   const dispatch = useDispatch()
@@ -41,7 +41,7 @@ const Search = () => {
       return
     }
 
-    dispatch(setAppsSearchResult(getAppsByLabel(apps, trimmedQuery)))
+    dispatch(setAppsSearchResult(getAppsByName(apps, trimmedQuery)))
     dispatch(setAppsSearchQuery(trimmedQuery))
   }
 
@@ -50,7 +50,7 @@ const Search = () => {
     dispatch(resetAppsSearchState())
   }, [searchInputRef])
 
-  const clearButton = (): JSX.Element | null => {
+  const clearButton = (): React.JSX.Element | null => {
     if (!searchQuery) return null
 
     return (

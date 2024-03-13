@@ -15,9 +15,9 @@ export const useTimeBasedRendering = () => {
   const temporaryPinnedAppsConfig = useSelector(selectTemporaryPinnedAppsConfigMemoized)
 
   useEffect(() => {
-    setStartDate(temporaryPinnedAppsConfig.startDate ? new Date(temporaryPinnedAppsConfig.startDate) : undefined)
-    setEndDate(temporaryPinnedAppsConfig.endDate ? new Date(temporaryPinnedAppsConfig.endDate) : undefined)
-  }, [temporaryPinnedAppsConfig.startDate, temporaryPinnedAppsConfig.endDate])
+    setStartDate(temporaryPinnedAppsConfig?.startDate ? new Date(temporaryPinnedAppsConfig.startDate) : undefined)
+    setEndDate(temporaryPinnedAppsConfig?.endDate ? new Date(temporaryPinnedAppsConfig.endDate) : undefined)
+  }, [temporaryPinnedAppsConfig?.startDate, temporaryPinnedAppsConfig?.endDate])
 
   useEffect(() => {
     let startRenderingTimeOut: NodeJS.Timeout | undefined

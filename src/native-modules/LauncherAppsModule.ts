@@ -1,19 +1,22 @@
 import { NativeModules } from 'react-native'
 
-export interface AppsModuleInterface {
+interface LauncherAppsModuleInterface {
   getConstants(): AppsModuleConstants
   launchApplication(packageName: string): void
   showApplicationDetails(packageName: string): void
   requestApplicationUninstall(packageName: string): void
   getApplications(): Promise<string>
+  getApplicationsV2(callback: (apps: string) => void): void
+  getApplicationsV3(): void
 }
 
-type AppsModuleConstants = {
+interface AppsModuleConstants {
+  appId: string
   appVersion: string
   buildNumber: string
-  packageName: string
+  isDebugBuild?: boolean
 }
 
-const { AppsModule } = NativeModules
+const { LauncherAppsModule } = NativeModules
 
-export default AppsModule as AppsModuleInterface
+export default LauncherAppsModule as LauncherAppsModuleInterface

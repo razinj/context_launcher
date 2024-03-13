@@ -12,6 +12,7 @@
     "test:ci": "jest --ci --no-cache --silent",
     "test:coverage": "jest --collect-coverage",
     "lint": "eslint . --ext .js,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
     "format": "prettier --write ."
   },
   "dependencies": {

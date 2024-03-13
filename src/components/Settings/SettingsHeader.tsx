@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, PressableAndroidRippleConfig, StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { APP_BUILD_NUMBER, APP_ID, APP_VERSION } from '../../constants'
+import { APP_BUILD_NUMBER, APP_ID, APP_VERSION, IS_DEBUG_BUILD } from '../../constants'
 import { setDisplaySettings } from '../../slices/appState'
 import { showAppDetails } from '../../utils/apps-module'
 import CustomIcon from '../shared/CustomIcon'
@@ -26,7 +26,7 @@ const SettingsHeader = () => {
       <Text style={styles.title}>
         Context Settings
         <Text style={styles.appInfoText}>
-          &nbsp;&nbsp;v{APP_VERSION} ({APP_BUILD_NUMBER})
+          &nbsp;&nbsp;v{APP_VERSION} ({APP_BUILD_NUMBER}){IS_DEBUG_BUILD ? <> (DEBUG)</> : null}
         </Text>
       </Text>
       <Pressable

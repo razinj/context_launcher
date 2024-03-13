@@ -20,14 +20,6 @@ public class Utils {
         super();
     }
 
-    public static String getEncodedIcon(@NonNull PackageManager pm, String packageName) {
-        try {
-            return getEncodedIcon(pm.getApplicationIcon(packageName));
-        } catch (PackageManager.NameNotFoundException nameNotFoundException) {
-            return "NOT_FOUND";
-        }
-    }
-
     public static String getEncodedIcon(@NonNull Drawable drawable) {
         Bitmap bitmap;
 

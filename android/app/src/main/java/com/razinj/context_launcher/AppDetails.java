@@ -1,7 +1,5 @@
 package com.razinj.context_launcher;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import org.json.JSONException;
@@ -29,7 +27,6 @@ public class AppDetails {
 
             return appDetails.toString();
         } catch (JSONException e) {
-            Log.e("AppsModule", "Couldn't construct app details JSON: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
