@@ -13,7 +13,7 @@ Become a [tester](https://play.google.com/apps/testing/com.razinj.context_launch
 ## Run
 
 Install dependencies:
-  
+
 ```shell
 # NPM
 npm ci
@@ -29,11 +29,22 @@ npm run android
 
 ## Build
 
-Debug `APK`:
+Debug `apk`:
 
 ```shell
 cd android && ./gradlew assembleDebug
 ```
+
+Release `apk` and `aab`
+
+Before generating release builds, change the `versionCode` and `versionName` in `android/app/build.gradle`.
+
+```shell
+./gradlew assembleRelease # Release 'apk'
+./gradlew bundleRelease # Release 'aab'
+```
+
+Or run the `build.sh` script.
 
 ## Tests
 
