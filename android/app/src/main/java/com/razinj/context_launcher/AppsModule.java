@@ -80,29 +80,33 @@ public class AppsModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getApplications(Promise promise) {
-        PackageManager pm = reactContext.getPackageManager();
-        List<AppDetails> apps = new ArrayList<>();
-        List<PackageInfo> packages;
+        new Thread(() -> {
+            PackageManager pm = reactContext.getPackageManager();
+            List<AppDetails> apps = new ArrayList<>();
+            List<PackageInfo> packages;
 
-        // Get installed packages
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            packages = pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(0));
-        } else {
-            packages = pm.getInstalledPackages(0);
-        }
-
-        // Filter and map to AppDetails
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            apps = packages.stream().filter(packageInfo -> Objects.nonNull(pm.getLaunchIntentForPackage(packageInfo.packageName))).map(packageInfo -> new AppDetails(packageInfo.packageName, packageInfo.applicationInfo.loadLabel(pm).toString(), Utils.getEncodedIcon(pm, packageInfo.packageName))).collect(Collectors.toList());
-        } else {
-            for (PackageInfo packageInfo : packages) {
-                if (Objects.isNull(pm.getLaunchIntentForPackage(packageInfo.packageName))) continue;
-
-                apps.add(new AppDetails(packageInfo.packageName, packageInfo.applicationInfo.loadLabel(pm).toString(), Utils.getEncodedIcon(pm, packageInfo.packageName)));
+            // Get installed packages
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packages = pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(0));
+            } else {
+                packages = pm.getInstalledPackages(0);
             }
-        }
 
-        promise.resolve(apps.toString());
+            // Filter and map to AppDetails
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                apps = packages.stream().filter(packageInfo -> Objects.nonNull(pm.getLaunchIntentForPackage(packageInfo.packageName))).map(packageInfo -> new AppDetails(packageInfo.packageName, packageInfo.applicationInfo.loadLabel(pm).toString(), Utils.getEncodedIcon(pm, packageInfo.packageName))).collect(Collectors.toList());
+            } else {
+                for (PackageInfo packageInfo : packages) {
+                    if (Objects.isNull(pm.getLaunchIntentForPackage(packageInfo.packageName))) {
+                        continue;
+                    }
+
+                    apps.add(new AppDetails(packageInfo.packageName, packageInfo.applicationInfo.loadLabel(pm).toString(), Utils.getEncodedIcon(pm, packageInfo.packageName)));
+                }
+            }
+
+            promise.resolve(apps.toString());
+        }).start();
     }
 
     @ReactMethod
