@@ -4,6 +4,9 @@ import { renderWithProvider, renderWithProviderAndContexts } from '../../utils/t
 import { toogleAllApps } from '../slices/appState'
 import AllAppsIcon from './AllAppsIcon'
 
+// Note: import explicitly to use the types shipped with jest.
+import {it, describe, expect} from '@jest/globals';
+
 const useDispatchMock = jest.fn()
 
 jest.mock('react-redux', () => ({

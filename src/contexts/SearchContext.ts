@@ -1,5 +1,5 @@
 import { createContext, RefObject } from 'react'
-import { TextInput } from 'react-native-gesture-handler'
+import { TextInput } from 'react-native'
 
 export type SearchContextType = {
   searchInputRef: RefObject<TextInput> | null
