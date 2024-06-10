@@ -7,8 +7,8 @@ import SearchContext from './contexts/SearchContext'
 import { useBackHandler } from './hooks/useBackHandler'
 import { usePackageChange } from './hooks/usePackageChange'
 import { PackageChange } from './models/event'
-import { appRemovedAction, getAppsListAction } from './slices/appsList'
 import { setDisplayAllApps } from './slices/appState'
+import { appRemovedAction, getAppsListAction } from './slices/appsList'
 
 const initialLoadPackageName = 'INITIAL_LOAD'
 const packageChangedInitialValue = {

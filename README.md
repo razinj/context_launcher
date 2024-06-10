@@ -24,7 +24,7 @@ cd android && ./gradlew build
 Install and launch app in an android device/emulator:
 
 ```shell
-npm run android
+npm run start:all
 ```
 
 ## Build

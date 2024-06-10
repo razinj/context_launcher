@@ -4,11 +4,11 @@ import { Modal, Portal } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
 import { BOTTOM_CONTAINER_HEIGHT_WITH_PADDINGS } from '../../constants'
 import { selectDisplaySettings, setDisplaySettings } from '../../slices/appState'
+import SettingsHeader from './SettingsHeader'
 import AdvancedSettings from './sections/AdvancedSettings'
 import FavoriteAppsSettings from './sections/FavoriteAppsSettings'
 import PinnedAppsSettings from './sections/PinnedAppsSettings'
 import RecentAppsSettings from './sections/RecentAppsSettings'
-import SettingsHeader from './SettingsHeader'
 import ToggleSettings from './shared/ToggleSettings'
 
 const Settings = () => {

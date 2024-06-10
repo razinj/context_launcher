@@ -35,7 +35,7 @@ describe('<SettingsHeader /> Tests', () => {
 
     fireEvent.press(appInfoButton)
 
-    expect(useDispatchMock).toBeCalledWith(setDisplaySettings(false))
-    expect(AppsModule.showAppDetails).toBeCalledWith(APP_ID)
+    expect(useDispatchMock).toHaveBeenCalledWith(setDisplaySettings(false))
+    expect(AppsModule.showAppDetails).toHaveBeenCalledWith(APP_ID)
   })
 })

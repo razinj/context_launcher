@@ -44,8 +44,8 @@ describe('<RecentAppsSettings /> Tests', () => {
 
     fireEvent.press(clearRecentAppsButton)
 
-    expect(useDispatchMock).toBeCalledWith(clearRecentApps())
-    expect(ToastModule.displayToast).toBeCalledWith('Recent apps cleared successfully!')
+    expect(useDispatchMock).toHaveBeenCalledWith(clearRecentApps())
+    expect(ToastModule.displayToast).toHaveBeenCalledWith('Recent apps cleared successfully!')
   })
 
   it('should dispatch action to toggle recent apps when button is pressed', () => {
@@ -65,6 +65,6 @@ describe('<RecentAppsSettings /> Tests', () => {
 
     fireEvent(toggleRecentAppsSwitch, 'valueChange')
 
-    expect(useDispatchMock).toBeCalledWith(displayRecentApps(true))
+    expect(useDispatchMock).toHaveBeenCalledWith(displayRecentApps(true))
   })
 })

@@ -28,6 +28,6 @@ describe('<AllAppsIcon /> Tests', () => {
 
     fireEvent.press(allAppsButton)
 
-    expect(useDispatchMock).toBeCalledWith(toogleAllApps())
+    expect(useDispatchMock).toHaveBeenCalledWith(toogleAllApps())
   })
 })

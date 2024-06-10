@@ -63,11 +63,21 @@ exports[`<Settings /> Tests should render modal correctly and match snapshot whe
             "selected": undefined,
           }
         }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
         accessible={true}
         collapsable={false}
         focusable={true}
         importantForAccessibility="no"
+        onBlur={[Function]}
         onClick={[Function]}
+        onFocus={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -108,13 +118,9 @@ exports[`<Settings /> Tests should render modal correctly and match snapshot whe
           collapsable={false}
           style={
             {
-              "alignSelf": undefined,
               "backgroundColor": "white",
               "borderRadius": 5,
               "bottom": 58.8,
-              "end": undefined,
-              "flex": undefined,
-              "height": undefined,
               "left": 5,
               "opacity": 1,
               "position": "absolute",
@@ -126,10 +132,6 @@ exports[`<Settings /> Tests should render modal correctly and match snapshot whe
               },
               "shadowOpacity": 0.15,
               "shadowRadius": 3,
-              "start": undefined,
-              "top": undefined,
-              "transform": undefined,
-              "width": undefined,
             }
           }
           testID="modal-surface-outer-layer"

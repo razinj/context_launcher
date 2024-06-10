@@ -61,7 +61,7 @@ describe('<AllAppsLetterIndex /> Tests', () => {
 
     fireEvent.press(letterIndexItem_C)
 
-    expect(onPressFn).toBeCalledWith(0)
+    expect(onPressFn).toHaveBeenCalledWith(0)
 
     // Letter M
     const letterIndexItem_M = screen.getByText('M')
@@ -71,6 +71,6 @@ describe('<AllAppsLetterIndex /> Tests', () => {
 
     fireEvent.press(letterIndexItem_M)
 
-    expect(onPressFn).toBeCalledWith(1)
+    expect(onPressFn).toHaveBeenCalledWith(1)
   })
 })

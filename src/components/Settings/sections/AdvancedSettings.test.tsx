@@ -35,8 +35,8 @@ describe('<AdvancedSettings /> Tests', () => {
 
     fireEvent.press(reloadAllAppsButton)
 
-    expect(useDispatchMock).toBeCalledWith(getAppsListAction())
-    expect(ToastModule.displayToast).toBeCalledWith('All apps reloaded successfully!')
+    expect(useDispatchMock).toHaveBeenCalledWith(getAppsListAction())
+    expect(ToastModule.displayToast).toHaveBeenCalledWith('All apps reloaded successfully!')
   })
 
   it('should reset preferences apps when button is pressed', () => {
@@ -48,7 +48,7 @@ describe('<AdvancedSettings /> Tests', () => {
 
     fireEvent.press(resetPreferencesButton)
 
-    expect(useDispatchMock).toBeCalledWith(resetPreferences())
-    expect(ToastModule.displayToast).toBeCalledWith('Settings reset successfully!')
+    expect(useDispatchMock).toHaveBeenCalledWith(resetPreferences())
+    expect(ToastModule.displayToast).toHaveBeenCalledWith('Settings reset successfully!')
   })
 })
