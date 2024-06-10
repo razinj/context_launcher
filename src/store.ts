@@ -1,22 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import {
-  createMigrate,
   FLUSH,
   MigrationManifest,
   PAUSE,
   PERSIST,
-  PersistConfig,
-  persistReducer,
-  persistStore,
   PURGE,
+  PersistConfig,
   REGISTER,
   REHYDRATE,
+  createMigrate,
+  persistReducer,
+  persistStore,
 } from 'redux-persist'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from './rootSaga'
-import appsListReducer from './slices/appsList'
 import appStateReducer from './slices/appState'
+import appsListReducer from './slices/appsList'
 import FavoriteAppsReducer from './slices/favoriteApps'
 import pinnedAppsReducer from './slices/pinnedApps'
 import preferencesReducer from './slices/preferences'

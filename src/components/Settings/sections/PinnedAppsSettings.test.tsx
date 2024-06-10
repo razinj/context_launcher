@@ -44,8 +44,8 @@ describe('<PinnedAppsSettings /> Tests', () => {
 
     fireEvent.press(clearPinnedAppsButton)
 
-    expect(useDispatchMock).toBeCalledWith(clearPinnedApps({ temporarily: false }))
-    expect(ToastModule.displayToast).toBeCalledWith('Pinned apps cleared successfully!')
+    expect(useDispatchMock).toHaveBeenCalledWith(clearPinnedApps({ temporarily: false }))
+    expect(ToastModule.displayToast).toHaveBeenCalledWith('Pinned apps cleared successfully!')
   })
 
   it('should dispatch action to clear temporarily pinned apps when button is pressed', () => {
@@ -57,8 +57,8 @@ describe('<PinnedAppsSettings /> Tests', () => {
 
     fireEvent.press(clearTemporarilyPinnedAppsButton)
 
-    expect(useDispatchMock).toBeCalledWith(clearPinnedApps({ temporarily: true }))
-    expect(ToastModule.displayToast).toBeCalledWith('Temporarily pinned apps cleared successfully!')
+    expect(useDispatchMock).toHaveBeenCalledWith(clearPinnedApps({ temporarily: true }))
+    expect(ToastModule.displayToast).toHaveBeenCalledWith('Temporarily pinned apps cleared successfully!')
   })
 
   describe('Sort pinned apps button tests - permanently pinned apps', () => {
@@ -141,7 +141,7 @@ describe('<PinnedAppsSettings /> Tests', () => {
 
       fireEvent.press(sortPinnedAppsButton)
 
-      expect(useDispatchMock).toBeCalledWith(sortPinnedApps())
+      expect(useDispatchMock).toHaveBeenCalledWith(sortPinnedApps())
     })
   })
 
@@ -225,7 +225,7 @@ describe('<PinnedAppsSettings /> Tests', () => {
 
       fireEvent.press(sortTemporarilyPinnedAppsButton)
 
-      expect(useDispatchMock).toBeCalledWith(sortTemporaryPinnedApps())
+      expect(useDispatchMock).toHaveBeenCalledWith(sortTemporaryPinnedApps())
     })
   })
 
@@ -247,7 +247,7 @@ describe('<PinnedAppsSettings /> Tests', () => {
 
     fireEvent(togglePinnedAppsSwitch, 'valueChange')
 
-    expect(useDispatchMock).toBeCalledWith(displayPinnedApps(true))
+    expect(useDispatchMock).toHaveBeenCalledWith(displayPinnedApps(true))
   })
 
   it('should dispatch action to toggle temporarily pinned apps view when button is pressed', () => {
@@ -268,7 +268,7 @@ describe('<PinnedAppsSettings /> Tests', () => {
 
     fireEvent(toggleTemporarilyPinnedAppsSwitch, 'valueChange')
 
-    expect(useDispatchMock).toBeCalledWith(displayTemporaryPinnedApps(true))
+    expect(useDispatchMock).toHaveBeenCalledWith(displayTemporaryPinnedApps(true))
   })
 
   it.todo('should open time picker with correct values - permanently pinned apps')

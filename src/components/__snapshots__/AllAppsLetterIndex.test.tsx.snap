@@ -50,7 +50,7 @@ exports[`<AllAppsLetterIndex /> Tests should render correctly and match snapshot
         onScrollEndDrag={[Function]}
         removeClippedSubviews={false}
         renderItem={[Function]}
-        scrollEventThrottle={50}
+        scrollEventThrottle={0.0001}
         stickyHeaderIndices={[]}
         testID="all-apps-letter-index-list"
         viewabilityConfigCallbackPairs={[]}
@@ -119,7 +119,7 @@ exports[`<AllAppsLetterIndex /> Tests should render correctly and match snapshot
         onScrollEndDrag={[Function]}
         removeClippedSubviews={false}
         renderItem={[Function]}
-        scrollEventThrottle={50}
+        scrollEventThrottle={0.0001}
         stickyHeaderIndices={[]}
         testID="all-apps-letter-index-list"
         viewabilityConfigCallbackPairs={[]}

@@ -28,6 +28,6 @@ describe('<SettingsIcon /> Tests', () => {
 
     fireEvent.press(settingsButton)
 
-    expect(useDispatchMock).toBeCalledWith(setDisplaySettings(true))
+    expect(useDispatchMock).toHaveBeenCalledWith(setDisplaySettings(true))
   })
 })

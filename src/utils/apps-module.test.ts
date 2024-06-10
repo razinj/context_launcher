@@ -8,20 +8,20 @@ describe('AppsModule Tests', () => {
     launchApp(aPackageName)
 
     expect(AppsModule.launchApplication).toBeCalledTimes(1)
-    expect(AppsModule.launchApplication).toBeCalledWith(aPackageName)
+    expect(AppsModule.launchApplication).toHaveBeenCalledWith(aPackageName)
   })
 
   it('should call AppsModule.showApplicationDetails with package name', () => {
     showAppDetails(aPackageName)
 
     expect(AppsModule.showApplicationDetails).toBeCalledTimes(1)
-    expect(AppsModule.showApplicationDetails).toBeCalledWith(aPackageName)
+    expect(AppsModule.showApplicationDetails).toHaveBeenCalledWith(aPackageName)
   })
 
   it('should call AppsModule.requestApplicationUninstall with package name', () => {
     requestAppUninstall(aPackageName)
 
     expect(AppsModule.requestApplicationUninstall).toBeCalledTimes(1)
-    expect(AppsModule.requestApplicationUninstall).toBeCalledWith(aPackageName)
+    expect(AppsModule.requestApplicationUninstall).toHaveBeenCalledWith(aPackageName)
   })
 })

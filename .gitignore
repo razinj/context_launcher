@@ -65,3 +65,6 @@ coverage/
 
 # vscode
 .vscode/
+
+# testing
+/coverage

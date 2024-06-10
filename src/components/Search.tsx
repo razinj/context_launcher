@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NEUTRAL_COLOR, PRIMARY_COLOR, SECONDARY_COLOR } from '../constants'
 import SearchContext from '../contexts/SearchContext'
 import { iconButtonStyle } from '../shared/bottom-container'
-import { selectAppsListMemoized } from '../slices/appsList'
 import {
   appLaunchFromSearch,
   resetAppsSearchState,
@@ -15,6 +14,7 @@ import {
   setAppsSearchResult,
   setDisplayAllApps,
 } from '../slices/appState'
+import { selectAppsListMemoized } from '../slices/appsList'
 import { getAppsByLabel } from '../utils/apps'
 
 const Search = () => {

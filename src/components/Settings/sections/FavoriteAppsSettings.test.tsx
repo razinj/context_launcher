@@ -39,8 +39,8 @@ describe('<FavoriteAppsSettings /> Tests', () => {
 
     fireEvent.press(clearFavoriteAppsButton)
 
-    expect(useDispatchMock).toBeCalledWith(clearFavoriteApps())
-    expect(ToastModule.displayToast).toBeCalledWith('Favorite apps cleared successfully!')
+    expect(useDispatchMock).toHaveBeenCalledWith(clearFavoriteApps())
+    expect(ToastModule.displayToast).toHaveBeenCalledWith('Favorite apps cleared successfully!')
   })
 
   describe('Sort favorite apps button tests', () => {
@@ -119,7 +119,7 @@ describe('<FavoriteAppsSettings /> Tests', () => {
 
       fireEvent.press(sortFavoriteAppsButton)
 
-      expect(useDispatchMock).toBeCalledWith(sortFavoriteApps())
+      expect(useDispatchMock).toHaveBeenCalledWith(sortFavoriteApps())
     })
   })
 
@@ -141,6 +141,6 @@ describe('<FavoriteAppsSettings /> Tests', () => {
 
     fireEvent(toggleFavoriteAppsSwitch, 'valueChange')
 
-    expect(useDispatchMock).toBeCalledWith(displayFavoriteApps(true))
+    expect(useDispatchMock).toHaveBeenCalledWith(displayFavoriteApps(true))
   })
 })
