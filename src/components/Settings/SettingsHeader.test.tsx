@@ -16,6 +16,7 @@ jest.mock('react-redux', () => ({
 describe('<SettingsHeader /> Tests', () => {
   beforeAll(() => {
     jest.spyOn(AppsModule, 'showAppDetails')
+    jest.spyOn(AppsModule, 'openSystemSettings')
   })
 
   it('should render correctly and match snapshot', () => {
@@ -24,9 +25,10 @@ describe('<SettingsHeader /> Tests', () => {
     expect(screen.toJSON()).toMatchSnapshot()
     expect(screen.getByTestId('wrapper')).toBeOnTheScreen()
     expect(screen.getByTestId('app-info-button')).toBeOnTheScreen()
+    expect(screen.getByTestId('system-settings-button')).toBeOnTheScreen()
   })
 
-  it('should call function to display settings bottom sheet when pressed', () => {
+  it('should call function to open app details page', () => {
     renderWithProvider(<SettingsHeader />)
 
     const appInfoButton = screen.getByTestId('app-info-button')
@@ -35,7 +37,20 @@ describe('<SettingsHeader /> Tests', () => {
 
     fireEvent.press(appInfoButton)
 
-    expect(useDispatchMock).toHaveBeenCalledWith(setDisplaySettings(false))
     expect(AppsModule.showAppDetails).toHaveBeenCalledWith(APP_ID)
+    expect(useDispatchMock).toHaveBeenCalledWith(setDisplaySettings(false))
+  })
+
+  it('should call function to open system settings', () => {
+    renderWithProvider(<SettingsHeader />)
+
+    const systemSettingsButton = screen.getByTestId('system-settings-button')
+
+    expect(systemSettingsButton).toBeOnTheScreen()
+
+    fireEvent.press(systemSettingsButton)
+
+    expect(useDispatchMock).toHaveBeenCalledWith(setDisplaySettings(false))
+    expect(AppsModule.openSystemSettings).toHaveBeenCalled()
   })
 })

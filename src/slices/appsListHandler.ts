@@ -6,15 +6,12 @@ import { appRemovedAction, getAppsListAction, setAppsList, setAppsLoading } from
 import { removeFavoriteApp } from './favoriteApps'
 import { removePinnedApp } from './pinnedApps'
 import { removeRecentApp } from './recentApps'
-import { displayToast } from '../utils/toast'
 
 function* getAppsListActionHandler() {
   try {
     yield put(setAppsLoading(true))
-    displayToast('Getting apps list')
     const applications: string = yield call(AppsModule.getApplications)
     const apps = JSON.parse(applications) as AppDetails[]
-    displayToast('Done getting apps list')
     yield put(setAppsList(apps))
     yield put(setAppsLoading(false))
   } catch (error: unknown) {

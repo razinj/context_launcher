@@ -3,6 +3,7 @@ import { NativeModules } from 'react-native'
 export interface AppsModuleInterface {
   getConstants(): AppsModuleConstants
   launchApplication(packageName: string): void
+  openSystemSettings(): void
   showApplicationDetails(packageName: string): void
   requestApplicationUninstall(packageName: string): void
   getApplications(): Promise<string>
