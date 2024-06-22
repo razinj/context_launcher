@@ -8,6 +8,7 @@
         tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
     <application
         android:name=".MainApplication"
@@ -43,6 +44,9 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-        <service android:name=".AppProvider" />
+        <service android:name=".AppProvider" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="I need the foreground service to receive events about apps installation so I remove or add the to the UI on-change."/>
+        </service>
     </application>
 </manifest>

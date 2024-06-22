@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,15 +14,21 @@ import {
   setAppsSearchResult,
   setDisplayAllApps,
 } from '../slices/appState'
-import { selectAppsListMemoized } from '../slices/appsList'
+import { selectAppsListMemoized, selectAppsLoading } from '../slices/appsList'
 import { getAppsByLabel } from '../utils/apps'
 
 const Search = () => {
   const dispatch = useDispatch()
   const apps = useSelector(selectAppsListMemoized)
+  const appsLoading = useSelector(selectAppsLoading)
   const searchQuery = useSelector(selectAppsSearchQuery)
   const displayAllApps = useSelector(selectDisplayAllApps)
   const { searchInputRef, clearSearchInput, clearAndBlurSearchInput } = useContext(SearchContext)
+  const [placeholder, setPlaceholder] = useState('Search')
+
+  useEffect(() => {
+    setPlaceholder(appsLoading ? 'Search - Indexing...' : 'Search')
+  }, [appsLoading])
 
   const onQueryChange = (query: string) => {
     dispatch(setDisplayAllApps(false))
@@ -83,7 +89,7 @@ const Search = () => {
         testID='search-input'
         ref={searchInputRef}
         style={styles.searchInput}
-        placeholder='Search'
+        placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
         returnKeyType='go'
         autoCapitalize='words'

@@ -5,16 +5,24 @@ import android.content.Context
 import android.content.Intent
 
 class PackageChangeReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
-        val packageName = intent.data!!.schemeSpecificPart
+    override fun onReceive(
+        context: Context,
+        intent: Intent,
+    ) {
+        val packageName = intent.data?.schemeSpecificPart
+        val action = intent.action
 
-        if (packageName.equals(context.packageName, ignoreCase = true)) return
+        if (packageName == null || action == null) {
+            return
+        }
+        if (packageName.equals(context.packageName, ignoreCase = true)) {
+            return
+        }
 
         handleEvent(
             context,
-            intent.action!!,
+            action,
             packageName,
-            intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)
         )
     }
 
@@ -22,10 +30,12 @@ class PackageChangeReceiver : BroadcastReceiver() {
         fun handleEvent(
             context: Context,
             action: String,
-            packageName: String?,
-            replacing: Boolean
+            packageName: String,
         ) {
-            if (action != Intent.ACTION_PACKAGE_ADDED && action != Intent.ACTION_PACKAGE_CHANGED && action != Intent.ACTION_PACKAGE_REMOVED) {
+            if (action != Intent.ACTION_PACKAGE_ADDED &&
+                action != Intent.ACTION_PACKAGE_CHANGED &&
+                action != Intent.ACTION_PACKAGE_REMOVED
+            ) {
                 return
             }
 
@@ -34,17 +44,12 @@ class PackageChangeReceiver : BroadcastReceiver() {
             intent.putExtra(Constants.PACKAGE_CHANGE_NAME, packageName)
 
             if (action == Intent.ACTION_PACKAGE_ADDED || action == Intent.ACTION_PACKAGE_CHANGED) {
-                val launchIntent = context.packageManager.getLaunchIntentForPackage(
-                    packageName!!
-                )
                 // Ignore plugin apps
-                if (launchIntent == null) return
+                context.packageManager.getLaunchIntentForPackage(packageName) ?: return
 
-                intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, java.lang.Boolean.FALSE)
-            } else if (replacing) {
-                intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, java.lang.Boolean.FALSE)
+                intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, false)
             } else {
-                intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, java.lang.Boolean.TRUE)
+                intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, true)
             }
 
             context.sendBroadcast(intent)
