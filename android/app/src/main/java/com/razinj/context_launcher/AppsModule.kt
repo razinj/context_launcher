@@ -108,7 +108,17 @@ class AppsModule internal constructor(
 
     @ReactMethod
     fun launchApplication(packageName: String) {
-        val intent = reactContext.packageManager.getLaunchIntentForPackage(packageName)
+        val intent =
+            reactContext.packageManager
+                .getLaunchIntentForPackage(packageName)
+                ?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        reactContext.startActivity(intent)
+    }
+
+    @ReactMethod
+    fun openSystemSettings() {
+        val intent = Intent(Settings.ACTION_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         reactContext.startActivity(intent)
     }

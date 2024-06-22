@@ -22,6 +22,7 @@ jest.mock('react-native', () => {
       buildNumber: '12',
     }),
     launchApplication: jest.fn(),
+    openSystemSettings: jest.fn(),
     showApplicationDetails: jest.fn(),
     requestApplicationUninstall: jest.fn(),
     getApplications: jest.fn(),

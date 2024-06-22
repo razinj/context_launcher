@@ -11,7 +11,7 @@ export interface AppsListState {
 
 const initialState: AppsListState = {
   list: [],
-  loading: false
+  loading: false,
 }
 
 export const appsListSlice = createSlice({
@@ -24,9 +24,9 @@ export const appsListSlice = createSlice({
         .filter(({ packageName }: AppDetails) => packageName !== APP_ID)
         .sort((appOne: AppDetails, appTwo: AppDetails) => appOne.name.localeCompare(appTwo.name))
     },
-    setAppsLoading: (state: AppsListState, {payload}: PayloadAction<boolean>) => {
+    setAppsLoading: (state: AppsListState, { payload }: PayloadAction<boolean>) => {
       state.loading = payload
-    }
+    }, // TODO: Should I keep this!?
   },
 })
 
