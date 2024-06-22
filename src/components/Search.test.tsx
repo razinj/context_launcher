@@ -70,6 +70,7 @@ describe('<Search /> Tests', () => {
       ...initialStoreState,
       appsList: {
         list: [chromeAppDetails, getAppForTestsByName('Maps')!],
+        loading: false,
       },
       appState: {
         ...initialStoreState.appState,
@@ -110,6 +111,7 @@ describe('<Search /> Tests', () => {
       ...initialStoreState,
       appsList: {
         list: [getAppForTestsByName('Chrome')!],
+        loading: false,
       },
       appState: {
         ...initialStoreState.appState,

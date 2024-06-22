@@ -7,6 +7,7 @@ export const APP_ID = 'com.razinj.context_launcher'
 export const initialStoreState: RootState = {
   appsList: {
     list: [],
+    loading: false,
   },
   favoriteApps: {
     list: [],
