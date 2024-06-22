@@ -21,6 +21,7 @@ describe('<AllAppsLetterIndex /> Tests', () => {
       ...initialStoreState,
       appsList: {
         list: [getAppForTestsByName('Chrome')!],
+        loading: false,
       },
     }
 
@@ -44,6 +45,7 @@ describe('<AllAppsLetterIndex /> Tests', () => {
       ...initialStoreState,
       appsList: {
         list: [getAppForTestsByName('Chrome')!, getAppForTestsByName('Maps')!],
+        loading: false,
       },
     }
 
