@@ -18,40 +18,48 @@ class AppProvider : Service() {
 
     override fun onCreate() {
         val launcherApps = (getSystemService(LAUNCHER_APPS_SERVICE) as LauncherApps)
-        launcherApps.registerCallback(object : LauncherAppsCallback() {
-            override fun onPackageAdded(packageName: String, user: UserHandle) {
-                if (user == Process.myUserHandle()) return
+        launcherApps.registerCallback(
+            object : LauncherAppsCallback() {
+                override fun onPackageAdded(
+                    packageName: String,
+                    user: UserHandle,
+                ) {
+                    if (user == Process.myUserHandle()) return
 
-                PackageChangeReceiver.Companion.handleEvent(
-                    this@AppProvider,
-                    Intent.ACTION_PACKAGE_ADDED,
-                    packageName,
-                    false
-                )
-            }
+                    PackageChangeReceiver.handleEvent(
+                        this@AppProvider,
+                        Intent.ACTION_PACKAGE_ADDED,
+                        packageName,
+                    )
+                }
 
-            override fun onPackageChanged(packageName: String, user: UserHandle) {
-                if (user == Process.myUserHandle()) return
+                override fun onPackageChanged(
+                    packageName: String,
+                    user: UserHandle,
+                ) {
+                    if (user == Process.myUserHandle()) return
 
-                PackageChangeReceiver.Companion.handleEvent(
-                    this@AppProvider,
-                    Intent.ACTION_PACKAGE_CHANGED,
-                    packageName,
-                    true
-                )
-            }
+                    PackageChangeReceiver.handleEvent(
+                        this@AppProvider,
+                        Intent.ACTION_PACKAGE_CHANGED,
+                        packageName,
+                    )
+                }
 
-            override fun onPackageRemoved(packageName: String, user: UserHandle) {
-                if (user == Process.myUserHandle()) return
+                override fun onPackageRemoved(
+                    packageName: String,
+                    user: UserHandle,
+                ) {
+                    if (user == Process.myUserHandle()) return
 
-                PackageChangeReceiver.Companion.handleEvent(
-                    this@AppProvider,
-                    Intent.ACTION_PACKAGE_REMOVED,
-                    packageName,
-                    false
-                )
-            }
-        })
+                    PackageChangeReceiver.handleEvent(
+                        this@AppProvider,
+                        Intent.ACTION_PACKAGE_REMOVED,
+                        packageName,
+                    )
+                }
+            },
+        )
 
         this.packageChangeReceiver = PackageChangeReceiver()
 
@@ -78,11 +86,12 @@ class AppProvider : Service() {
         // Notification channel
         val channelId = BuildConfig.APPLICATION_ID
         val channelName = "AppProvider Channel"
-        val notificationChannel = NotificationChannel(
-            channelId,
-            channelName,
-            NotificationManager.IMPORTANCE_NONE
-        )
+        val notificationChannel =
+            NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_NONE,
+            )
         notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
 
         // Notification manager
@@ -91,13 +100,15 @@ class AppProvider : Service() {
 
         // Notification builder
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-        val notification = notificationBuilder
-            .setPriority(NotificationManager.IMPORTANCE_NONE)
-            .setCategory(Notification.CATEGORY_SERVICE)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setSilent(true)
-            .build()
+        val notification =
+            notificationBuilder
+                .setPriority(NotificationManager.IMPORTANCE_NONE)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setSilent(true)
+                .build()
+
         startForeground(1, notification)
     }
 
@@ -106,7 +117,5 @@ class AppProvider : Service() {
         super.onDestroy()
     }
 
-    override fun onBind(intent: Intent): IBinder? {
-        return null
-    }
+    override fun onBind(intent: Intent): IBinder? = null
 }

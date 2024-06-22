@@ -8,26 +8,35 @@ import android.os.UserHandle
  * only parts of LauncherApps.Callback are needed.
  */
 open class LauncherAppsCallback : LauncherApps.Callback() {
-    override fun onPackageRemoved(packageName: String, user: UserHandle) {
+    override fun onPackageRemoved(
+        packageName: String,
+        user: UserHandle,
+    ) {
     }
 
-    override fun onPackageAdded(packageName: String, user: UserHandle) {
+    override fun onPackageAdded(
+        packageName: String,
+        user: UserHandle,
+    ) {
     }
 
-    override fun onPackageChanged(packageName: String, user: UserHandle) {
+    override fun onPackageChanged(
+        packageName: String,
+        user: UserHandle,
+    ) {
     }
 
     override fun onPackagesAvailable(
         packageNames: Array<String>,
         user: UserHandle,
-        replacing: Boolean
+        replacing: Boolean,
     ) {
     }
 
     override fun onPackagesUnavailable(
         packageNames: Array<String>,
         user: UserHandle,
-        replacing: Boolean
+        replacing: Boolean,
     ) {
     }
 }

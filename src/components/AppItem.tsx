@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import { List } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import { APP_ITEM_HEIGHT, PRESSABLE_RIPPLE_COLOR } from '../constants'
@@ -14,7 +14,6 @@ import AppIcon from './shared/AppIcon'
 type Props = {
   appDetails: AppDetails
   renderedIn: RenderedIn
-  listItemStyle?: StyleProp<ViewStyle>
 }
 
 const AppItem = ({ appDetails, renderedIn }: Props) => {
@@ -59,7 +58,7 @@ const AppItem = ({ appDetails, renderedIn }: Props) => {
         onPress={onPress}
         onLongPress={onLongPress}
         style={styles.pressable}
-        android_ripple={{ borderless: true, color: PRESSABLE_RIPPLE_COLOR }}>
+        android_ripple={{ borderless: false, color: PRESSABLE_RIPPLE_COLOR }}>
         {getAppIconElement()}
       </Pressable>
     </View>
@@ -79,6 +78,7 @@ const styles = StyleSheet.create({
   },
   pressableWrapper: {
     borderRadius: 5,
+    overflow: 'hidden',
     height: APP_ITEM_HEIGHT,
   },
   icon: {

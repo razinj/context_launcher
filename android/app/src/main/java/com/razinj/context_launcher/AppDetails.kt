@@ -5,9 +5,9 @@ import org.json.JSONException
 import org.json.JSONObject
 
 class AppDetails internal constructor(
-    var packageName: String,
-    var name: String,
-    var icon: String?
+    private var packageName: String,
+    private var name: String,
+    private var icon: String?,
 ) {
     override fun toString(): String {
         try {
