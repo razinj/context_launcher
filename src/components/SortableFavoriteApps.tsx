@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, PressableAndroidRippleConfig, StyleSheet, Text, View } from 'react-native'
+import { PressableAndroidRippleConfig, StyleSheet, Text, View } from 'react-native'
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist'
 import Animated, {
   cancelAnimation,
@@ -16,6 +16,7 @@ import { selectFavoriteAppsMemoized, setFavoriteApps } from '../slices/favoriteA
 import { getListKey } from '../utils/apps'
 import AppIcon from './shared/AppIcon'
 import CustomIcon from './shared/CustomIcon'
+import CustomPressable from './shared/CustomPressable'
 
 const doneButtonRippleConfig: PressableAndroidRippleConfig = {
   borderless: true,
@@ -52,9 +53,9 @@ const SortableFavoriteApps = () => {
     return (
       <ScaleDecorator>
         <Animated.View style={isActive ? undefined : animatedStyles}>
-          <Pressable key={item.packageName} style={styles.pressable} onLongPress={drag} disabled={isActive}>
+          <CustomPressable key={item.packageName} style={styles.pressable} onLongPress={drag} disabled={isActive}>
             <AppIcon style={styles.image} icon={item.icon} />
-          </Pressable>
+          </CustomPressable>
         </Animated.View>
       </ScaleDecorator>
     )
@@ -64,13 +65,9 @@ const SortableFavoriteApps = () => {
     <View style={styles.wrapper}>
       <View style={styles.infoTextWrapper}>
         <Text style={styles.infoText}>Press and hold an app to start dragging</Text>
-        <Pressable
-          style={styles.doneButtonWrapper}
-          onPress={doneSorting}
-          android_disableSound={true}
-          android_ripple={doneButtonRippleConfig}>
+        <CustomPressable style={styles.doneButtonWrapper} onPress={doneSorting} android_ripple={doneButtonRippleConfig}>
           <CustomIcon name={sorted ? 'check' : 'close'} size={18} color={WHITE_COLOR} />
-        </Pressable>
+        </CustomPressable>
       </View>
       <View style={styles.draggableListWrapper}>
         <DraggableFlatList

@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import CustomIcon from '../../shared/CustomIcon'
+import CustomPressable from '../../shared/CustomPressable'
 import SettingsItemLabel from './SettingsItemLabel'
 import { settingItemButtonRippleConfig } from './values'
 
@@ -12,10 +13,9 @@ const ToggleSettings = ({ title, description, children }: ToggleSettingsProps) =
   return (
     <>
       <View style={renderSettings ? [styles.wrapper, styles.activeWrapper] : styles.wrapper}>
-        <Pressable
+        <CustomPressable
           testID='toggle-settings-button'
           onPress={() => setRenderSettings(!renderSettings)}
-          android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={styles.pressable}>
           <SettingsItemLabel
@@ -24,7 +24,7 @@ const ToggleSettings = ({ title, description, children }: ToggleSettingsProps) =
             titleStyle={renderSettings ? [styles.activeTitle] : []}
           />
           <CustomIcon name={`chevron-${renderSettings ? 'up' : 'down'}`} size={30} color='#808080' />
-        </Pressable>
+        </CustomPressable>
       </View>
 
       {renderSettings && children}

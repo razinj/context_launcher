@@ -3,7 +3,6 @@ import {
   FlatList,
   ListRenderItem,
   ListRenderItemInfo,
-  Pressable,
   PressableAndroidRippleConfig,
   StyleSheet,
   Text,
@@ -13,6 +12,7 @@ import { useSelector } from 'react-redux'
 import { WHITE_COLOR } from '../constants'
 import { AppLetterIndex } from '../models/list-letter-index'
 import { selectAppsLetterListMemoized } from '../slices/appsList'
+import CustomPressable from './shared/CustomPressable'
 
 type Props = {
   onPress: (letterIndex: number) => void
@@ -32,13 +32,12 @@ const AllAppsLetterIndex = ({ onPress }: Props) => {
 
   const renderItem: ListRenderItem<AppLetterIndex> = ({ item }: ListRenderItemInfo<AppLetterIndex>) => {
     return (
-      <Pressable
-        android_disableSound={true}
+      <CustomPressable
         android_ripple={rippleConfig}
         style={styles.letterIndexLabelWrapper}
         onPress={() => onPress(item.index)}>
         <Text style={styles.letterIndexLabel}>{item.letter}</Text>
-      </Pressable>
+      </CustomPressable>
     )
   }
 

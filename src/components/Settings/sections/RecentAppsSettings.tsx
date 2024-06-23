@@ -1,9 +1,10 @@
 import React from 'react'
-import { Pressable, Switch, View } from 'react-native'
+import { Switch, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { displayRecentApps, selectDisplayRecentAppsMemoized } from '../../../slices/preferences'
 import { clearRecentApps } from '../../../slices/recentApps'
 import { displayToast } from '../../../utils/toast'
+import CustomPressable from '../../shared/CustomPressable'
 import SettingsItemLabel from '../shared/SettingsItemLabel'
 import {
   activeSwitch,
@@ -41,14 +42,13 @@ const RecentAppsSettings = () => {
       </View>
 
       <View style={settingItemWrapperStyle}>
-        <Pressable
+        <CustomPressable
           testID='clear-button'
           onPress={onClearRecentApps}
-          android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={settingsPressableItemStyle}>
           <SettingsItemLabel title='Clear' />
-        </Pressable>
+        </CustomPressable>
       </View>
     </>
   )

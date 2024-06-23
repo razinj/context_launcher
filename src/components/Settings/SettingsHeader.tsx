@@ -36,16 +36,11 @@ const SettingsHeader = () => {
         </Text>
       </Text>
       <View style={styles.pressablesWrapper}>
-        <CustomPressable
-          onPress={onAppInfoClick}
-          android_disableSound={true}
-          android_ripple={pressableRippleConfig}
-          testID='app-info-button'>
+        <CustomPressable onPress={onAppInfoClick} android_ripple={pressableRippleConfig} testID='app-info-button'>
           <CustomIcon name='information-outline' size={34} color='#808080' />
         </CustomPressable>
         <CustomPressable
           onPress={onSystemSettingsClick}
-          android_disableSound={true}
           android_ripple={pressableRippleConfig}
           testID='system-settings-button'>
           <CustomIcon name='cog-outline' size={34} color='#808080' />
