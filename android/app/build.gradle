@@ -89,7 +89,7 @@ android {
 
     signingConfigs {
         release {
-            def keystorePropertiesFile = file('local.properties')
+            def keystorePropertiesFile = rootProject.file('local.properties')
             if (keystorePropertiesFile.exists()) {
                 def keystoreProperties = new Properties()
                 keystorePropertiesFile.withInputStream { stream ->

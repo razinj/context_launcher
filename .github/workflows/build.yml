@@ -28,7 +28,7 @@ jobs:
 
       - name: Decode and save the keystore file
         run: |
-          echo ${{ secrets.CONTEXT_LAUNCHER_UPLOAD_STORE_FILE }} | base64 --decode > $GITHUB_WORKSPACE/android/upload.keystore
+          echo ${{ secrets.CONTEXT_LAUNCHER_UPLOAD_STORE_FILE }} | base64 --decode > $GITHUB_WORKSPACE/android/app/upload.keystore
 
       - name: Prepare local.properties file
         run: |
