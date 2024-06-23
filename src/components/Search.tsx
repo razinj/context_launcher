@@ -14,12 +14,12 @@ import {
   setAppsSearchResult,
   setDisplayAllApps,
 } from '../slices/appState'
-import { selectAppsListMemoized, selectAppsLoading } from '../slices/appsList'
+import { selectAppsList, selectAppsLoading } from '../slices/appsList'
 import { getAppsByLabel } from '../utils/apps'
 
 const Search = () => {
   const dispatch = useDispatch()
-  const apps = useSelector(selectAppsListMemoized)
+  const apps = useSelector(selectAppsList)
   const appsLoading = useSelector(selectAppsLoading)
   const searchQuery = useSelector(selectAppsSearchQuery)
   const displayAllApps = useSelector(selectDisplayAllApps)

@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 import { Switch, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { sortFavoriteApps } from '../../../slices/appState'
-import { clearFavoriteApps, selectFavoriteAppsCountMemoized } from '../../../slices/favoriteApps'
-import { displayFavoriteApps, selectDisplayFavoriteAppsMemoized } from '../../../slices/preferences'
+import { clearFavoriteApps, selectFavoriteAppsCount } from '../../../slices/favoriteApps'
+import { displayFavoriteApps, selectDisplayFavoriteApps } from '../../../slices/preferences'
 import { displayToast } from '../../../utils/toast'
 import CustomPressable from '../../shared/CustomPressable'
 import SettingsItemLabel from '../shared/SettingsItemLabel'
@@ -18,8 +18,8 @@ import {
 
 const FavoriteAppsSettings = () => {
   const dispatch = useDispatch()
-  const favoriteAppsCount = useSelector(selectFavoriteAppsCountMemoized)
-  const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
+  const favoriteAppsCount = useSelector(selectFavoriteAppsCount)
+  const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteApps)
 
   const toggleDisplayFavoriteApps = () => {
     dispatch(displayFavoriteApps(!displayFavoriteAppsValue))

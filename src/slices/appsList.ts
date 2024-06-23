@@ -35,10 +35,9 @@ export const { setAppsList, setAppsLoading } = appsListSlice.actions
 export const getAppsListAction = createAction('appsList/getAppsListAction')
 export const appRemovedAction = createAction<string>('appsList/appRemovedAction')
 
-const selectAppsList = (state: RootState) => state.appsList.list
+export const selectAppsList = (state: RootState) => state.appsList.list
 export const selectAppsLoading = (state: RootState) => state.appsList.loading
 
-export const selectAppsListMemoized = createSelector(selectAppsList, (list: AppDetails[]) => list)
 export const selectAppsLetterListMemoized = createSelector(selectAppsList, (list: AppDetails[]) =>
   getAppsLetterIndex(list)
 )

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { selectTemporaryPinnedAppsConfigMemoized } from '../slices/pinnedApps'
+import { selectTemporaryPinnedAppsConfig } from '../slices/pinnedApps'
 
 type CheckResult = {
   startRenderingTimeOutId: NodeJS.Timeout | undefined
@@ -12,7 +12,7 @@ export const useTimeBasedRendering = () => {
   const [endDate, setEndDate] = useState<Date | undefined>()
   const [canRender, setCanRender] = useState(false)
 
-  const temporaryPinnedAppsConfig = useSelector(selectTemporaryPinnedAppsConfigMemoized)
+  const temporaryPinnedAppsConfig = useSelector(selectTemporaryPinnedAppsConfig)
 
   useEffect(() => {
     setStartDate(temporaryPinnedAppsConfig.startDate ? new Date(temporaryPinnedAppsConfig.startDate) : undefined)

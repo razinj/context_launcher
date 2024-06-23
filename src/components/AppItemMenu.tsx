@@ -11,22 +11,12 @@ import {
 } from '../constants'
 import SearchContext from '../contexts/SearchContext'
 import { resetAppsSearchState, selectDisplayAppMenu, selectMenuAppDetails, setDisplayAppMenu } from '../slices/appState'
+import { addFavoriteApp, removeFavoriteApp, selectFavoriteApps, selectFavoriteAppsCount } from '../slices/favoriteApps'
+import { addPinnedApp, removePinnedApp, selectPinnedApps, selectTemporaryPinnedApps } from '../slices/pinnedApps'
 import {
-  addFavoriteApp,
-  removeFavoriteApp,
-  selectFavoriteAppsCountMemoized,
-  selectFavoriteAppsMemoized,
-} from '../slices/favoriteApps'
-import {
-  addPinnedApp,
-  removePinnedApp,
-  selectPinnedAppsMemoized,
-  selectTemporaryPinnedAppsMemoized,
-} from '../slices/pinnedApps'
-import {
-  selectDisplayFavoriteAppsMemoized,
-  selectDisplayPinnedAppsMemoized,
-  selectDisplayTemporaryPinnedAppsMemoized,
+  selectDisplayFavoriteApps,
+  selectDisplayPinnedApps,
+  selectDisplayTemporaryPinnedApps,
 } from '../slices/preferences'
 import { getAppIndex } from '../utils/apps'
 import { requestAppUninstall, showAppDetails } from '../utils/apps-module'
@@ -38,13 +28,13 @@ const AppItemMenu = () => {
   const [isFavoriteApp, setIsFavoriteApp] = useState(false)
   const [isPinnedApp, setIsPinnedApp] = useState(false)
   const [isTemporarilyPinnedApp, setIsTemporarilyPinnedApp] = useState(false)
-  const favoriteApps = useSelector(selectFavoriteAppsMemoized)
-  const pinnedApps = useSelector(selectPinnedAppsMemoized)
-  const temporaryPinnedApps = useSelector(selectTemporaryPinnedAppsMemoized)
-  const favoriteAppsCount = useSelector(selectFavoriteAppsCountMemoized)
-  const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteAppsMemoized)
-  const displayPinnedAppsValue = useSelector(selectDisplayPinnedAppsMemoized)
-  const displayTemporaryPinnedApps = useSelector(selectDisplayTemporaryPinnedAppsMemoized)
+  const favoriteApps = useSelector(selectFavoriteApps)
+  const pinnedApps = useSelector(selectPinnedApps)
+  const temporaryPinnedApps = useSelector(selectTemporaryPinnedApps)
+  const favoriteAppsCount = useSelector(selectFavoriteAppsCount)
+  const displayFavoriteAppsValue = useSelector(selectDisplayFavoriteApps)
+  const displayPinnedAppsValue = useSelector(selectDisplayPinnedApps)
+  const displayTemporaryPinnedApps = useSelector(selectDisplayTemporaryPinnedApps)
   const { clearAndBlurSearchInput } = useContext(SearchContext)
 
   const appDetails = useSelector(selectMenuAppDetails)

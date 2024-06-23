@@ -5,16 +5,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { sortPinnedApps, sortTemporaryPinnedApps } from '../../../slices/appState'
 import {
   clearPinnedApps,
-  selectPinnedAppsCountMemoized,
-  selectTemporaryPinnedAppsConfigMemoized,
-  selectTemporaryPinnedAppsCountMemoized,
+  selectPinnedAppsCount,
+  selectTemporaryPinnedAppsConfig,
+  selectTemporaryPinnedAppsCount,
   setTemporaryAppsConfig,
 } from '../../../slices/pinnedApps'
 import {
   displayPinnedApps,
   displayTemporaryPinnedApps,
-  selectDisplayPinnedAppsMemoized,
-  selectDisplayTemporaryPinnedAppsMemoized,
+  selectDisplayPinnedApps,
+  selectDisplayTemporaryPinnedApps,
 } from '../../../slices/preferences'
 import { getDateFromStringWithCurrentDateValue, getTimeFromDate, stripDateFromSeconds } from '../../../utils/date'
 import { displayToast } from '../../../utils/toast'
@@ -33,11 +33,11 @@ import {
 
 const PinnedAppsSettings = () => {
   const dispatch = useDispatch()
-  const displayPinnedAppsValue = useSelector(selectDisplayPinnedAppsMemoized)
-  const pinnedAppsCount = useSelector(selectPinnedAppsCountMemoized)
-  const displayTemporaryPinnedAppsValue = useSelector(selectDisplayTemporaryPinnedAppsMemoized)
-  const temporaryPinnedAppsCount = useSelector(selectTemporaryPinnedAppsCountMemoized)
-  const temporaryPinnedAppsConfig = useSelector(selectTemporaryPinnedAppsConfigMemoized)
+  const displayPinnedAppsValue = useSelector(selectDisplayPinnedApps)
+  const pinnedAppsCount = useSelector(selectPinnedAppsCount)
+  const displayTemporaryPinnedAppsValue = useSelector(selectDisplayTemporaryPinnedApps)
+  const temporaryPinnedAppsCount = useSelector(selectTemporaryPinnedAppsCount)
+  const temporaryPinnedAppsConfig = useSelector(selectTemporaryPinnedAppsConfig)
 
   const toggleDisplayPinnedApps = () => {
     dispatch(displayPinnedApps(!displayPinnedAppsValue))

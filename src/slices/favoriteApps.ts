@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FavoriteApp } from '../models/favorite-app'
 import { RootState } from '../store'
 import { getApp, getAppIndex } from '../utils/apps'
@@ -39,9 +39,7 @@ export const favoriteAppsSlice = createSlice({
 
 export const { addFavoriteApp, removeFavoriteApp, setFavoriteApps, clearFavoriteApps } = favoriteAppsSlice.actions
 
-const selectFavoriteApps = (state: RootState) => state.favoriteApps.list
-
-export const selectFavoriteAppsMemoized = createSelector(selectFavoriteApps, (list: FavoriteApp[]) => list)
-export const selectFavoriteAppsCountMemoized = createSelector(selectFavoriteApps, (list: FavoriteApp[]) => list.length)
+export const selectFavoriteApps = (state: RootState) => state.favoriteApps.list
+export const selectFavoriteAppsCount = (state: RootState) => state.favoriteApps.list.length
 
 export default favoriteAppsSlice.reducer

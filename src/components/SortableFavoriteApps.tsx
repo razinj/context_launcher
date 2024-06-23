@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BACKGROUND_COLOR, WHITE_COLOR } from '../constants'
 import { FavoriteApp } from '../models/favorite-app'
 import { setDisplaySortableFavoriteApps } from '../slices/appState'
-import { selectFavoriteAppsMemoized, setFavoriteApps } from '../slices/favoriteApps'
+import { selectFavoriteApps, setFavoriteApps } from '../slices/favoriteApps'
 import { getListKey } from '../utils/apps'
 import AppIcon from './shared/AppIcon'
 import CustomIcon from './shared/CustomIcon'
@@ -27,7 +27,7 @@ const doneButtonRippleConfig: PressableAndroidRippleConfig = {
 
 const SortableFavoriteApps = () => {
   const dispatch = useDispatch()
-  const apps = useSelector(selectFavoriteAppsMemoized)
+  const apps = useSelector(selectFavoriteApps)
   const [sorted, setSorted] = useState(false)
 
   const rotateValue = useSharedValue(-5)

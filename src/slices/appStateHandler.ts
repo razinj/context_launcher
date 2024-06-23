@@ -23,8 +23,8 @@ import {
   sortTemporaryPinnedApps,
   toogleAllApps,
 } from './appState'
-import { selectFavoriteAppsMemoized } from './favoriteApps'
-import { selectPinnedAppsMemoized } from './pinnedApps'
+import { selectFavoriteApps } from './favoriteApps'
+import { selectPinnedApps } from './pinnedApps'
 import { addRecentApp } from './recentApps'
 
 // We should only add a launched app if it was clicked (rendered) in one of the following places;
@@ -50,8 +50,8 @@ function* appLaunchHandler(action: PayloadAction<{ renderedIn: RenderedIn; appDe
   }
 
   // Skip adding to recent apps if permanently pinned/favourited but launched from different lists/views
-  const pinnedApps: PinnedApp[] = yield select(selectPinnedAppsMemoized)
-  const favoriteApps: FavoriteApp[] = yield select(selectFavoriteAppsMemoized)
+  const pinnedApps: PinnedApp[] = yield select(selectPinnedApps)
+  const favoriteApps: FavoriteApp[] = yield select(selectFavoriteApps)
   // TODO: Include the temporarily pinned apps but only when they're rendered/displayed.
 
   const pinnedAppsPackages: string[] = pinnedApps.map(({ packageName }: PinnedApp) => packageName)
