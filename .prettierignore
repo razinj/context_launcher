@@ -12,3 +12,5 @@ package-lock.json
 android
 
 coverage/
+
+.github/*/*.yml
