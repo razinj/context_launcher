@@ -33,7 +33,7 @@ jobs:
       - name: Prepare local.properties file
         run: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > $GITHUB_WORKSPACE/android/local.properties
-          echo "CONTEXT_LAUNCHER_UPLOAD_STORE_FILE=$GITHUB_WORKSPACE/android/upload.keystore" >> $GITHUB_WORKSPACE/android/local.properties
+          echo "CONTEXT_LAUNCHER_UPLOAD_STORE_FILE=$GITHUB_WORKSPACE/android/app/upload.keystore" >> $GITHUB_WORKSPACE/android/local.properties
           echo "CONTEXT_LAUNCHER_UPLOAD_STORE_PASSWORD=${{ secrets.CONTEXT_LAUNCHER_UPLOAD_STORE_PASSWORD }}" >> $GITHUB_WORKSPACE/android/local.properties
           echo "CONTEXT_LAUNCHER_UPLOAD_KEY_ALIAS=${{ secrets.CONTEXT_LAUNCHER_UPLOAD_KEY_ALIAS }}" >> $GITHUB_WORKSPACE/android/local.properties
           echo "CONTEXT_LAUNCHER_UPLOAD_KEY_PASSWORD=${{ secrets.CONTEXT_LAUNCHER_UPLOAD_KEY_PASSWORD }}" >> $GITHUB_WORKSPACE/android/local.properties
