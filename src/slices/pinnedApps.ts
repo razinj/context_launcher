@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PinnedApp, PinnedAppsState, TemporaryPinnedAppsConfig } from '../models/pinned-app'
 import { RootState } from '../store'
 import { getAppIndex } from '../utils/apps'
@@ -66,20 +66,10 @@ export const pinnedAppsSlice = createSlice({
 export const { addPinnedApp, removePinnedApp, setTemporaryAppsConfig, clearPinnedApps, setPinnedApps } =
   pinnedAppsSlice.actions
 
-const selectPinnedApps = (state: RootState) => state.pinnedApps.list
-const selecttTemporaryPinnedApps = (state: RootState) => state.pinnedApps.temporarily
-const selectTemporaryPinnedAppsConfig = (state: RootState) => state.pinnedApps.temporaryAppsConfig
-
-export const selectPinnedAppsMemoized = createSelector(selectPinnedApps, (list: PinnedApp[]) => list)
-export const selectPinnedAppsCountMemoized = createSelector(selectPinnedApps, (list: PinnedApp[]) => list.length)
-export const selectTemporaryPinnedAppsMemoized = createSelector(selecttTemporaryPinnedApps, (list: PinnedApp[]) => list)
-export const selectTemporaryPinnedAppsCountMemoized = createSelector(
-  selecttTemporaryPinnedApps,
-  (list: PinnedApp[]) => list.length
-)
-export const selectTemporaryPinnedAppsConfigMemoized = createSelector(
-  selectTemporaryPinnedAppsConfig,
-  (config: TemporaryPinnedAppsConfig) => config
-)
+export const selectPinnedApps = (state: RootState) => state.pinnedApps.list
+export const selectPinnedAppsCount = (state: RootState) => state.pinnedApps.list.length
+export const selectTemporaryPinnedApps = (state: RootState) => state.pinnedApps.temporarily
+export const selectTemporaryPinnedAppsCount = (state: RootState) => state.pinnedApps.temporarily.length
+export const selectTemporaryPinnedAppsConfig = (state: RootState) => state.pinnedApps.temporaryAppsConfig
 
 export default pinnedAppsSlice.reducer

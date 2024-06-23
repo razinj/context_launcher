@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 
 export interface PreferencesState {
@@ -48,17 +48,9 @@ export const {
   resetPreferences,
 } = preferencesSlice.actions
 
-const selectDisplayRecentApps = (state: RootState) => state.preferences.displayRecentApps
-const selectDisplayFavoriteApps = (state: RootState) => state.preferences.displayFavoriteApps
-const selectDisplayPinnedApps = (state: RootState) => state.preferences.displayPinnedApps
-const selectDisplayTemporaryPinnedApps = (state: RootState) => state.preferences.displayTemporaryPinnedApps
-
-export const selectDisplayRecentAppsMemoized = createSelector(selectDisplayRecentApps, (value: boolean) => value)
-export const selectDisplayFavoriteAppsMemoized = createSelector(selectDisplayFavoriteApps, (value: boolean) => value)
-export const selectDisplayPinnedAppsMemoized = createSelector(selectDisplayPinnedApps, (value: boolean) => value)
-export const selectDisplayTemporaryPinnedAppsMemoized = createSelector(
-  selectDisplayTemporaryPinnedApps,
-  (value: boolean) => value
-)
+export const selectDisplayRecentApps = (state: RootState) => state.preferences.displayRecentApps
+export const selectDisplayFavoriteApps = (state: RootState) => state.preferences.displayFavoriteApps
+export const selectDisplayPinnedApps = (state: RootState) => state.preferences.displayPinnedApps
+export const selectDisplayTemporaryPinnedApps = (state: RootState) => state.preferences.displayTemporaryPinnedApps
 
 export default preferencesSlice.reducer

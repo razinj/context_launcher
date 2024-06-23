@@ -5,13 +5,13 @@ import { useSelector } from 'react-redux'
 import { BACKGROUND_COLOR } from '../constants'
 import { AppDetails } from '../models/app-details'
 import { RenderedIn } from '../models/rendered-in'
-import { selectAppsListMemoized } from '../slices/appsList'
+import { selectAppsList } from '../slices/appsList'
 import { getListItemLayout, getListKey } from '../utils/apps'
 import AllAppsLetterIndex from './AllAppsLetterIndex'
 import AppItem from './AppItem'
 
 const AllApps = () => {
-  const apps = useSelector(selectAppsListMemoized)
+  const apps = useSelector(selectAppsList)
   const listRef: MutableRefObject<FlatList<AppDetails> | null> = useRef(null)
 
   const scrollToIndex = useCallback(

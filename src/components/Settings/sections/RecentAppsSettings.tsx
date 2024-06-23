@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { displayRecentApps, selectDisplayRecentAppsMemoized } from '../../../slices/preferences'
+import { displayRecentApps, selectDisplayRecentApps } from '../../../slices/preferences'
 import { clearRecentApps } from '../../../slices/recentApps'
 import { displayToast } from '../../../utils/toast'
 import CustomPressable from '../../shared/CustomPressable'
@@ -17,7 +17,7 @@ import {
 
 const RecentAppsSettings = () => {
   const dispatch = useDispatch()
-  const displayRecentAppsValue = useSelector(selectDisplayRecentAppsMemoized)
+  const displayRecentAppsValue = useSelector(selectDisplayRecentApps)
 
   const toggleDisplayRecentApps = () => {
     dispatch(displayRecentApps(!displayRecentAppsValue))

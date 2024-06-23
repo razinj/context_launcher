@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BACKGROUND_COLOR, WHITE_COLOR } from '../constants'
 import { PinnedApp } from '../models/pinned-app'
 import { setDisplaySortablePinnedApps } from '../slices/appState'
-import { selectPinnedAppsMemoized, setPinnedApps } from '../slices/pinnedApps'
+import { selectPinnedApps, setPinnedApps } from '../slices/pinnedApps'
 import { getListKey } from '../utils/apps'
 import AppIcon from './shared/AppIcon'
 import CustomIcon from './shared/CustomIcon'
@@ -27,7 +27,7 @@ const doneButtonRippleConfig: PressableAndroidRippleConfig = {
 
 const SortablePinnedApps = () => {
   const dispatch = useDispatch()
-  const apps = useSelector(selectPinnedAppsMemoized)
+  const apps = useSelector(selectPinnedApps)
   const [sorted, setSorted] = useState(false)
 
   const rotateValue = useSharedValue(-5)

@@ -19,18 +19,18 @@ import {
   selectDisplaySortableTemporaryPinnedApps,
 } from '../slices/appState'
 import {
-  selectDisplayFavoriteAppsMemoized,
-  selectDisplayPinnedAppsMemoized,
-  selectDisplayRecentAppsMemoized,
-  selectDisplayTemporaryPinnedAppsMemoized,
+  selectDisplayFavoriteApps,
+  selectDisplayPinnedApps,
+  selectDisplayRecentApps,
+  selectDisplayTemporaryPinnedApps,
 } from '../slices/preferences'
 
 const TopContainer = () => {
   const searchQuery = useSelector(selectAppsSearchQuery)
-  const displayRecentApps = useSelector(selectDisplayRecentAppsMemoized)
-  const displayPinnedApps = useSelector(selectDisplayPinnedAppsMemoized)
-  const displayTemporaryPinnedApps = useSelector(selectDisplayTemporaryPinnedAppsMemoized)
-  const displayFavoriteApps = useSelector(selectDisplayFavoriteAppsMemoized)
+  const displayRecentApps = useSelector(selectDisplayRecentApps)
+  const displayPinnedApps = useSelector(selectDisplayPinnedApps)
+  const displayTemporaryPinnedApps = useSelector(selectDisplayTemporaryPinnedApps)
+  const displayFavoriteApps = useSelector(selectDisplayFavoriteApps)
   const sortableFavoriteApps = useSelector(selectDisplaySortableFavoriteApps)
   const sortablePinnedApps = useSelector(selectDisplaySortablePinnedApps)
   const sortableTemporaryPinnedApps = useSelector(selectDisplaySortableTemporaryPinnedApps)

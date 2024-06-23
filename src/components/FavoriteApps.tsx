@@ -10,11 +10,11 @@ import {
   sectionWrapper,
   whiteTextColorStyle,
 } from '../shared/styles'
-import { selectFavoriteAppsMemoized } from '../slices/favoriteApps'
+import { selectFavoriteApps } from '../slices/favoriteApps'
 import AppItem from './AppItem'
 
 const FavoriteApps = () => {
-  const apps = useSelector(selectFavoriteAppsMemoized)
+  const apps = useSelector(selectFavoriteApps)
 
   const noAppsFound = useMemo(() => apps.length === 0, [apps])
 

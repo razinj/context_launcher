@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux'
 import { RecentApp } from '../models/recent-app'
 import { RenderedIn } from '../models/rendered-in'
 import { sectionHeaderLabelStyle, sectionHeaderWrapperStyle, sectionWrapper } from '../shared/styles'
-import { selectRecentAppsMemoized } from '../slices/recentApps'
+import { selectRecentApps } from '../slices/recentApps'
 import { getListItemLayout, getListKey } from '../utils/apps'
 import AppItem from './AppItem'
 import EmptyListComponent from './shared/EmptyListComponent'
 
 const RecentApps = () => {
-  const apps = useSelector(selectRecentAppsMemoized)
+  const apps = useSelector(selectRecentApps)
 
   const renderItem: ListRenderItem<RecentApp> = ({ item }: ListRenderItemInfo<RecentApp>) => (
     <AppItem appDetails={item} renderedIn={RenderedIn.RECENT_APPS} />

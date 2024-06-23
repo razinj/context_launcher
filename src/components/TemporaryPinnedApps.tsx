@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux'
 import { PinnedApp } from '../models/pinned-app'
 import { RenderedIn } from '../models/rendered-in'
 import { sectionHeaderLabelStyle, sectionHeaderWrapperStyle, sectionWrapper } from '../shared/styles'
-import { selectTemporaryPinnedAppsMemoized } from '../slices/pinnedApps'
+import { selectTemporaryPinnedApps } from '../slices/pinnedApps'
 import { getListItemLayout, getListKey } from '../utils/apps'
 import AppItem from './AppItem'
 import EmptyListComponent from './shared/EmptyListComponent'
 
 const TemporaryPinnedApps = () => {
-  const apps = useSelector(selectTemporaryPinnedAppsMemoized)
+  const apps = useSelector(selectTemporaryPinnedApps)
 
   const renderItem: ListRenderItem<PinnedApp> = ({ item }: ListRenderItemInfo<PinnedApp>) => (
     <AppItem appDetails={item} renderedIn={RenderedIn.PINNED_APPS} />

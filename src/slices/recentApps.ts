@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RecentApp } from '../models/recent-app'
 import { RootState } from '../store'
 import { getAppIndex } from '../utils/apps'
@@ -41,8 +41,6 @@ export const recentAppsSlice = createSlice({
 
 export const { addRecentApp, removeRecentApp, clearRecentApps } = recentAppsSlice.actions
 
-const selectRecentApps = (state: RootState) => state.recentApps.list
-
-export const selectRecentAppsMemoized = createSelector(selectRecentApps, (list: RecentApp[]) => list)
+export const selectRecentApps = (state: RootState) => state.recentApps.list
 
 export default recentAppsSlice.reducer
