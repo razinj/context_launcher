@@ -1,6 +1,8 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { AppDetails } from '../models/app-details'
+import { FavoriteApp } from '../models/favorite-app'
+import { PinnedApp } from '../models/pinned-app'
 import { RenderedIn } from '../models/rendered-in'
 import { launchApp } from '../utils/apps-module'
 import { dismissKeyboard } from '../utils/keyboard'
@@ -21,8 +23,11 @@ import {
   sortTemporaryPinnedApps,
   toogleAllApps,
 } from './appState'
+import { selectFavoriteAppsMemoized } from './favoriteApps'
+import { selectPinnedAppsMemoized } from './pinnedApps'
 import { addRecentApp } from './recentApps'
 
+// We should only add a launched app if it was clicked (rendered) in one of the following places;
 const ADD_TO_RECENT_APPS_RENDERED_IN_VALUES = [RenderedIn.ALL_APPS, RenderedIn.FILTERED_APPS]
 
 function* toggleAllAppsHandler() {
@@ -38,9 +43,27 @@ function* appLaunchHandler(action: PayloadAction<{ renderedIn: RenderedIn; appDe
   yield put(setDisplaySettings(false))
   yield put(setDisplaySortableFavoriteApps(false))
 
-  if (ADD_TO_RECENT_APPS_RENDERED_IN_VALUES.includes(action.payload.renderedIn)) {
-    yield put(addRecentApp(action.payload.appDetails))
+  const { appDetails, renderedIn } = action.payload
+
+  if (!ADD_TO_RECENT_APPS_RENDERED_IN_VALUES.includes(renderedIn)) {
+    return
   }
+
+  // Skip adding to recent apps if permanently pinned/favourited but launched from different lists/views
+  const pinnedApps: PinnedApp[] = yield select(selectPinnedAppsMemoized)
+  const favoriteApps: FavoriteApp[] = yield select(selectFavoriteAppsMemoized)
+  // TODO: Include the temporarily pinned apps but only when they're rendered/displayed.
+
+  const pinnedAppsPackages: string[] = pinnedApps.map(({ packageName }: PinnedApp) => packageName)
+  const favoriteAppsPackages: string[] = favoriteApps.map(({ packageName }: FavoriteApp) => packageName)
+  const allApps = new Set([...pinnedAppsPackages, ...favoriteAppsPackages])
+
+  if (allApps.has(appDetails.packageName)) {
+    return
+  }
+
+  // Otherwise add to recent apps
+  yield put(addRecentApp(appDetails))
 }
 
 function* sortFavoriteAppsHandler() {
