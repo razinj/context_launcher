@@ -89,14 +89,24 @@ android {
 
     signingConfigs {
         release {
-            if (project.hasProperty('CONTEXT_LAUNCHER_UPLOAD_STORE_FILE')) {
-                project.logger.lifecycle('[!] Release upload keystore file found.')
-                storeFile file(CONTEXT_LAUNCHER_UPLOAD_STORE_FILE)
-                storePassword CONTEXT_LAUNCHER_UPLOAD_STORE_PASSWORD
-                keyAlias CONTEXT_LAUNCHER_UPLOAD_KEY_ALIAS
-                keyPassword CONTEXT_LAUNCHER_UPLOAD_KEY_PASSWORD
+            def keystorePropertiesFile = file('local.properties')
+            if (keystorePropertiesFile.exists()) {
+                def keystoreProperties = new Properties()
+                keystorePropertiesFile.withInputStream { stream ->
+                    keystoreProperties.load(stream)
+                }
+
+                if (keystoreProperties.containsKey('CONTEXT_LAUNCHER_UPLOAD_STORE_FILE')) {
+                    project.logger.lifecycle('[!] Release upload keystore file found.')
+                    storeFile file(keystoreProperties['CONTEXT_LAUNCHER_UPLOAD_STORE_FILE'])
+                    storePassword keystoreProperties['CONTEXT_LAUNCHER_UPLOAD_STORE_PASSWORD']
+                    keyAlias keystoreProperties['CONTEXT_LAUNCHER_UPLOAD_KEY_ALIAS']
+                    keyPassword keystoreProperties['CONTEXT_LAUNCHER_UPLOAD_KEY_PASSWORD']
+                } else {
+                    project.logger.lifecycle('[X] Release upload keystore file not found.')
+                }
             } else {
-                project.logger.lifecycle('[X] Release upload keystore file not found.')
+                project.logger.lifecycle('[X] local.properties file not found.')
             }
         }
         debug {
