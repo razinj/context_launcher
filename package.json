@@ -12,7 +12,8 @@
     "test:ci": "jest --ci --no-cache --silent",
     "test:coverage": "jest --collect-coverage",
     "lint": "eslint . --ext .js,.ts,.tsx",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:ci": "prettier --check ."
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.23.1",
