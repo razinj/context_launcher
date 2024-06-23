@@ -1,6 +1,6 @@
 import { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import React, { useMemo } from 'react'
-import { Pressable, StyleSheet, Switch, Text, View } from 'react-native'
+import { StyleSheet, Switch, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { sortPinnedApps, sortTemporaryPinnedApps } from '../../../slices/appState'
 import {
@@ -18,6 +18,7 @@ import {
 } from '../../../slices/preferences'
 import { getDateFromStringWithCurrentDateValue, getTimeFromDate, stripDateFromSeconds } from '../../../utils/date'
 import { displayToast } from '../../../utils/toast'
+import CustomPressable from '../../shared/CustomPressable'
 import SettingsItemLabel from '../shared/SettingsItemLabel'
 import {
   activeSwitch,
@@ -125,11 +126,10 @@ const PinnedAppsSettings = () => {
       </View>
 
       <View style={settingItemWrapperStyle}>
-        <Pressable
+        <CustomPressable
           testID='sort-pinned-apps-button'
           disabled={pinnedAppsSortDisabled}
           onPress={onPinnedAppsSortViewClick}
-          android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={[settingsPressableItemStyle, { opacity: pinnedAppsSortDisabled ? 0.5 : 1 }]}>
           <SettingsItemLabel
@@ -142,7 +142,7 @@ const PinnedAppsSettings = () => {
                 : 'Click to start sorting'
             }
           />
-        </Pressable>
+        </CustomPressable>
       </View>
 
       <View style={settingItemWrapperStyle}>
@@ -157,11 +157,10 @@ const PinnedAppsSettings = () => {
       </View>
 
       <View style={settingItemWrapperStyle}>
-        <Pressable
+        <CustomPressable
           testID='sort-temporarily-pinned-apps-button'
           disabled={temporaryPinnedAppsSortDisabled}
           onPress={onTemporaryPinnedAppsSortViewClick}
-          android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={[settingsPressableItemStyle, { opacity: temporaryPinnedAppsSortDisabled ? 0.5 : 1 }]}>
           <SettingsItemLabel
@@ -174,7 +173,7 @@ const PinnedAppsSettings = () => {
                 : 'Click to start sorting'
             }
           />
-        </Pressable>
+        </CustomPressable>
       </View>
 
       <View style={styles.pinnedAppsItemContainer}>
@@ -183,49 +182,45 @@ const PinnedAppsSettings = () => {
           description='Click below to set times'
         />
         <View style={styles.pinnedAppsTimePickersWrapper}>
-          <Pressable
+          <CustomPressable
             testID='set-start-time-button'
             onPress={() => showTimePicker(true)}
-            android_disableSound={true}
             android_ripple={settingItemButtonRippleConfig}
             style={styles.pinnedAppsTimePicker}>
             <Text style={styles.pinnedAppsTimePickerLabel}>
               Start time is {getTimeFromDate(temporaryPinnedAppsConfig?.startDate)}
             </Text>
-          </Pressable>
-          <Pressable
+          </CustomPressable>
+          <CustomPressable
             testID='set-end-time-button'
             onPress={() => showTimePicker(false)}
-            android_disableSound={true}
             android_ripple={settingItemButtonRippleConfig}
             style={styles.pinnedAppsTimePicker}>
             <Text style={styles.pinnedAppsTimePickerLabel}>
               End time is {getTimeFromDate(temporaryPinnedAppsConfig?.endDate)}
             </Text>
-          </Pressable>
+          </CustomPressable>
         </View>
       </View>
 
       <View style={settingItemWrapperStyle}>
-        <Pressable
+        <CustomPressable
           testID='clear-pinned-apps-button'
           onPress={onClearPinnedApps}
-          android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={settingsPressableItemStyle}>
           <SettingsItemLabel title='Clear pinned apps' />
-        </Pressable>
+        </CustomPressable>
       </View>
 
       <View style={settingItemWrapperStyle}>
-        <Pressable
+        <CustomPressable
           testID='clear-temporarily-pinned-apps-button'
           onPress={onClearTemporarilyPinnedApps}
-          android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={settingsPressableItemStyle}>
           <SettingsItemLabel title='Clear temporarily pinned apps' />
-        </Pressable>
+        </CustomPressable>
       </View>
     </>
   )

@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react'
-import { Pressable, Switch, View } from 'react-native'
+import { Switch, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { sortFavoriteApps } from '../../../slices/appState'
 import { clearFavoriteApps, selectFavoriteAppsCountMemoized } from '../../../slices/favoriteApps'
 import { displayFavoriteApps, selectDisplayFavoriteAppsMemoized } from '../../../slices/preferences'
 import { displayToast } from '../../../utils/toast'
+import CustomPressable from '../../shared/CustomPressable'
 import SettingsItemLabel from '../shared/SettingsItemLabel'
 import {
   activeSwitch,
@@ -52,11 +53,10 @@ const FavoriteAppsSettings = () => {
       </View>
 
       <View style={settingItemWrapperStyle}>
-        <Pressable
+        <CustomPressable
           testID='sort-button'
           disabled={favoriteAppsSortDisabled}
           onPress={onFavoriteAppsSortViewClick}
-          android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={[settingsPressableItemStyle, { opacity: favoriteAppsSortDisabled ? 0.5 : 1 }]}>
           <SettingsItemLabel
@@ -69,18 +69,17 @@ const FavoriteAppsSettings = () => {
                 : 'Click to start sorting'
             }
           />
-        </Pressable>
+        </CustomPressable>
       </View>
 
       <View style={settingItemWrapperStyle}>
-        <Pressable
+        <CustomPressable
           testID='clear-button'
           onPress={onClearFavoriteApps}
-          android_disableSound={true}
           android_ripple={settingItemButtonRippleConfig}
           style={settingsPressableItemStyle}>
           <SettingsItemLabel title='Clear' />
-        </Pressable>
+        </CustomPressable>
       </View>
     </>
   )

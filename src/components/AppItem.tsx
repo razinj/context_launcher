@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { List } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import { APP_ITEM_HEIGHT, PRESSABLE_RIPPLE_COLOR } from '../constants'
@@ -10,6 +10,7 @@ import { appLaunch, setDisplayAppMenu, setMenuAppDetails } from '../slices/appSt
 import { launchApp } from '../utils/apps-module'
 import HighlightText from './HighlightText'
 import AppIcon from './shared/AppIcon'
+import CustomPressable from './shared/CustomPressable'
 
 type Props = {
   appDetails: AppDetails
@@ -54,13 +55,13 @@ const AppItem = ({ appDetails, renderedIn }: Props) => {
 
   return (
     <View style={styles.pressableWrapper}>
-      <Pressable
+      <CustomPressable
         onPress={onPress}
         onLongPress={onLongPress}
         style={styles.pressable}
         android_ripple={{ borderless: false, color: PRESSABLE_RIPPLE_COLOR }}>
         {getAppIconElement()}
-      </Pressable>
+      </CustomPressable>
     </View>
   )
 }
