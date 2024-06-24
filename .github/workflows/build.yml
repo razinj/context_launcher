@@ -46,6 +46,20 @@ jobs:
         working-directory: ./android
         run: ./gradlew --no-daemon build
 
+      # Build artifacts
+      - name: Build Debug - APK
+        working-directory: ./android
+        run: ./gradlew --no-daemon assembleDebug
+
+      - name: Build Release - APK
+        working-directory: ./android
+        run: ./gradlew --no-daemon assembleRelease
+
+      - name: Build Release - AAB
+        working-directory: ./android
+        run: ./gradlew --no-daemon bundleRelease
+
+      # Upload built artifacts
       - name: Set short Git commit SHA
         run: |
           short_sha=$(git rev-parse --short ${{ github.sha }})
