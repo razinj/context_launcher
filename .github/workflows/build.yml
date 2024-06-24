@@ -65,23 +65,20 @@ jobs:
           short_sha=$(git rev-parse --short ${{ github.sha }})
           echo "COMMIT_SHORT_SHA=$short_sha" >> $GITHUB_ENV
 
-      - name: List files in android/app/build
-        run: ls -Rali $GITHUB_WORKSPACE/android/app/build
-
       - name: Upload Debug - APK
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-debug.apk
-          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/debug/context-launcher*.apk
+          name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-debug-apks
+          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/debug/*.apk
 
       - name: Upload Release - APK
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-release.apk
-          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/context-launcher*.apk
+          name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-release-apks
+          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/*.apk
 
       - name: Upload Release - AAB
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-release.aab
-          path: $GITHUB_WORKSPACE/android/app/build/outputs/bundle/release/context-launcher*.aab
+          name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-release-aabs
+          path: $GITHUB_WORKSPACE/android/app/build/outputs/bundle/release/*.aab
