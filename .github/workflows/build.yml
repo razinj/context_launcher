@@ -69,16 +69,16 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-debug-apks
-          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/debug/*.apk
+          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/debug/
 
       - name: Upload Release - APK
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-release-apks
-          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/*.apk
+          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/
 
       - name: Upload Release - AAB
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-release-aabs
-          path: $GITHUB_WORKSPACE/android/app/build/outputs/bundle/release/*.aab
+          path: $GITHUB_WORKSPACE/android/app/build/outputs/bundle/release/
