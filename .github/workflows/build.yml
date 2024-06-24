@@ -45,3 +45,26 @@ jobs:
       - name: Build
         working-directory: ./android
         run: ./gradlew --no-daemon build
+
+      - name: Set short Git commit SHA
+        run: |
+          short_sha=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_SHORT_SHA=$short_sha" >> $GITHUB_ENV
+
+      - name: Upload Debug - APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{COMMIT_SHORT_SHA}}-context-launcher-debug.apk
+          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/debug/context-launcher*.apk
+
+      - name: Upload Release - APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{COMMIT_SHORT_SHA}}-context-launcher-release.apk
+          path: $GITHUB_WORKSPACE/android/app/build/outputs/apk/release/context-launcher*.apk
+
+      - name: Upload Release - AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{COMMIT_SHORT_SHA}}-context-launcher-release.aab
+          path: $GITHUB_WORKSPACE/android/app/build/outputs/bundle/release/context-launcher*.aab
