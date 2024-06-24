@@ -1,0 +1,104 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*" # Matches tags like v1.0.0, v2.1.0, etc.
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+
+      - name: Install Node.js Dependencies
+        run: npm ci
+
+      - name: Use Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "microsoft"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Decode and save the keystore file
+        run: |
+          # Upload store file was encoded: base64 -i upload.keystore -o ~/upload.keystore.base64
+          echo ${{ secrets.CONTEXT_LAUNCHER_UPLOAD_STORE_FILE }} | base64 --decode > $GITHUB_WORKSPACE/android/app/upload.keystore
+
+      - name: Prepare local.properties file
+        run: |
+          # Since the password contains a dollar sign ($) I had to encode it and decode it here.
+          STORE_PASSWORD=$(echo "${{ secrets.CONTEXT_LAUNCHER_UPLOAD_STORE_PASSWORD_BASE64 }}" | base64 --decode)
+          KEY_PASSWORD=$(echo "${{ secrets.CONTEXT_LAUNCHER_UPLOAD_KEY_PASSWORD_BASE64 }}" | base64 --decode)
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > $GITHUB_WORKSPACE/android/local.properties
+          echo "CONTEXT_LAUNCHER_UPLOAD_STORE_FILE=$GITHUB_WORKSPACE/android/app/upload.keystore" >> $GITHUB_WORKSPACE/android/local.properties
+          echo "CONTEXT_LAUNCHER_UPLOAD_STORE_PASSWORD=$STORE_PASSWORD" >> $GITHUB_WORKSPACE/android/local.properties
+          echo "CONTEXT_LAUNCHER_UPLOAD_KEY_ALIAS=${{ secrets.CONTEXT_LAUNCHER_UPLOAD_KEY_ALIAS }}" >> $GITHUB_WORKSPACE/android/local.properties
+          echo "CONTEXT_LAUNCHER_UPLOAD_KEY_PASSWORD=$KEY_PASSWORD" >> $GITHUB_WORKSPACE/android/local.properties
+
+      - name: Build
+        working-directory: ./android
+        run: ./gradlew --no-daemon build
+
+      # Build artifacts
+      - name: Build Debug - APK
+        working-directory: ./android
+        run: ./gradlew --no-daemon assembleDebug
+
+      - name: Build Release - APK
+        working-directory: ./android
+        run: ./gradlew --no-daemon assembleRelease
+
+      - name: Build Release - AAB
+        working-directory: ./android
+        run: ./gradlew --no-daemon bundleRelease
+
+      # Upload built artifacts
+      - name: Set short Git commit SHA
+        run: |
+          short_sha=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_SHORT_SHA=$short_sha" >> $GITHUB_ENV
+
+      - name: Upload Debug - APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-debug-apks
+          path: android/app/build/outputs/apk/debug/*.apk
+
+      - name: Upload Release - APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-release-apks
+          path: android/app/build/outputs/apk/release/*.apk
+
+      - name: Upload Release - AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.COMMIT_SHORT_SHA }}-context-launcher-release-aabs
+          path: android/app/build/outputs/bundle/release/*.aab
+
+      # - name: Generate Changelog
+      #   run: |
+      #     npx auto-changelog --unreleased-only
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          # body_path: ./CHANGELOG.md
+          make_latest: 'true'
+          generate_release_notes: true
+          files: |
+            android/app/build/outputs/apk/release/*.apk
+            android/app/build/outputs/bundle/release/*.aab
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
