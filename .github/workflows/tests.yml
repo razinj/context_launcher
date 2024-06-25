@@ -1,14 +1,7 @@
 name: tests
 
 on:
-  workflow_run:
-    workflows: [code-style]
-    types:
-      - completed
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  workflow_call:
 
 jobs:
   jest:
