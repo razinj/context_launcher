@@ -1,6 +1,10 @@
-name: Code Style
+name: code-style
 
 on: [push]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check-formatting:

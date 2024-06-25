@@ -1,21 +1,26 @@
-name: Tests
+name: tests
 
-on: [push]
+on:
+  workflow_run:
+    workflows: [code-style]
+    types:
+      - completed
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  jest-tests:
-    strategy:
-      matrix:
-        node-version: ["18.x", "20.x"]
+  jest:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "20.x"
 
       - name: Install Dependencies
         run: npm ci
