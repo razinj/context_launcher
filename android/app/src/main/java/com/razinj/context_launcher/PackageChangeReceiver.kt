@@ -23,6 +23,7 @@ class PackageChangeReceiver : BroadcastReceiver() {
             context,
             action,
             packageName,
+            intent.getBooleanExtra(Intent.EXTRA_REPLACING, false),
         )
     }
 
@@ -31,25 +32,22 @@ class PackageChangeReceiver : BroadcastReceiver() {
             context: Context,
             action: String,
             packageName: String,
+            replacing: Boolean,
         ) {
-            if (action != Intent.ACTION_PACKAGE_ADDED &&
-                action != Intent.ACTION_PACKAGE_CHANGED &&
-                action != Intent.ACTION_PACKAGE_REMOVED
-            ) {
-                return
-            }
-
             val intent = Intent()
             intent.setAction(Constants.PACKAGE_UPDATE_ACTION)
             intent.putExtra(Constants.PACKAGE_CHANGE_NAME, packageName)
 
-            if (action == Intent.ACTION_PACKAGE_ADDED || action == Intent.ACTION_PACKAGE_CHANGED) {
-                // Ignore plugin apps
-                context.packageManager.getLaunchIntentForPackage(packageName) ?: return
-
-                intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, false)
+            if (Intent.ACTION_PACKAGE_ADDED == action) {
+                if (!replacing) {
+                    intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, false)
+                }
+            } else if (Intent.ACTION_PACKAGE_REMOVED == action) {
+                if (!replacing) {
+                    intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, true)
+                }
             } else {
-                intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, true)
+                intent.putExtra(Constants.PACKAGE_CHANGE_IS_REMOVED, false)
             }
 
             context.sendBroadcast(intent)

@@ -9,7 +9,6 @@ import android.content.IntentFilter
 import android.content.pm.LauncherApps
 import android.os.Build
 import android.os.IBinder
-import android.os.Process
 import android.os.UserHandle
 import androidx.core.app.NotificationCompat
 
@@ -17,19 +16,19 @@ class AppProvider : Service() {
     private var packageChangeReceiver: PackageChangeReceiver? = null
 
     override fun onCreate() {
-        val launcherApps = (getSystemService(LAUNCHER_APPS_SERVICE) as LauncherApps)
+        val launcherApps = getSystemService(LAUNCHER_APPS_SERVICE) as LauncherApps
+
         launcherApps.registerCallback(
             object : LauncherAppsCallback() {
                 override fun onPackageAdded(
                     packageName: String,
                     user: UserHandle,
                 ) {
-                    if (user == Process.myUserHandle()) return
-
                     PackageChangeReceiver.handleEvent(
                         this@AppProvider,
                         Intent.ACTION_PACKAGE_ADDED,
                         packageName,
+                        false,
                     )
                 }
 
@@ -37,12 +36,11 @@ class AppProvider : Service() {
                     packageName: String,
                     user: UserHandle,
                 ) {
-                    if (user == Process.myUserHandle()) return
-
                     PackageChangeReceiver.handleEvent(
                         this@AppProvider,
                         Intent.ACTION_PACKAGE_CHANGED,
                         packageName,
+                        true,
                     )
                 }
 
@@ -50,12 +48,11 @@ class AppProvider : Service() {
                     packageName: String,
                     user: UserHandle,
                 ) {
-                    if (user == Process.myUserHandle()) return
-
                     PackageChangeReceiver.handleEvent(
                         this@AppProvider,
                         Intent.ACTION_PACKAGE_REMOVED,
                         packageName,
+                        false,
                     )
                 }
             },
